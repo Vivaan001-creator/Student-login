@@ -1,1 +1,103 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Edit Student</title>
+
+<link rel="stylesheet"
+href="admin.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<h1>Edit Student</h1>
+
+<input
+type="text"
+id="studentName"
+placeholder="Student Name">
+
+<input
+type="text"
+id="fatherName"
+placeholder="Father Name">
+
+<input
+type="text"
+id="attendance"
+placeholder="Attendance">
+
+  <h3>Subject Marks</h3>
+
+<div id="marksEditor">
+
+</div>
+  
+<h3>Live Result Preview</h3>
+
+<div class="preview-box">
+
+<p><b>Total:</b> <span id="previewTotal">0</span></p>
+
+<p><b>Percentage:</b> <span id="previewPercentage">0%</span></p>
+
+<p><b>Grade:</b> <span id="previewGrade">-</span></p>
+
+<p><b>Status:</b> <span id="previewStatus">-</span></p>
+
+<p><b>Rank:</b> <span id="previewRank">-</span></p>
+
+<p><b>Teacher Comment:</b> <span id="previewComment">-</span></p>
+
+</div>
+  
+<label>Select Result Month</label>
+
+<select
+id="month"
+onchange="changeMonth()">
+
+</select>
+
+<h3>Result Status</h3>
+
+<select id="publishStatus">
+    <option value="published">Published</option>
+    <option value="unpublished">Unpublished</option>
+</select>
+
+<br><br>
+
+<button onclick="saveStudent()">
+    Save Changes
+</button>
+
+<br><br>
+
+<br><br>
+
+<button
+onclick="window.location.href='students.html'">
+
+⬅ Back
+
+</button>
+
+</div>
+
+<script type="module" src="admin.js"></script>
+
+</body>
+
+</html>
 
