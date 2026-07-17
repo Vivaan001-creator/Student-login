@@ -1,1 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard</title>
+
+<link rel="stylesheet"
+href="admin.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<h1>Admin Panel</h1>
+
+<p>Welcome Administrator</p>
+
+<div class="menu">
+
+<button onclick="window.location.href='students.html'">
+Student Records
+</button>
+
+<button onclick="window.location.href='add-student.html'">
+➕ Add Student
+</button>
+  
+<button id="marksBtn">
+Marks Management
+</button>
+
+<button id="attendanceBtn">
+Attendance
+</button>
+
+<button id="resultBtn">
+Publish Result
+</button>
+
+<button onclick="window.location.href='change-password.html'">
+
+Change Password
+
+</button>
+  
+  <button onclick="adminLogout()">
+    Logout
+  </button>
+
+</div>
+
+</div>
+
+<script type="module" src="admin.js"></script>
+
+</body>
+
+</html>
 
