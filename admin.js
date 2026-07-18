@@ -904,6 +904,24 @@ async function loadTeacherTable(){
 
 <td>${teacher.subject}</td>
 
+<td>${teacher.phone}</td>
+
+<td>
+
+<span class="${
+teacher.status==="Active"
+?
+"status-active"
+:
+"status-inactive"
+}">
+
+${teacher.status}
+
+</span>
+
+</td>
+
 <td>
 
 <button
