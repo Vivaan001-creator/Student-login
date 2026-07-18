@@ -1531,3 +1531,40 @@ async function loadSchoolProfile(){
 }
 
 loadSchoolProfile();
+
+// ==========================
+// Show School Name
+// ==========================
+
+async function showSchoolName(){
+
+    const schoolTitle =
+        document.getElementById("schoolTitle");
+
+    if(!schoolTitle) return;
+
+    try{
+
+        const profileSnap =
+            await getDoc(
+                doc(db,"settings","schoolProfile")
+            );
+
+        if(profileSnap.exists()){
+
+            schoolTitle.textContent =
+                profileSnap.data().schoolName;
+
+        }
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+showSchoolName();
