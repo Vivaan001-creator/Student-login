@@ -651,3 +651,36 @@ window.addEventListener("load",()=>{
 document.body.classList.add("loaded");
 
 });
+
+
+// ==========================
+// Dashboard Mouse Effect
+// ==========================
+
+const dashboard = document.querySelector(".dashboard");
+
+if(dashboard){
+
+document.addEventListener("mousemove",(e)=>{
+
+const x =
+(window.innerWidth/2-e.clientX)/45;
+
+const y =
+(window.innerHeight/2-e.clientY)/45;
+
+dashboard.style.transform=
+
+`rotateY(${x}deg) rotateX(${-y}deg)`;
+
+});
+
+document.addEventListener("mouseleave",()=>{
+
+dashboard.style.transform=
+
+"rotateX(0deg) rotateY(0deg)";
+
+});
+
+}
