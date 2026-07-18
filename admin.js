@@ -978,6 +978,145 @@ async function deleteTeacher(id){
 window.deleteTeacher=deleteTeacher;
 
 // ==========================
+// Edit Teacher
+// ==========================
+
+function editTeacher(id){
+
+    localStorage.setItem(
+        "editTeacherId",
+        id
+    );
+
+    window.location.href =
+        "edit-teacher.html";
+
+}
+
+window.editTeacher =
+editTeacher;
+
+// ==========================
+// Load Teacher
+// ==========================
+
+async function loadTeacher(){
+
+    const id =
+        localStorage.getItem(
+            "editTeacherId"
+        );
+
+    if(!id) return;
+
+    const teacherRef =
+        doc(db,"teachers",id);
+
+    const teacherSnap =
+        await getDoc(teacherRef);
+
+    if(!teacherSnap.exists()){
+
+        alert("Teacher Not Found");
+
+        return;
+
+    }
+
+    const teacher =
+        teacherSnap.data();
+
+    document.getElementById("teacherName").value =
+        teacher.name || "";
+
+    document.getElementById("teacherSubject").value =
+        teacher.subject || "";
+
+    document.getElementById("teacherPhone").value =
+        teacher.phone || "";
+
+    document.getElementById("teacherEmail").value =
+        teacher.email || "";
+
+    document.getElementById("teacherQualification").value =
+        teacher.qualification || "";
+
+    document.getElementById("teacherExperience").value =
+        teacher.experience || "";
+
+    document.getElementById("teacherStatus").value =
+        teacher.status || "Active";
+
+}
+
+if(
+window.location.pathname.includes(
+"edit-teacher.html"
+)
+){
+
+    loadTeacher();
+
+}
+// ==========================
+// Save Teacher
+// ==========================
+
+async function saveTeacher(){
+
+    const id =
+        localStorage.getItem(
+            "editTeacherId"
+        );
+
+    await setDoc(
+
+        doc(db,"teachers",id),
+
+        {
+
+            name:
+document.getElementById("teacherName").value,
+
+            subject:
+document.getElementById("teacherSubject").value,
+
+            phone:
+document.getElementById("teacherPhone").value,
+
+            email:
+document.getElementById("teacherEmail").value,
+
+            qualification:
+document.getElementById("teacherQualification").value,
+
+            experience:
+Number(
+document.getElementById("teacherExperience").value
+),
+
+            status:
+document.getElementById("teacherStatus").value
+
+        },
+
+        { merge:true }
+
+    );
+
+    alert(
+        "Teacher Updated Successfully"
+    );
+
+    window.location.href =
+        "teachers.html";
+
+}
+
+window.saveTeacher =
+saveTeacher;
+
+// ==========================
 // Search Teacher
 // ==========================
 
