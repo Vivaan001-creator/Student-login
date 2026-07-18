@@ -612,3 +612,21 @@ async function loadDashboardStats(){
 }
 
 loadDashboardStats();
+
+// ==========================
+// Dashboard Clock
+// ==========================
+
+const dashboardClock =
+    document.getElementById("dashboardClock");
+
+if(dashboardClock){
+
+    setInterval(()=>{
+
+        dashboardClock.textContent =
+            new Date().toLocaleString();
+
+    },1000);
+
+}
