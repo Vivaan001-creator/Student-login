@@ -937,6 +937,14 @@ ${teacher.status}
 </td>
 
 <td>
+
+<button
+onclick="viewTeacher('${docSnap.id}')">
+
+View
+
+</button>
+
 <button onclick="editTeacher('${docSnap.id}')">
 Edit
 </button>
@@ -1300,3 +1308,136 @@ storageRef
 return url;
 
 }
+
+// ==========================
+// View Teacher
+// ==========================
+
+function viewTeacher(id){
+
+localStorage.setItem(
+
+"profileTeacherId",
+
+id
+
+);
+
+window.location.href=
+
+"teacher-profile.html";
+
+}
+
+window.viewTeacher=viewTeacher;
+
+// ==========================
+// Load Teacher Profile
+// ==========================
+
+async function loadTeacherProfile(){
+
+const id=
+
+localStorage.getItem(
+
+"profileTeacherId"
+
+);
+
+if(!id) return;
+
+const snap=
+
+await getDoc(
+
+doc(db,"teachers",id)
+
+);
+
+if(!snap.exists()) return;
+
+const teacher=snap.data();
+
+document.getElementById(
+
+"profilePhoto"
+
+).src=
+
+teacher.photo||
+
+"teacher.png";
+
+document.getElementById(
+
+"profileName"
+
+).textContent=
+
+teacher.name;
+
+document.getElementById(
+
+"profileSubject"
+
+).textContent=
+
+teacher.subject;
+
+document.getElementById(
+
+"profilePhone"
+
+).textContent=
+
+teacher.phone;
+
+document.getElementById(
+
+"profileEmail"
+
+).textContent=
+
+teacher.email;
+
+document.getElementById(
+
+"profileQualification"
+
+).textContent=
+
+teacher.qualification;
+
+document.getElementById(
+
+"profileExperience"
+
+).textContent=
+
+teacher.experience;
+
+document.getElementById(
+
+"profileStatus"
+
+).textContent=
+
+teacher.status;
+
+}
+
+if(
+
+window.location.pathname.includes(
+
+"teacher-profile.html"
+
+)
+
+){
+
+loadTeacherProfile();
+
+}
+
