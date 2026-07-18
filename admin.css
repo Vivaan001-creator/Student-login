@@ -1249,3 +1249,127 @@ box-shadow:
 0 0 18px rgba(78,84,200,.5);
 
 }
+
+.teacher-profile-card{
+
+width:95%;
+
+max-width:500px;
+
+margin:auto;
+
+margin-top:40px;
+
+padding:30px;
+
+background:white;
+
+border-radius:20px;
+
+box-shadow:
+
+0 10px 30px rgba(0,0,0,.2);
+
+text-align:center;
+
+}
+
+.teacher-profile-card img{
+
+width:150px;
+
+height:150px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+border:5px solid #4e54c8;
+
+margin-bottom:20px;
+
+}
+
+.teacher-profile-card h2{
+
+margin-bottom:20px;
+
+color:#4e54c8;
+
+}
+
+.teacher-profile-card p{
+
+margin:12px 0;
+
+font-size:17px;
+
+color:#333;
+
+}
+
+.teacher-profile-card button{
+
+margin-top:25px;
+
+width:100%;
+
+}
+
+.teacher-profile-card{
+
+animation:
+
+profileFade .7s ease;
+
+}
+
+@keyframes profileFade{
+
+0%{
+
+opacity:0;
+
+transform:
+
+translateY(30px)
+
+scale(.95);
+
+}
+
+100%{
+
+opacity:1;
+
+transform:
+
+translateY(0)
+
+scale(1);
+
+}
+
+}
+
+.teacher-profile-card img{
+
+transition:.35s;
+
+}
+
+.teacher-profile-card img:hover{
+
+transform:
+
+scale(1.08)
+
+rotate(3deg);
+
+box-shadow:
+
+0 0 25px
+
+rgba(78,84,200,.45);
+
+}
