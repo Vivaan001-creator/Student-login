@@ -777,3 +777,175 @@ translateY(0);
 }
 
 }
+
+
+  /* ==========================
+   Glass Reflection
+========================== */
+
+.dashboard{
+
+position:relative;
+
+overflow:hidden;
+
+}
+
+.dashboard::before{
+
+content:"";
+
+position:absolute;
+
+top:-40%;
+
+left:-60%;
+
+width:80%;
+
+height:200%;
+
+background:
+
+linear-gradient(
+
+90deg,
+
+transparent,
+
+rgba(255,255,255,.08),
+
+transparent
+
+);
+
+transform:rotate(20deg);
+
+animation:
+
+glassReflection 8s linear infinite;
+
+pointer-events:none;
+
+}
+
+@keyframes glassReflection{
+
+0%{
+
+left:-70%;
+
+}
+
+100%{
+
+left:150%;
+
+}
+
+}
+
+/* ==========================
+   Premium Hover
+========================== */
+
+.menu button{
+
+position:relative;
+
+overflow:hidden;
+
+}
+
+.menu button::after{
+
+content:"";
+
+position:absolute;
+
+top:0;
+
+left:-120%;
+
+width:45%;
+
+height:100%;
+
+background:
+
+rgba(255,255,255,.25);
+
+transform:skewX(-25deg);
+
+transition:.7s;
+
+}
+
+.menu button:hover::after{
+
+left:150%;
+
+}
+
+.menu button:hover{
+
+letter-spacing:.6px;
+
+}
+
+
+/* ==========================
+   Statistics Glow
+========================== */
+
+.stat-card{
+
+position:relative;
+
+overflow:hidden;
+
+}
+
+.stat-card::before{
+
+content:"";
+
+position:absolute;
+
+width:220px;
+
+height:220px;
+
+background:
+
+radial-gradient(
+
+rgba(255,255,255,.15),
+
+transparent
+
+);
+
+top:-120px;
+
+right:-120px;
+
+transition:.5s;
+
+}
+
+.stat-card:hover::before{
+
+transform:scale(1.35);
+
+}
+
+.stat-card:hover h2{
+
+text-shadow:
+
+0 0 18px
+
+rgba(255,255,255,.8);
+
+}
