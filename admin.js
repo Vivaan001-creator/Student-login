@@ -1564,3 +1564,125 @@ alert(
 window.saveTeacherAttendance=
 
 saveTeacherAttendance;
+
+// ==========================
+// Teacher Attendance History
+// ==========================
+
+async function loadAttendanceHistory(){
+
+const table=
+
+document.getElementById(
+
+"attendanceHistoryTable"
+
+);
+
+if(!table) return;
+
+table.innerHTML="";
+
+const selectedDate=
+
+document.getElementById(
+
+"historyDate"
+
+).value;
+
+const teachers=
+
+await getDocs(
+
+collection(db,"teachers")
+
+);
+
+for(const teacherDoc of teachers.docs){
+
+const teacher=
+
+teacherDoc.data();
+
+if(selectedDate){
+
+const attendanceRef=
+
+doc(
+
+db,
+
+"teachers",
+
+teacherDoc.id,
+
+"attendance",
+
+selectedDate
+
+);
+
+const attendanceSnap=
+
+await getDoc(attendanceRef);
+
+if(attendanceSnap.exists()){
+
+const attendance=
+
+attendanceSnap.data();
+
+table.innerHTML+=`
+
+<tr>
+
+<td>${teacher.name}</td>
+
+<td>${attendance.date}</td>
+
+<td>${attendance.status}</td>
+
+</tr>
+
+`;
+
+}
+
+}
+
+}
+
+}
+
+window.loadAttendanceHistory=
+
+loadAttendanceHistory;
+
+if(
+
+window.location.pathname.includes(
+
+"teacher-attendance-history.html"
+
+)
+
+){
+
+const today=
+
+new Date()
+
+.toISOString()
+
+.split("T")[0];
+
+document.getElementById(
+
+"historyDate"
+
+).value=today;
+
+loadAttendanceHistory();
+
+}
