@@ -623,6 +623,76 @@ async function loadDashboardStats(){
 loadDashboardStats();
 
 // ==========================
+// Dashboard Live Statistics
+// ==========================
+
+async function loadSchoolStats() {
+
+    // Total Students
+    const studentSnapshot =
+        await getCountFromServer(
+            collection(db, "students")
+        );
+
+    const studentBox =
+        document.getElementById("studentCount");
+
+    if (studentBox) {
+
+        studentBox.textContent =
+            studentSnapshot.data().count;
+
+    }
+
+    // Teachers (Temporary)
+
+    const teacherBox =
+        document.getElementById("teacherCount");
+
+    if (teacherBox) {
+
+        teacherBox.textContent = "0";
+
+    }
+
+    // Classes
+
+    const classBox =
+        document.getElementById("classCount");
+
+    if (classBox) {
+
+        classBox.textContent = "6";
+
+    }
+
+    // Published Results
+
+    const publishBox =
+        document.getElementById("publishCount");
+
+    if (publishBox) {
+
+        publishBox.textContent = "0";
+
+    }
+
+    // Pending Results
+
+    const pendingBox =
+        document.getElementById("pendingCount");
+
+    if (pendingBox) {
+
+        pendingBox.textContent = "0";
+
+    }
+
+}
+
+loadSchoolStats();
+
+// ==========================
 // Dashboard Clock
 // ==========================
 
