@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Teacher Management</title>
+
+<link rel="stylesheet" href="admin.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<h1>Teacher Management</h1>
+
+<input
+type="text"
+id="searchTeacher"
+placeholder="Search Teacher">
+
+<table class="student-table">
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+
+<th>Name</th>
+
+<th>Subject</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="teacherTable">
+
+</tbody>
+
+</table>
+
+<br>
+
+<button
+onclick="window.location.href='add-teacher.html'">
+
+Add Teacher
+
+</button>
+
+<br><br>
+
+<button
+onclick="window.location.href='dashboard.html'">
+
+Back
+
+</button>
+
+</div>
+
+<script type="module"
+src="admin.js"></script>
+
+</body>
+
+</html>
