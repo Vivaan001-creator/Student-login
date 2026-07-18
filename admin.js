@@ -1440,3 +1440,94 @@ window.location.pathname.includes(
 loadTeacherProfile();
 
 }
+
+// ==========================
+// School Profile
+// ==========================
+
+async function saveSchoolProfile(){
+
+    const profile={
+
+        schoolName:
+        document.getElementById("schoolName").value.trim(),
+
+        principalName:
+        document.getElementById("principalName").value.trim(),
+
+        schoolAddress:
+        document.getElementById("schoolAddress").value.trim(),
+
+        schoolPhone:
+        document.getElementById("schoolPhone").value.trim(),
+
+        schoolEmail:
+        document.getElementById("schoolEmail").value.trim(),
+
+        schoolWebsite:
+        document.getElementById("schoolWebsite").value.trim()
+
+    };
+
+    try{
+
+        await setDoc(
+
+            doc(db,"settings","schoolProfile"),
+
+            profile
+
+        );
+
+        alert("School Profile Saved Successfully");
+
+    }
+
+    catch(error){
+
+        alert(error.message);
+
+    }
+
+}
+
+window.saveSchoolProfile=saveSchoolProfile;
+
+
+async function loadSchoolProfile(){
+
+    if(
+        !location.pathname.includes("school-profile.html")
+    ) return;
+
+    const profileRef=
+        doc(db,"settings","schoolProfile");
+
+    const profileSnap=
+        await getDoc(profileRef);
+
+    if(!profileSnap.exists()) return;
+
+    const data=profileSnap.data();
+
+    document.getElementById("schoolName").value=
+        data.schoolName||"";
+
+    document.getElementById("principalName").value=
+        data.principalName||"";
+
+    document.getElementById("schoolAddress").value=
+        data.schoolAddress||"";
+
+    document.getElementById("schoolPhone").value=
+        data.schoolPhone||"";
+
+    document.getElementById("schoolEmail").value=
+        data.schoolEmail||"";
+
+    document.getElementById("schoolWebsite").value=
+        data.schoolWebsite||"";
+
+}
+
+loadSchoolProfile();
