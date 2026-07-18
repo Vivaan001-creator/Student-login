@@ -1069,7 +1069,15 @@ document.getElementById("teacherExperience").value
 ),
 
             status:
-document.getElementById("teacherStatus").value
+document.getElementById("teacherStatus").value,
+
+          photo:
+
+photoURL ||
+
+document.getElementById(
+"teacherPhotoPreview"
+).src
 
         },
 
