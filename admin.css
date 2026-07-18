@@ -1219,3 +1219,33 @@ transform:scale(1.05);
 width:100%;
 
 }
+
+.teacher-list-photo{
+
+width:45px;
+
+height:45px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+border:2px solid #4e54c8;
+
+}
+
+.teacher-list-photo{
+
+transition:.35s;
+
+}
+
+.teacher-list-photo:hover{
+
+transform:scale(1.4);
+
+box-shadow:
+
+0 0 18px rgba(78,84,200,.5);
+
+}
