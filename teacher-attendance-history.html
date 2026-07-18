@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Teacher Attendance History</title>
+
+<link rel="stylesheet"
+href="admin.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<h1>Teacher Attendance History</h1>
+
+<input
+type="date"
+id="historyDate">
+
+<button
+onclick="loadAttendanceHistory()">
+
+Search
+
+</button>
+
+<table class="student-table">
+
+<thead>
+
+<tr>
+
+<th>Teacher</th>
+
+<th>Date</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody id="attendanceHistoryTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+<script
+type="module"
+src="admin.js">
+
+</script>
+
+</body>
+
+</html>
