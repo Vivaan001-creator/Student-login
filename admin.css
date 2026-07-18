@@ -1138,3 +1138,40 @@ font-size:15px;
 opacity:.8;
 
   }
+
+
+.status-active{
+
+background:#28a745;
+
+color:white;
+
+padding:6px 12px;
+
+border-radius:20px;
+
+font-weight:bold;
+
+font-size:13px;
+
+display:inline-block;
+
+}
+
+.status-inactive{
+
+background:#dc3545;
+
+color:white;
+
+padding:6px 12px;
+
+border-radius:20px;
+
+font-weight:bold;
+
+font-size:13px;
+
+display:inline-block;
+
+}
