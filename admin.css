@@ -106,23 +106,25 @@ color:#666;
 
 width:95%;
 
-max-width:900px;
-
-background:white;
+max-width:1200px;
 
 padding:30px;
 
 border-radius:20px;
 
-box-shadow:0 10px 30px rgba(0,0,0,.2);
+background:transparent;
 
-text-align:center;
+box-shadow:none;
+
+text-align:left;
+
+color:white;
 
 }
 
 .dashboard h1{
 
-color:#4e54c8;
+color:white;
 
 margin-bottom:10px;
 
@@ -132,7 +134,7 @@ margin-bottom:10px;
 
 margin-bottom:30px;
 
-color:#666;
+color:white;
 
 }
 
@@ -281,6 +283,8 @@ align-items:center;
 
 font-weight:bold;
 
+color:#222;
+
 }
 
 .subject-row input{
@@ -303,7 +307,7 @@ margin-top:20px;
 
 padding:20px;
 
-background:#f5f7ff;
+background:white;
 
 border-radius:10px;
 
@@ -313,11 +317,11 @@ border:1px solid #ddd;
 
 .preview-box p{
 
-margin:10px 0;
-
 font-size:17px;
 
 font-weight:bold;
+
+color:#222;
 
 }
 
@@ -331,9 +335,7 @@ font-weight:bold;
 
 .subject-row small{
 
-color:#666;
-
-font-size:13px;
+color:#444;
 
 }
 
