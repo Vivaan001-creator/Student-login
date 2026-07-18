@@ -568,3 +568,212 @@ transform:
 translateY(-5px);
 
 }
+
+
+/* ==========================
+   Dashboard Entry Animation
+========================== */
+
+.dashboard{
+
+animation:
+
+dashboardFade .9s ease;
+
+}
+
+@keyframes dashboardFade{
+
+0%{
+
+opacity:0;
+
+transform:
+
+translateY(35px)
+
+scale(.96);
+
+}
+
+100%{
+
+opacity:1;
+
+transform:
+
+translateY(0)
+
+scale(1);
+
+}
+
+}
+
+.dashboard-header{
+
+animation:
+
+slideTop .8s ease;
+
+}
+
+@keyframes slideTop{
+
+0%{
+
+opacity:0;
+
+transform:
+
+translateY(-30px);
+
+}
+
+100%{
+
+opacity:1;
+
+transform:
+
+translateY(0);
+
+}
+
+}
+
+.dashboard-stats .stat-card{
+
+opacity:0;
+
+animation:
+
+cardPop .7s ease forwards;
+
+}
+
+.dashboard-stats .stat-card:nth-child(1){
+
+animation-delay:.15s;
+
+}
+
+.dashboard-stats .stat-card:nth-child(2){
+
+animation-delay:.30s;
+
+}
+
+.dashboard-stats .stat-card:nth-child(3){
+
+animation-delay:.45s;
+
+}
+
+.dashboard-stats .stat-card:nth-child(4){
+
+animation-delay:.60s;
+
+}
+
+@keyframes cardPop{
+
+0%{
+
+opacity:0;
+
+transform:
+
+translateY(25px)
+
+scale(.9);
+
+}
+
+100%{
+
+opacity:1;
+
+transform:
+
+translateY(0)
+
+scale(1);
+
+}
+
+}
+
+/* ==========================
+   Menu Animation
+========================== */
+
+.menu button{
+
+opacity:0;
+
+animation:
+
+menuShow .7s ease forwards;
+
+}
+
+.menu button:nth-child(1){
+
+animation-delay:.75s;
+
+}
+
+.menu button:nth-child(2){
+
+animation-delay:.90s;
+
+}
+
+.menu button:nth-child(3){
+
+animation-delay:1.05s;
+
+}
+
+.menu button:nth-child(4){
+
+animation-delay:1.20s;
+
+}
+
+.menu button:nth-child(5){
+
+animation-delay:1.35s;
+
+}
+
+.menu button:nth-child(6){
+
+animation-delay:1.50s;
+
+}
+
+@keyframes menuShow{
+
+0%{
+
+opacity:0;
+
+transform:
+
+translateY(20px);
+
+}
+
+100%{
+
+opacity:1;
+
+transform:
+
+translateY(0);
+
+}
+
+}
