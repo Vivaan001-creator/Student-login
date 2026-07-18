@@ -630,3 +630,13 @@ if(dashboardClock){
     },1000);
 
 }
+
+
+const resultCount =
+document.getElementById("resultCount");
+
+if(resultCount){
+
+resultCount.textContent="0";
+
+}
