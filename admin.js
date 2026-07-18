@@ -1760,6 +1760,18 @@ document.getElementById("attendancePercent").textContent=
 
 percent+"%";
 
+  document.getElementById("presentCard").textContent=
+
+present;
+
+document.getElementById("absentCard").textContent=
+
+absent;
+
+document.getElementById("leaveCard").textContent=
+
+leave;
+
   document.getElementById(
 
 "attendancePercentCircle"
@@ -1812,6 +1824,64 @@ circle.style.color="#ffffff";
 
 }
 
+  const title=
+
+document.getElementById("performanceTitle");
+
+const message=
+
+document.getElementById("performanceMessage");
+
+if(percent>=95){
+
+title.textContent="Outstanding";
+
+message.textContent=
+
+"Excellent attendance record.";
+
+}
+
+else if(percent>=85){
+
+title.textContent="Excellent";
+
+message.textContent=
+
+"Very good attendance.";
+
+}
+
+else if(percent>=75){
+
+title.textContent="Good";
+
+message.textContent=
+
+"Attendance is satisfactory.";
+
+}
+
+else if(percent>=60){
+
+title.textContent="Average";
+
+message.textContent=
+
+"Needs improvement.";
+
+}
+
+else{
+
+title.textContent="Poor";
+
+message.textContent=
+
+"Attendance is very low.";
+
+}
+  
 }
 
 window.loadTeacherReport=
