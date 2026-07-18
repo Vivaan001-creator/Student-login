@@ -684,3 +684,28 @@ dashboard.style.transform=
 });
 
 }
+
+// ==========================
+// Dashboard Date Time
+// ==========================
+
+const timeBox =
+document.getElementById("liveDateTime");
+
+if(timeBox){
+
+setInterval(()=>{
+
+const now=new Date();
+
+timeBox.innerHTML=
+
+now.toLocaleDateString()
+
++"<br>"+
+
+now.toLocaleTimeString();
+
+},1000);
+
+}
