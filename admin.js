@@ -1020,10 +1020,28 @@ editTeacher;
 async function saveTeacher(){
 
     const id =
+      
         localStorage.getItem(
             "editTeacherId"
         );
+const file =
+document
+.getElementById(
+"teacherPhoto"
+).files[0];
 
+let photoURL = "";
+
+if(file){
+
+    photoURL =
+    await uploadTeacherPhoto(
+        file,
+        id
+    );
+
+}
+  
     await setDoc(
 
         doc(db,"teachers",id),
