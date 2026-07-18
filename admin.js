@@ -579,3 +579,36 @@ async function deleteStudent(roll) {
 }
 
 window.deleteStudent = deleteStudent;
+
+// ==========================
+// Dashboard Statistics
+// ==========================
+
+async function loadDashboardStats(){
+
+    const studentElement =
+        document.getElementById("studentCount");
+
+    if(!studentElement) return;
+
+    try{
+
+        const snapshot =
+            await getCountFromServer(
+                collection(db,"students")
+            );
+
+        studentElement.textContent =
+            snapshot.data().count;
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+loadDashboardStats();
