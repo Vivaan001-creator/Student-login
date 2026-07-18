@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Edit Teacher</title>
+
+<link rel="stylesheet"
+href="admin.css">
+
+</head>
+
+<body>
+
+<div class="admin-box">
+
+<h1>Edit Teacher</h1>
+
+<input
+type="text"
+id="teacherName"
+placeholder="Teacher Name">
+
+<input
+type="text"
+id="teacherSubject"
+placeholder="Subject">
+
+<input
+type="tel"
+id="teacherPhone"
+placeholder="Mobile Number">
+
+<input
+type="email"
+id="teacherEmail"
+placeholder="Email">
+
+<input
+type="text"
+id="teacherQualification"
+placeholder="Qualification">
+
+<input
+type="number"
+id="teacherExperience"
+placeholder="Experience">
+
+<select id="teacherStatus">
+
+<option value="Active">
+Active
+</option>
+
+<option value="Inactive">
+Inactive
+</option>
+
+</select>
+
+<button
+onclick="saveTeacher()">
+
+Save Changes
+
+</button>
+
+<br><br>
+
+<button
+onclick="window.location.href='teachers.html'">
+
+Back
+
+</button>
+
+</div>
+
+<script
+type="module"
+src="admin.js">
+
+</script>
+
+</body>
+
+</html>
