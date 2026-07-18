@@ -123,6 +123,15 @@ async function loadStudentTable() {
     );
 
     snapshot.forEach((docSnap) => {
+      const totalBox =
+document.getElementById("totalStudents");
+
+if(totalBox){
+
+totalBox.textContent =
+snapshot.size;
+
+}
 
         const student = docSnap.data();
 
