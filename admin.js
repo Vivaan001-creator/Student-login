@@ -923,6 +923,9 @@ ${teacher.status}
 </td>
 
 <td>
+<button onclick="editTeacher('${docSnap.id}')">
+Edit
+</button>
 
 <button
 onclick="deleteTeacher('${docSnap.id}')">
@@ -997,6 +1000,64 @@ window.editTeacher =
 editTeacher;
 
 // ==========================
+// Save Teacher
+// ==========================
+
+async function saveTeacher(){
+
+    const id =
+        localStorage.getItem(
+            "editTeacherId"
+        );
+
+    await setDoc(
+
+        doc(db,"teachers",id),
+
+        {
+
+            name:
+document.getElementById("teacherName").value,
+
+            subject:
+document.getElementById("teacherSubject").value,
+
+            phone:
+document.getElementById("teacherPhone").value,
+
+            email:
+document.getElementById("teacherEmail").value,
+
+            qualification:
+document.getElementById("teacherQualification").value,
+
+            experience:
+Number(
+document.getElementById("teacherExperience").value
+),
+
+            status:
+document.getElementById("teacherStatus").value
+
+        },
+
+        { merge:true }
+
+    );
+
+    alert(
+        "Teacher Updated Successfully"
+    );
+
+    window.location.href =
+        "teachers.html";
+
+}
+
+window.saveTeacher =
+saveTeacher;
+
+// ==========================
 // Load Teacher
 // ==========================
 
@@ -1058,63 +1119,7 @@ window.location.pathname.includes(
     loadTeacher();
 
 }
-// ==========================
-// Save Teacher
-// ==========================
 
-async function saveTeacher(){
-
-    const id =
-        localStorage.getItem(
-            "editTeacherId"
-        );
-
-    await setDoc(
-
-        doc(db,"teachers",id),
-
-        {
-
-            name:
-document.getElementById("teacherName").value,
-
-            subject:
-document.getElementById("teacherSubject").value,
-
-            phone:
-document.getElementById("teacherPhone").value,
-
-            email:
-document.getElementById("teacherEmail").value,
-
-            qualification:
-document.getElementById("teacherQualification").value,
-
-            experience:
-Number(
-document.getElementById("teacherExperience").value
-),
-
-            status:
-document.getElementById("teacherStatus").value
-
-        },
-
-        { merge:true }
-
-    );
-
-    alert(
-        "Teacher Updated Successfully"
-    );
-
-    window.location.href =
-        "teachers.html";
-
-}
-
-window.saveTeacher =
-saveTeacher;
 
 // ==========================
 // Search Teacher
