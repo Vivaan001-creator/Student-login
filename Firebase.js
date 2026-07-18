@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
 import { getFirestore } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
+import { getStorage } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
 const firebaseConfig = {
   apiKey: "AIzaSyA83oNjXsBaXPl5jVZgdLm2E1f4MMoFfEM",
   authDomain: "school-management-portal-fb8da.firebaseapp.com",
@@ -14,5 +14,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
+const storage = getStorage(app);
 
-export { db };
+export { db, storage };
