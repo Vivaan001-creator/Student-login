@@ -1441,3 +1441,126 @@ loadTeacherProfile();
 
 }
 
+// ==========================
+// Load Teacher Dropdown
+// ==========================
+
+async function loadTeacherDropdown(){
+
+const select=
+
+document.getElementById(
+
+"attendanceTeacher"
+
+);
+
+if(!select) return;
+
+select.innerHTML="";
+
+const snapshot=
+
+await getDocs(
+
+collection(db,"teachers")
+
+);
+
+snapshot.forEach(docSnap=>{
+
+const teacher=
+
+docSnap.data();
+
+select.innerHTML+=`
+
+<option value="${docSnap.id}">
+
+${teacher.name}
+
+</option>
+
+`;
+
+});
+
+}
+
+loadTeacherDropdown();
+
+// ==========================
+// Save Teacher Attendance
+// ==========================
+
+async function saveTeacherAttendance(){
+
+const teacherId=
+
+document.getElementById(
+
+"attendanceTeacher"
+
+).value;
+
+const date=
+
+document.getElementById(
+
+"attendanceDate"
+
+).value;
+
+const status=
+
+document.getElementById(
+
+"attendanceStatus"
+
+).value;
+
+if(!date){
+
+alert("Select Date");
+
+return;
+
+}
+
+await setDoc(
+
+doc(
+
+db,
+
+"teachers",
+
+teacherId,
+
+"attendance",
+
+date
+
+),
+
+{
+
+date,
+
+status
+
+}
+
+);
+
+alert(
+
+"Attendance Saved Successfully"
+
+);
+
+}
+
+window.saveTeacherAttendance=
+
+saveTeacherAttendance;
