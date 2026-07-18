@@ -1182,3 +1182,36 @@ function searchTeacher(){
 }
 
 window.searchTeacher=searchTeacher;
+
+// ==========================
+// Teacher Photo Preview
+// ==========================
+
+const teacherPhotoInput =
+document.getElementById("teacherPhoto");
+
+if(teacherPhotoInput){
+
+teacherPhotoInput.addEventListener(
+"change",
+function(){
+
+const file=this.files[0];
+
+if(!file) return;
+
+const reader=new FileReader();
+
+reader.onload=function(e){
+
+document.getElementById(
+"teacherPhotoPreview"
+).src=e.target.result;
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+}
