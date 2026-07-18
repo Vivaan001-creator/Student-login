@@ -719,26 +719,3 @@ now.toLocaleTimeString();
 
 }
 
-
-// ==========================
-// Dashboard Notifications
-// ==========================
-
-const noticeList =
-document.getElementById("notificationList");
-
-if(noticeList){
-
-noticeList.innerHTML=`
-
-<li>✅ Dashboard Connected Successfully</li>
-
-<li>📚 Student Database Ready</li>
-
-<li>📄 Result Management Available</li>
-
-<li>🔒 Admin Login Protected</li>
-
-`;
-
- }
