@@ -1095,6 +1095,14 @@ async function loadTeacher(){
     const teacher =
         teacherSnap.data();
 
+if(teacher.photo){
+
+    document.getElementById(
+        "teacherPhotoPreview"
+    ).src = teacher.photo;
+
+}
+  
     document.getElementById("teacherName").value =
         teacher.name || "";
 
