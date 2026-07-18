@@ -1411,3 +1411,61 @@ font-size:16px;
 background:white;
 
 }
+
+.attendance-progress{
+
+display:flex;
+
+justify-content:center;
+
+margin:30px 0;
+
+}
+
+.progress-circle{
+
+width:180px;
+
+height:180px;
+
+border-radius:50%;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:34px;
+
+font-weight:bold;
+
+color:white;
+
+background:
+
+conic-gradient(
+
+#28a745 0deg,
+
+#28a745 0deg,
+
+#e5e5e5 0deg
+
+);
+
+transition:.8s;
+
+box-shadow:
+
+0 10px 30px rgba(0,0,0,.2);
+
+}
+
+.progress-circle span{
+
+text-shadow:
+
+0 2px 5px rgba(0,0,0,.3);
+
+}
