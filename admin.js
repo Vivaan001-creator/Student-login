@@ -904,6 +904,14 @@ async function loadTeacherTable(){
 
 <td>${teacher.subject}</td>
 
+<td>
+
+<img
+src="${teacher.photo || 'teacher.png'}"
+class="teacher-list-photo">
+
+</td>
+
 <td>${teacher.phone}</td>
 
 <td>
