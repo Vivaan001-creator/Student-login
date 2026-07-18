@@ -1469,3 +1469,57 @@ text-shadow:
 0 2px 5px rgba(0,0,0,.3);
 
 }
+
+@media print{
+
+button{
+
+display:none;
+
+}
+
+body{
+
+background:white;
+
+}
+
+.dashboard{
+
+box-shadow:none;
+
+}
+
+}
+
+.preview-box{
+
+animation:
+
+reportFade .7s ease;
+
+}
+
+@keyframes reportFade{
+
+0%{
+
+opacity:0;
+
+transform:
+
+translateY(20px);
+
+}
+
+100%{
+
+opacity:1;
+
+transform:
+
+translateY(0);
+
+}
+
+  }
