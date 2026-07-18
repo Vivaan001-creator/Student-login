@@ -1621,3 +1621,55 @@ font-size:16px;
 color:#555;
 
 }
+
+.status-card{
+
+animation:cardAppear .6s ease;
+
+}
+
+@keyframes cardAppear{
+
+0%{
+
+opacity:0;
+
+transform:translateY(20px);
+
+}
+
+100%{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+.performance-box{
+
+animation:fadePerformance .8s ease;
+
+}
+
+@keyframes fadePerformance{
+
+0%{
+
+opacity:0;
+
+transform:scale(.9);
+
+}
+
+100%{
+
+opacity:1;
+
+transform:scale(1);
+
+}
+
+}
