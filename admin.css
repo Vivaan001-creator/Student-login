@@ -1175,3 +1175,47 @@ font-size:13px;
 display:inline-block;
 
 }
+
+.teacher-photo-box{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+margin-bottom:20px;
+
+}
+
+.teacher-photo-box img{
+
+width:120px;
+
+height:120px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+border:4px solid #4e54c8;
+
+box-shadow:0 10px 25px rgba(0,0,0,.2);
+
+margin-bottom:12px;
+
+transition:.35s;
+
+}
+
+.teacher-photo-box img:hover{
+
+transform:scale(1.05);
+
+}
+
+.teacher-photo-box input{
+
+width:100%;
+
+}
