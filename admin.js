@@ -1760,6 +1760,58 @@ document.getElementById("attendancePercent").textContent=
 
 percent+"%";
 
+  document.getElementById(
+
+"attendancePercentCircle"
+
+).textContent=
+
+percent+"%";
+
+const degree=
+
+percent*3.6;
+
+document.querySelector(
+
+".progress-circle"
+
+).style.background=
+
+`conic-gradient(
+
+#28a745 ${degree}deg,
+
+#e5e5e5 ${degree}deg
+
+)`;
+
+  const circle=
+
+document.querySelector(
+
+".progress-circle"
+
+);
+
+if(percent>=90){
+
+circle.style.color="#ffffff";
+
+}
+
+else if(percent>=75){
+
+circle.style.color="#ffffff";
+
+}
+
+else{
+
+circle.style.color="#ffffff";
+
+}
+
 }
 
 window.loadTeacherReport=
