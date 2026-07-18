@@ -788,3 +788,218 @@ now.toLocaleTimeString();
 },1000);
 
 }
+
+// ==========================
+// Add Teacher
+// ==========================
+
+async function addTeacher(){
+
+    const teacherId =
+        document.getElementById("teacherId")?.value.trim();
+
+    const teacherName =
+        document.getElementById("teacherName")?.value.trim();
+
+    const teacherSubject =
+        document.getElementById("teacherSubject")?.value.trim();
+
+    if(
+        !teacherId ||
+        !teacherName ||
+        !teacherSubject
+    ){
+
+        alert("Please fill all fields.");
+
+        return;
+
+    }
+
+    try{
+
+        await setDoc(
+
+            doc(db,"teachers",teacherId),
+
+            {
+
+                name:teacherName,
+
+                subject:teacherSubject
+
+            }
+
+        );
+
+        alert("Teacher Added Successfully.");
+
+        window.location.href="teachers.html";
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        alert(error.message);
+
+    }
+
+}
+
+window.addTeacher=addTeacher;
+
+// ==========================
+// Load Teacher Table
+// ==========================
+
+const teacherTable =
+document.getElementById("teacherTable");
+
+if(teacherTable){
+
+    loadTeacherTable();
+
+}
+
+async function loadTeacherTable(){
+
+    teacherTable.innerHTML="";
+
+    const snapshot=
+        await getDocs(
+            collection(db,"teachers")
+        );
+
+    snapshot.forEach((docSnap)=>{
+
+        const teacher=
+            docSnap.data();
+
+        teacherTable.innerHTML+=`
+
+<tr>
+
+<td>${docSnap.id}</td>
+
+<td>${teacher.name}</td>
+
+<td>${teacher.subject}</td>
+
+<td>
+
+<button
+onclick="deleteTeacher('${docSnap.id}')">
+
+Delete
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+    });
+
+}
+
+// ==========================
+// Delete Teacher
+// ==========================
+
+async function deleteTeacher(id){
+
+    const confirmDelete=
+
+    confirm("Delete this Teacher?");
+
+    if(!confirmDelete) return;
+
+    try{
+
+        await deleteDoc(
+
+            doc(db,"teachers",id)
+
+        );
+
+        alert("Teacher Deleted.");
+
+        loadTeacherTable();
+
+    }
+
+    catch(error){
+
+        alert(error.message);
+
+    }
+
+}
+
+window.deleteTeacher=deleteTeacher;
+
+// ==========================
+// Search Teacher
+// ==========================
+
+function searchTeacher(){
+
+    const keyword=
+
+    document.getElementById("searchTeacher")
+
+    ?.value
+
+    .toLowerCase();
+
+    const rows=
+
+    document.querySelectorAll(
+
+        "#teacherTable tr"
+
+    );
+
+    rows.forEach(row=>{
+
+        const id=
+
+        row.cells[0].textContent.toLowerCase();
+
+        const name=
+
+        row.cells[1].textContent.toLowerCase();
+
+        const subject=
+
+        row.cells[2].textContent.toLowerCase();
+
+        if(
+
+            id.includes(keyword)||
+
+            name.includes(keyword)||
+
+            subject.includes(keyword)
+
+        ){
+
+            row.style.display="";
+
+        }
+
+        else{
+
+            row.style.display="none";
+
+        }
+
+    });
+
+}
+
+window.searchTeacher=searchTeacher;
