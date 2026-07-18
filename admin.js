@@ -824,9 +824,26 @@ async function addTeacher(){
 
             {
 
-                name:teacherName,
+    name:teacherName,
 
-                subject:teacherSubject
+    subject:teacherSubject,
+
+    phone:
+document.getElementById("teacherPhone").value.trim(),
+
+    email:
+document.getElementById("teacherEmail").value.trim(),
+
+    qualification:
+document.getElementById("teacherQualification").value.trim(),
+
+    experience:
+Number(
+document.getElementById("teacherExperience").value
+),
+
+    status:
+document.getElementById("teacherStatus").value
 
             }
 
