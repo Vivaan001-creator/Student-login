@@ -1,4 +1,5 @@
 import { db, storage } from "./Firebase.js";
+
 import {
   doc,
   setDoc,
@@ -8,6 +9,12 @@ import {
   getDocs,
   getCountFromServer
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
 
 // ==========================
 // Default Admin Password
@@ -1228,5 +1235,42 @@ document.getElementById(
 reader.readAsDataURL(file);
 
 });
+
+}
+
+
+// ==========================
+// Upload Teacher Photo
+// ==========================
+
+async function uploadTeacherPhoto(file,id){
+
+const storageRef=
+
+ref(
+
+storage,
+
+"teachers/"+id
+
+);
+
+await uploadBytes(
+
+storageRef,
+
+file
+
+);
+
+const url=
+
+await getDownloadURL(
+
+storageRef
+
+);
+
+return url;
 
 }
