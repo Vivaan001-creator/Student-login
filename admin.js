@@ -1686,3 +1686,121 @@ document.getElementById(
 loadAttendanceHistory();
 
 }
+
+// ==========================
+// Teacher Monthly Report
+// ==========================
+
+async function loadTeacherReport(){
+
+const teacherId=
+document.getElementById("reportTeacher").value;
+
+const month=
+document.getElementById("reportMonth").value;
+
+if(!teacherId || !month){
+
+alert("Select Teacher and Month");
+
+return;
+
+}
+
+const attendanceCollection=
+
+await getDocs(
+
+collection(
+db,
+"teachers",
+teacherId,
+"attendance"
+)
+
+);
+
+let present=0;
+let absent=0;
+let leave=0;
+
+attendanceCollection.forEach(docSnap=>{
+
+const data=docSnap.data();
+
+if(!data.date.startsWith(month)) return;
+
+if(data.status==="Present") present++;
+
+if(data.status==="Absent") absent++;
+
+if(data.status==="Leave") leave++;
+
+});
+
+const total=
+
+present+absent+leave;
+
+const percent=
+
+total===0
+?0
+:((present/total)*100).toFixed(1);
+
+document.getElementById("totalDays").textContent=total;
+
+document.getElementById("presentDays").textContent=present;
+
+document.getElementById("absentDays").textContent=absent;
+
+document.getElementById("leaveDays").textContent=leave;
+
+document.getElementById("attendancePercent").textContent=
+
+percent+"%";
+
+}
+
+window.loadTeacherReport=
+
+loadTeacherReport;
+async function loadTeacherReportDropdown(){
+
+const select=
+
+document.getElementById("reportTeacher");
+
+if(!select) return;
+
+select.innerHTML="";
+
+const snapshot=
+
+await getDocs(
+
+collection(db,"teachers")
+
+);
+
+snapshot.forEach(docSnap=>{
+
+const teacher=
+
+docSnap.data();
+
+select.innerHTML+=`
+
+<option value="${docSnap.id}">
+
+${teacher.name}
+
+</option>
+
+`;
+
+});
+
+}
+
+loadTeacherReportDropdown();
