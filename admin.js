@@ -21,7 +21,7 @@ import {
 // ==========================
 
 if (!localStorage.getItem("adminPassword")) {
-    localStorage.setItem("adminPassword", "12345");
+    localStorage.setItem("adminPassword", "1234");
 }
 
 
