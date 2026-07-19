@@ -1447,6 +1447,37 @@ loadTeacherProfile();
 
 async function saveSchoolProfile(){
 
+  const logoFile =
+document.getElementById("schoolLogo").files[0];
+
+let logoURL = "";
+
+if(logoFile){
+
+const logoRef = ref(
+
+storage,
+
+"schoolLogo/logo.png"
+
+);
+
+await uploadBytes(
+
+logoRef,
+
+logoFile
+
+);
+
+logoURL = await getDownloadURL(
+
+logoRef
+
+);
+
+}
+
     const profile={
 
         schoolName:
@@ -1467,6 +1498,24 @@ async function saveSchoolProfile(){
         schoolWebsite:
         document.getElementById("schoolWebsite").value.trim()
 
+      logoURL: logoURL,
+
+const preview =
+
+document.getElementById("logoPreview");
+
+if(
+
+preview &&
+
+data.logoURL
+
+){
+
+preview.src = data.logoURL;
+
+}
+      
     };
 
     try{
