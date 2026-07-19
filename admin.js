@@ -1175,10 +1175,7 @@ if(!file) return;
 const reader=new FileReader();
 
 reader.onload=function(e){
-
-document.getElementById(
-"teacherPhotoPreview"
-).src=e.target.result;
+document.getElementById("teacherPhotoPreview").src = teacher.photo;
 
 };
 
@@ -1327,37 +1324,6 @@ loadTeacherProfile();
 
 async function saveSchoolProfile(){
 
-  const logoFile =
-document.getElementById("schoolLogo").files[0];
-
-let logoURL = "";
-
-if(logoFile){
-
-const logoRef = ref(
-
-storage,
-
-"schoolLogo/logo.png"
-
-);
-
-await uploadBytes(
-
-logoRef,
-
-logoFile
-
-);
-
-logoURL = await getDownloadURL(
-
-logoRef
-
-);
-
-}
-
 const profile = {
 
     schoolName:
@@ -1377,8 +1343,6 @@ const profile = {
 
     schoolWebsite:
     document.getElementById("schoolWebsite").value.trim(),
-
-    logoURL: logoURL
 
 };
       
