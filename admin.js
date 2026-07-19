@@ -1,4 +1,4 @@
-import { db, storage } from "./Firebase.js";
+import { db } from "./Firebase.js";
 
 import {
   doc,
