@@ -981,8 +981,6 @@ async function loadTeacherTable(){
 
     snapshot.forEach((docSnap)=>{
       
-console.log(docSnap.id, teacher.photo);
-      
         const teacher = docSnap.data();
 
         teacherTable.innerHTML += `
