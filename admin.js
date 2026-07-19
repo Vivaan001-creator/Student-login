@@ -753,7 +753,7 @@ async function loadSchoolStats() {
 
     if (classBox) {
 
-        classBox.textContent = "6";
+        classBox.textContent = "10";
 
     }
 
