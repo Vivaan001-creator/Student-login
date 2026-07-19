@@ -1601,3 +1601,23 @@ async function showSchoolName(){
 }
 
 showSchoolName();
+
+
+async function loadTeacherCount(){
+
+const teacherBox =
+document.getElementById("teacherCount");
+
+if(!teacherBox) return;
+
+const snap =
+await getCountFromServer(
+collection(db,"teachers")
+);
+
+teacherBox.textContent =
+snap.data().count;
+
+}
+
+loadTeacherCount();
