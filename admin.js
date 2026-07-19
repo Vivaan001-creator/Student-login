@@ -416,44 +416,49 @@ function loadSubjects(student) {
 
     subjects.forEach(subject => {
 
-        const maxMarks =
-            student.class === "1" ||
-            student.class === "2" ||
-            student.class === "3"
-            ? 50
-            : 60;
+    const lowerClasses = [
+        "Nursery",
+        "L.K.G",
+        "U.K.G",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+    ];
 
-        const passMarks =
-            student.class === "1" ||
-            student.class === "2" ||
-            student.class === "3"
-            ? 17
-            : 20;
+    const maxMarks =
+        lowerClasses.includes(student.class)
+        ? 50
+        : 60;
 
-        marksEditor.innerHTML += `
-        <div class="subject-row">
+    const passMarks =
+        lowerClasses.includes(student.class)
+        ? 17
+        : 20;
 
-            <label>
-                ${subject}
-                <br>
-                <small>
-                    Max : ${maxMarks}
-                    &nbsp;&nbsp;
-                    Pass : ${passMarks}
-                </small>
-            </label>
+    marksEditor.innerHTML += `
+    <div class="subject-row">
 
-            <input
-                type="number"
-                min="0"
-                max="${maxMarks}"
-                value="0">
+        <label>
+            ${subject}
+            <br>
+            <small>
+                Max : ${maxMarks}
+                &nbsp;&nbsp;
+                Pass : ${passMarks}
+            </small>
+        </label>
 
-        </div>
-        `;
-    });
+        <input
+            type="number"
+            min="0"
+            max="${maxMarks}"
+            value="0">
 
-}
+    </div>
+    `;
+});
 
 async function loadMarksFromFirestore(roll, month) {
 
