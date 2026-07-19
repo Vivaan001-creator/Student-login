@@ -30,7 +30,7 @@ if (!localStorage.getItem("adminPassword")) {
 // ==========================
 
 function adminLogin() {
-  alert("login Clicked");
+
 
     const username = document.getElementById("username");
     const password = document.getElementById("password");
@@ -90,7 +90,6 @@ page.includes("school-profile.html")
 
 function adminLogout() {
 
-    alert("Logout function called");
 
     sessionStorage.clear();
 
@@ -1015,13 +1014,17 @@ document
 let photoURL = "";
 
 if(file){
-
+console.log(file);
+alert("Uploading: " + file.name);
+  
     photoURL =
     await uploadTeacherPhoto(
         file,
         id
     );
 
+  console.log(photoURL);
+alert(photoURL);
 }
   
     await setDoc(
