@@ -10,8 +10,6 @@ import {
   getCountFromServer
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-import { storage } from "./Firebase.js";
-
 import {
   ref,
   uploadBytes,
@@ -1423,149 +1421,68 @@ loadTeacherProfile();
 
 async function saveSchoolProfile(){
 
-  const logoFile =
-document.getElementById("schoolLogo").files[0];
+    const logoFile = document.getElementById("schoolLogo").files[0];
 
-let logoURL = "";
+    let logoURL = "";
 
-if(logoFile){
+    if(logoFile){
+        const logoRef = ref(storage, "schoolLogo/logo.png");
+        await uploadBytes(logoRef, logoFile);
+        logoURL = await getDownloadURL(logoRef);
+    }
 
-const logoRef = ref(
-
-storage,
-
-"schoolLogo/logo.png"
-
-);
-
-await uploadBytes(
-
-logoRef,
-
-logoFile
-
-);
-
-logoURL = await getDownloadURL(
-
-logoRef
-
-);
-
-}
-
-    const profile={
-const profile = {
-
-    schoolName:
-    document.getElementById("schoolName").value.trim(),
-
-    principalName:
-    document.getElementById("principalName").value.trim(),
-
-    schoolAddress:
-    document.getElementById("schoolAddress").value.trim(),
-
-    schoolPhone:
-    document.getElementById("schoolPhone").value.trim(),
-
-    schoolEmail:
-    document.getElementById("schoolEmail").value.trim(),
-
-    schoolWebsite:
-    document.getElementById("schoolWebsite").value.trim(),
-
-    logoURL: logoURL
-
-};
-  
-const preview =
-
-document.getElementById("logoPreview");
-      
+    const profile = {
+        schoolName: document.getElementById("schoolName").value.trim(),
+        principalName: document.getElementById("principalName").value.trim(),
+        schoolAddress: document.getElementById("schoolAddress").value.trim(),
+        schoolPhone: document.getElementById("schoolPhone").value.trim(),
+        schoolEmail: document.getElementById("schoolEmail").value.trim(),
+        schoolWebsite: document.getElementById("schoolWebsite").value.trim(),
+        logoURL: logoURL
     };
-if(
-
-preview &&
-
-data.logoURL
-
-){
-
-preview.src = data.logoURL;
-
-}
 
     try{
+        await setDoc(doc(db,"settings","schoolProfile"), profile);
 
-        await setDoc(
-
-            doc(db,"settings","schoolProfile"),
-
-            profile
-
-        );
+        const preview = document.getElementById("logoPreview");
+        if(preview && profile.logoURL){
+            preview.src = profile.logoURL;
+        }
 
         alert("School Profile Saved Successfully");
-
     }
-
     catch(error){
-
         alert(error.message);
-
     }
-
 }
 
-window.saveSchoolProfile=saveSchoolProfile;
-
+window.saveSchoolProfile = saveSchoolProfile;
 
 async function loadSchoolProfile(){
 
-    if(
-        !location.pathname.includes("school-profile.html")
-    ) return;
+    if(!location.pathname.includes("school-profile.html")) return;
 
-    const profileRef=
-        doc(db,"settings","schoolProfile");
-
-    const profileSnap=
-        await getDoc(profileRef);
+    const profileRef = doc(db,"settings","schoolProfile");
+    const profileSnap = await getDoc(profileRef);
 
     if(!profileSnap.exists()) return;
 
-    const data=profileSnap.data();
+    const data = profileSnap.data();
 
-    document.getElementById("schoolName").value=
-        data.schoolName||"";
+    document.getElementById("schoolName").value = data.schoolName || "";
+    document.getElementById("principalName").value = data.principalName || "";
+    document.getElementById("schoolAddress").value = data.schoolAddress || "";
+    document.getElementById("schoolPhone").value = data.schoolPhone || "";
+    document.getElementById("schoolEmail").value = data.schoolEmail || "";
+    document.getElementById("schoolWebsite").value = data.schoolWebsite || "";
 
-    document.getElementById("principalName").value=
-        data.principalName||"";
-
-    document.getElementById("schoolAddress").value=
-        data.schoolAddress||"";
-
-    document.getElementById("schoolPhone").value=
-        data.schoolPhone||"";
-
-    document.getElementById("schoolEmail").value=
-        data.schoolEmail||"";
-
-    document.getElementById("schoolWebsite").value=
-        data.schoolWebsite||"";
-
-}
-
-if(data.logoURL){
-
-document.getElementById("logoPreview").src =
-data.logoURL;
-
+    const preview = document.getElementById("logoPreview");
+    if(preview && data.logoURL){
+        preview.src = data.logoURL;
+    }
 }
 
 loadSchoolProfile();
-
 // ==========================
 // Show School Name
 // ==========================
