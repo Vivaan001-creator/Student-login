@@ -1013,6 +1013,8 @@ alert(document.getElementById("teacherPhotoPreview").src.substring(0,50));
     const photoURL =
     document.getElementById("teacherPhotoPreview").src;
 
+alert(photoURL.substring(0,80));
+  
     await setDoc(
         doc(db,"teachers",id),
         {
