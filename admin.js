@@ -1250,30 +1250,34 @@ reader.readAsDataURL(file);
 // Upload Teacher Photo
 // ==========================
 
-async function uploadTeacherPhoto(file,id){
+async function uploadTeacherPhoto(file, id) {
 
-const storageRef = ref(
-    storage,
-    `teachers/${id}/${Date.now()}_${file.name}`
-);
-  
-await uploadBytes(
+    try {
 
-storageRef,
+        const storageRef = ref(
+            storage,
+            `teachers/${id}/${Date.now()}_${file.name}`
+        );
 
-file
+        await uploadBytes(storageRef, file);
 
-);
+        alert("Upload Success");
 
-const url=
+        const url = await getDownloadURL(storageRef);
 
-await getDownloadURL(
+        alert("URL = " + url);
 
-storageRef
+        return url;
 
-);
+    } catch (error) {
 
-return url;
+        console.error(error);
+
+        alert(error.code + "\n" + error.message);
+
+        return "";
+
+    }
 
 }
 
