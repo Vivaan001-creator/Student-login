@@ -354,7 +354,9 @@ async function loadStudent() {
 // Load Months
 // ==========================
 
-const month = document.getElementById("month");
+function loadMonths() {
+
+    const month = document.getElementById("month");
 
     if (!month) return;
 
@@ -380,7 +382,7 @@ const month = document.getElementById("month");
         "October 2027",
         "November 2027",
         "December 2027",
-        "January 2028",
+        "January 2028"
     ];
 
     months.forEach(item => {
