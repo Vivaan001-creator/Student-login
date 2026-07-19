@@ -1588,6 +1588,16 @@ async function showSchoolName(){
             schoolTitle.textContent =
                 profileSnap.data().schoolName;
 
+const logo =
+document.getElementById("schoolLogoImage");
+
+if(logo){
+
+logo.src =
+profileSnap.data().logoURL || "";
+
+}
+          
         }
 
     }
