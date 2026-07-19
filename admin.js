@@ -1249,16 +1249,11 @@ reader.readAsDataURL(file);
 
 async function uploadTeacherPhoto(file,id){
 
-const storageRef=
-
-ref(
-
-storage,
-
-"teachers/"+id
-
+const storageRef = ref(
+    storage,
+    `teachers/${id}/${Date.now()}_${file.name}`
 );
-
+  
 await uploadBytes(
 
 storageRef,
