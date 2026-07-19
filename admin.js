@@ -459,7 +459,7 @@ function loadSubjects(student) {
     </div>
     `;
 });
-
+}
 async function loadMarksFromFirestore(roll, month) {
 
     const resultRef = doc(db, "students", roll, "results", month);
