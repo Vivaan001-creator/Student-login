@@ -1162,29 +1162,28 @@ window.searchTeacher = searchTeacher;
 const teacherPhotoInput =
 document.getElementById("teacherPhoto");
 
-if(teacherPhotoInput){
+if (teacherPhotoInput) {
 
-teacherPhotoInput.addEventListener(
-"change",
-function(){
+    teacherPhotoInput.addEventListener("change", function () {
 
-const file=this.files[0];
+        const file = this.files[0];
 
-if(!file) return;
+        if (!file) return;
 
-const reader=new FileReader();
+        const reader = new FileReader();
 
-reader.onload=function(e){
-document.getElementById("teacherPhotoPreview").src = teacher.photo;
+        reader.onload = function (e) {
 
-};
+            document.getElementById("teacherPhotoPreview").src =
+            e.target.result;
 
-reader.readAsDataURL(file);
+        };
 
-});
+        reader.readAsDataURL(file);
+
+    });
 
 }
-
 
 // ==========================
 // View Teacher
