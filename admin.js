@@ -1005,27 +1005,8 @@ async function saveTeacher(){
         localStorage.getItem(
             "editTeacherId"
         );
-const file =
-document
-.getElementById(
-"teacherPhoto"
-).files[0];
-
-let photoURL = "";
-
-if(file){
-console.log(file);
-alert("Uploading: " + file.name);
-  
-    photoURL =
-    await uploadTeacherPhoto(
-        file,
-        id
-    );
-
-  console.log(photoURL);
-alert(photoURL);
-}
+const photoURL =
+document.getElementById("teacherPhotoPreview").src;
   
     await setDoc(
 
@@ -1058,11 +1039,7 @@ document.getElementById("teacherStatus").value,
 
           photo:
 
-photoURL ||
-
-document.getElementById(
-"teacherPhotoPreview"
-).src
+photo: photoURL
 
         },
 
@@ -1245,41 +1222,6 @@ reader.readAsDataURL(file);
 
 }
 
-
-// ==========================
-// Upload Teacher Photo
-// ==========================
-
-async function uploadTeacherPhoto(file, id) {
-
-    try {
-
-        const storageRef = ref(
-            storage,
-            `teachers/${id}/${Date.now()}_${file.name}`
-        );
-
-        await uploadBytes(storageRef, file);
-
-        alert("Upload Success");
-
-        const url = await getDownloadURL(storageRef);
-
-        alert("URL = " + url);
-
-        return url;
-
-    } catch (error) {
-
-        console.error(error);
-
-        alert(error.code + "\n" + error.message);
-
-        return "";
-
-    }
-
-}
 
 // ==========================
 // View Teacher
