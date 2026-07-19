@@ -1556,12 +1556,12 @@ async function loadSchoolProfile(){
     document.getElementById("schoolWebsite").value=
         data.schoolWebsite||"";
 
-  if(data.logoURL){
+}
+
+if(data.logoURL){
 
 document.getElementById("logoPreview").src =
 data.logoURL;
-
-  }
 
 }
 
