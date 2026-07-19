@@ -1037,8 +1037,6 @@ document.getElementById("teacherExperience").value
             status:
 document.getElementById("teacherStatus").value,
 
-          photo:
-
 photo: photoURL
 
         },
@@ -1136,49 +1134,35 @@ window.location.pathname.includes(
 
 function searchTeacher(){
 
-    const keyword=
-
+    const keyword =
     document.getElementById("searchTeacher")
+    ?.value.toLowerCase();
 
-    ?.value
-
-    .toLowerCase();
-
-    const rows=
-
-    document.querySelectorAll(
-
-        "#teacherTable tr"
-
-    );
+    const rows =
+    document.querySelectorAll("#teacherTable tr");
 
     rows.forEach(row=>{
 
         const id =
-row.cells[1].textContent.toLowerCase();
+        row.cells[1].textContent.toLowerCase();
 
-const name =
-row.cells[2].textContent.toLowerCase();
+        const name =
+        row.cells[2].textContent.toLowerCase();
 
-const subject =
-row.cells[3].textContent.toLowerCase();
+        const subject =
+        row.cells[3].textContent.toLowerCase();
 
         if(
-        id.includes(keyword)||
-
-            name.includes(keyword)||
-
+            id.includes(keyword) ||
+            name.includes(keyword) ||
             subject.includes(keyword)
-
         ){
 
-            row.style.display="";
+            row.style.display = "";
 
-        }
+        }else{
 
-        else{
-
-            row.style.display="none";
+            row.style.display = "none";
 
         }
 
@@ -1186,7 +1170,7 @@ row.cells[3].textContent.toLowerCase();
 
 }
 
-window.searchTeacher=searchTeacher;
+window.searchTeacher = searchTeacher;
 
 // ==========================
 // Teacher Photo Preview
