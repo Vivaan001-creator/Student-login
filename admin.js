@@ -753,7 +753,7 @@ async function loadSchoolStats() {
 
     if (classBox) {
 
-        classBox.textContent = "10";
+        classBox.textContent = "6";
 
     }
 
@@ -980,7 +980,7 @@ async function loadTeacherTable(){
     );
 
     snapshot.forEach((docSnap)=>{
-      
+
         const teacher = docSnap.data();
 
         teacherTable.innerHTML += `
