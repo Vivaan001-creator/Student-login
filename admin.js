@@ -1091,9 +1091,8 @@ async function loadTeacher(){
 
 if(teacher.photo){
 
-    document.getElementById(
-        "teacherPhotoPreview"
-    ).src = teacher.photo;
+    document.getElementById("teacherPhotoPreview").src =
+teacher.photo;
 
 }
   
