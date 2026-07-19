@@ -888,12 +888,21 @@ if(teacherTable){
 
 async function loadTeacherTable(){
 
-    teacherTable.innerHTML += `
-<tr>
+teacherTable.innerHTML="";
 
-<td>
-<img
-src="${teacher.photo || 'teacher.png'}"
+const snapshot = await getDocs(
+collection(db,"teachers")
+);
+
+snapshot.forEach((docSnap)=>{
+
+const teacher = docSnap.data();
+
+teacherTable.innerHTML += `...`;
+
+});
+
+}
 class="teacher-list-photo">
 </td>
 
@@ -1188,5 +1197,431 @@ function searchTeacher(){
         row.cells[2].textContent.toLowerCase();
 
         if(
+        id.includes(keyword)||
+
+            name.includes(keyword)||
+
+            subject.includes(keyword)
+
+        ){
+
+            row.style.display="";
+
+        }
+
+        else{
+
+            row.style.display="none";
+
+        }
+
+    });
+
+}
+
+window.searchTeacher=searchTeacher;
+
+// ==========================
+// Teacher Photo Preview
+// ==========================
+
+const teacherPhotoInput =
+document.getElementById("teacherPhoto");
+
+if(teacherPhotoInput){
+
+teacherPhotoInput.addEventListener(
+"change",
+function(){
+
+const file=this.files[0];
+
+if(!file) return;
+
+const reader=new FileReader();
+
+reader.onload=function(e){
+
+document.getElementById(
+"teacherPhotoPreview"
+).src=e.target.result;
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+}
+
+
+// ==========================
+// Upload Teacher Photo
+// ==========================
+
+async function uploadTeacherPhoto(file,id){
+
+const storageRef=
+
+ref(
+
+storage,
+
+"teachers/"+id
+
+);
+
+await uploadBytes(
+
+storageRef,
+
+file
+
+);
+
+const url=
+
+await getDownloadURL(
+
+storageRef
+
+);
+
+return url;
+
+}
+
+// ==========================
+// View Teacher
+// ==========================
+
+function viewTeacher(id){
+
+localStorage.setItem(
+
+"profileTeacherId",
+
+id
+
+);
+
+window.location.href=
+
+"teacher-profile.html";
+
+}
+
+window.viewTeacher=viewTeacher;
+
+// ==========================
+// Load Teacher Profile
+// ==========================
+
+async function loadTeacherProfile(){
+
+const id=
+
+localStorage.getItem(
+
+"profileTeacherId"
+
+);
+
+if(!id) return;
+
+const snap=
+
+await getDoc(
+
+doc(db,"teachers",id)
+
+);
+
+if(!snap.exists()) return;
+
+const teacher=snap.data();
+
+document.getElementById(
+
+"profilePhoto"
+
+).src=
+
+teacher.photo||
+
+"teacher.png";
+
+document.getElementById(
+
+"profileName"
+
+).textContent=
+
+teacher.name;
+
+document.getElementById(
+
+"profileSubject"
+
+).textContent=
+
+teacher.subject;
+
+document.getElementById(
+
+"profilePhone"
+
+).textContent=
+
+teacher.phone;
+
+document.getElementById(
+
+"profileEmail"
+
+).textContent=
+
+teacher.email;
+
+document.getElementById(
+
+"profileQualification"
+
+).textContent=
+
+teacher.qualification;
+
+document.getElementById(
+
+"profileExperience"
+
+).textContent=
+
+teacher.experience;
+
+document.getElementById(
+
+"profileStatus"
+
+).textContent=
+
+teacher.status;
+
+}
+
+if(
+
+window.location.pathname.includes(
+
+"teacher-profile.html"
+
+)
+
+){
+
+loadTeacherProfile();
+
+}
+
+// ==========================
+// School Profile
+// ==========================
+
+async function saveSchoolProfile(){
+
+  const logoFile =
+document.getElementById("schoolLogo").files[0];
+
+let logoURL = "";
+
+if(logoFile){
+
+const logoRef = ref(
+
+storage,
+
+"schoolLogo/logo.png"
+
+);
+
+await uploadBytes(
+
+logoRef,
+
+logoFile
+
+);
+
+logoURL = await getDownloadURL(
+
+logoRef
+
+);
+
+}
+
+const profile = {
+
+    schoolName:
+    document.getElementById("schoolName").value.trim(),
+
+    principalName:
+    document.getElementById("principalName").value.trim(),
+
+    schoolAddress:
+    document.getElementById("schoolAddress").value.trim(),
+
+    schoolPhone:
+    document.getElementById("schoolPhone").value.trim(),
+
+    schoolEmail:
+    document.getElementById("schoolEmail").value.trim(),
+
+    schoolWebsite:
+    document.getElementById("schoolWebsite").value.trim(),
+
+    logoURL: logoURL
+
+};
+      
+    };
+
+    try{
+
+        await setDoc(
+
+            doc(db,"settings","schoolProfile"),
+
+            profile
+
+        );
+
+        alert("School Profile Saved Successfully");
+
+    }
+
+    catch(error){
+
+        alert(error.message);
+
+    }
+
+}
+
+window.saveSchoolProfile=saveSchoolProfile;
+
+
+async function loadSchoolProfile(){
+
+    if(
+        !location.pathname.includes("school-profile.html")
+    ) return;
+
+    const profileRef=
+        doc(db,"settings","schoolProfile");
+
+    const profileSnap=
+        await getDoc(profileRef);
+
+    if(!profileSnap.exists()) return;
+
+    const data = profileSnap.data();
+
+document.getElementById("schoolName").value =
+data.schoolName || "";
+
+document.getElementById("principalName").value =
+data.principalName || "";
+
+document.getElementById("schoolAddress").value =
+data.schoolAddress || "";
+
+document.getElementById("schoolPhone").value =
+data.schoolPhone || "";
+
+document.getElementById("schoolEmail").value =
+data.schoolEmail || "";
+
+document.getElementById("schoolWebsite").value =
+data.schoolWebsite || "";
+
+if(data.logoURL){
+
+document.getElementById("logoPreview").src =
+data.logoURL;
+
+}
+}
+
+
+
+loadSchoolProfile();
+
+// ==========================
+// Show School Name
+// ==========================
+
+async function showSchoolName(){
+
+    const schoolTitle =
+        document.getElementById("schoolTitle");
+
+    if(!schoolTitle) return;
+
+    try{
+
+        const profileSnap =
+            await getDoc(
+                doc(db,"settings","schoolProfile")
+            );
+
+        if(profileSnap.exists()){
+
+            schoolTitle.textContent =
+                profileSnap.data().schoolName;
+
+const logo =
+document.getElementById("schoolLogoImage");
+
+if(logo){
+
+logo.src =
+profileSnap.data().logoURL || "";
+
+}
+          
+        }
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+showSchoolName();
+
+
+async function loadTeacherCount(){
+
+const teacherBox =
+document.getElementById("teacherCount");
+
+if(!teacherBox) return;
+
+const snap =
+await getCountFromServer(
+collection(db,"teachers")
+);
+
+teacherBox.textContent =
+snap.data().count;
+
+}
+
+loadTeacherCount();
 
      
