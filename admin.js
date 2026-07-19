@@ -1001,24 +1001,17 @@ editTeacher;
 
 async function saveTeacher(){
 
-const id = localStorage.getItem("editTeacherId");
-console.log("Teacher ID:", id);
-alert(id);
-  
     const id = localStorage.getItem("editTeacherId");
+
+    console.log("Teacher ID:", id);
+    alert(id);
 
     const file =
     document.getElementById("teacherPhoto").files[0];
 
-    console.log(document.getElementById("teacherPhotoPreview").src);
-
-alert(document.getElementById("teacherPhotoPreview").src.substring(0,50));
-
     const photoURL =
     document.getElementById("teacherPhotoPreview").src;
 
-alert(photoURL.substring(0,80));
-  
     await setDoc(
         doc(db,"teachers",id),
         {
@@ -1034,18 +1027,10 @@ alert(photoURL.substring(0,80));
         { merge: true }
     );
 
-    alert(
-        "Teacher Updated Successfully"
-    );
+    alert("Teacher Updated Successfully");
 
-    window.location.href =
-        "teachers.html";
-
+    window.location.href = "teachers.html";
 }
-
-window.saveTeacher =
-saveTeacher;
-
 // ==========================
 // Load Teacher
 // ==========================
