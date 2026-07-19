@@ -67,7 +67,12 @@ if (
     page.includes("dashboard.html") ||
     page.includes("students.html") ||
     page.includes("edit-student.html") ||
-    page.includes("change-password.html")
+    page.includes("change-password.html") ||
+    page.includes("teachers.html") ||
+page.includes("add-teacher.html") ||
+page.includes("edit-teacher.html") ||
+page.includes("teacher-profile.html") ||
+page.includes("school-profile.html")
 ) {
 
     if (sessionStorage.getItem("adminLoggedIn") !== "true") {
@@ -1184,17 +1189,14 @@ function searchTeacher(){
 
     rows.forEach(row=>{
 
-        const id=
+        const id =
+row.cells[1].textContent.toLowerCase();
 
-        row.cells[0].textContent.toLowerCase();
+const name =
+row.cells[2].textContent.toLowerCase();
 
-        const name=
-
-        row.cells[1].textContent.toLowerCase();
-
-        const subject=
-
-        row.cells[2].textContent.toLowerCase();
+const subject =
+row.cells[3].textContent.toLowerCase();
 
         if(
         id.includes(keyword)||
