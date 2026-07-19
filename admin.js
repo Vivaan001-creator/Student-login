@@ -998,6 +998,10 @@ editTeacher;
 // Save Teacher
 // ==========================
 
+console.log(document.getElementById("teacherPhotoPreview").src);
+
+alert(document.getElementById("teacherPhotoPreview").src.substring(0,50));
+
 async function saveTeacher(){
 
     const id =
