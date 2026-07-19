@@ -194,47 +194,73 @@ window.editStudent = editStudent;
 
 const classSubjects = {
 
+"Nursery": [
+        "English",
+        "Math",
+        "Hindi",
+        "Rhymes",
+        "G.K",
+    ],
+
+  "L.K.G": [
+        "English",
+        "Math",
+        "Hindi",
+        "Rhymes",
+        "G.K",
+    ],
+
+  "U.K.G": [
+        "English",
+        "Math",
+        "Hindi",
+        "Rhymes",
+        "G.K",
+    ],
+  
     "1": [
         "English",
         "Math",
         "Hindi",
-        "Science",
-        "Social Studies",
-        "Computer"
+        "Computer",
+        "E.V.S",
+        "G.K"
     ],
 
     "2": [
         "English",
         "Math",
         "Hindi",
-        "Science",
-        "Social Studies",
-        "Computer"
+        "Computer",
+        "E.V.S",
+        "G.K"
     ],
 
     "3": [
         "English",
         "Math",
         "Hindi",
-        "Science",
-        "Social Studies",
-        "Computer"
+        "Computer",
+        "E.V.S",
+        "G.K"
     ],
 
     "4": [
         "English",
         "Math",
         "Hindi",
-        "Science",
-        "Social Studies"
+        "Computer",
+        "E.V.S",
+        "G.K"
     ],
 
     "5": [
         "English",
         "Math",
         "Hindi",
-        "Science",
-        "Social Studies"
+        "Computer",
+        "E.V.S",
+        "G.K"
     ],
 
     "6": [
@@ -243,10 +269,46 @@ const classSubjects = {
         "Hindi",
         "Science",
         "Social Studies"
+        
+    ],
+
+  "7": [
+        "English",
+        "Math",
+        "Hindi",
+        "Science",
+        "Social Studies"
+    ],
+
+  
+  "8": [
+        "English",
+        "Math",
+        "Hindi",
+        "Science",
+        "Social Studies"
+        
+    ],
+
+  "9": [
+        "English",
+        "Math",
+        "Hindi",
+        "Science",
+        "Social Studies"
+        
+    ],
+
+  "10": [
+        "English",
+        "Math",
+        "Hindi",
+        "Science",
+        "Social Studies"
+        
     ]
 
 };
-
 
 // ==========================
 // Load Student 
@@ -292,9 +354,7 @@ async function loadStudent() {
 // Load Months
 // ==========================
 
-function loadMonths() {
-
-    const month = document.getElementById("month");
+const month = document.getElementById("month");
 
     if (!month) return;
 
@@ -307,7 +367,20 @@ function loadMonths() {
         "September 2026",
         "October 2026",
         "November 2026",
-        "December 2026"
+        "December 2026",
+        "January 2027",
+        "February 2027",
+        "March 2027",
+        "April 2027",
+        "May 2027",
+        "June 2027",
+        "July 2027",
+        "August 2027",
+        "September 2027",
+        "October 2027",
+        "November 2027",
+        "December 2027",
+        "January 2028",
     ];
 
     months.forEach(item => {
@@ -328,6 +401,7 @@ window.loadMonths = loadMonths;
 if (window.location.pathname.includes("edit-student.html")) {
     loadStudent();
 }
+
 function loadSubjects(student) {
 
     const marksEditor = document.getElementById("marksEditor");
