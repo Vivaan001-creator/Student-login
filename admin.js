@@ -1001,6 +1001,10 @@ editTeacher;
 
 async function saveTeacher(){
 
+const id = localStorage.getItem("editTeacherId");
+console.log("Teacher ID:", id);
+alert(id);
+  
     const id = localStorage.getItem("editTeacherId");
 
     const file =
