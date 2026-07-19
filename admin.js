@@ -998,55 +998,34 @@ editTeacher;
 // Save Teacher
 // ==========================
 
-console.log(document.getElementById("teacherPhotoPreview").src);
-
-alert(document.getElementById("teacherPhotoPreview").src.substring(0,50));
 
 async function saveTeacher(){
 
-    const id =
-      
-        localStorage.getItem(
-            "editTeacherId"
-        );
-const photoURL =
-document.getElementById("teacherPhotoPreview").src;
-  
+    const id = localStorage.getItem("editTeacherId");
+
+    const file =
+    document.getElementById("teacherPhoto").files[0];
+
+    console.log(document.getElementById("teacherPhotoPreview").src);
+
+alert(document.getElementById("teacherPhotoPreview").src.substring(0,50));
+
+    const photoURL =
+    document.getElementById("teacherPhotoPreview").src;
+
     await setDoc(
-
         doc(db,"teachers",id),
-
         {
-
-            name:
-document.getElementById("teacherName").value,
-
-            subject:
-document.getElementById("teacherSubject").value,
-
-            phone:
-document.getElementById("teacherPhone").value,
-
-            email:
-document.getElementById("teacherEmail").value,
-
-            qualification:
-document.getElementById("teacherQualification").value,
-
-            experience:
-Number(
-document.getElementById("teacherExperience").value
-),
-
-            status:
-document.getElementById("teacherStatus").value,
-
-photo: photoURL
-
+            name: document.getElementById("teacherName").value,
+            subject: document.getElementById("teacherSubject").value,
+            phone: document.getElementById("teacherPhone").value,
+            email: document.getElementById("teacherEmail").value,
+            qualification: document.getElementById("teacherQualification").value,
+            experience: Number(document.getElementById("teacherExperience").value),
+            status: document.getElementById("teacherStatus").value,
+            photo: photoURL
         },
-
-        { merge:true }
-
+        { merge: true }
     );
 
     alert(
