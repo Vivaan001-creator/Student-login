@@ -1482,7 +1482,8 @@ const profile = {
 const preview =
 
 document.getElementById("logoPreview");
-
+      
+    };
 if(
 
 preview &&
@@ -1494,8 +1495,6 @@ data.logoURL
 preview.src = data.logoURL;
 
 }
-      
-    };
 
     try{
 
