@@ -893,21 +893,21 @@ if(teacherTable){
 
 async function loadTeacherTable(){
 
-teacherTable.innerHTML="";
+    teacherTable.innerHTML = "";
 
-const snapshot = await getDocs(
-collection(db,"teachers")
-);
+    const snapshot = await getDocs(
+        collection(db,"teachers")
+    );
 
-snapshot.forEach((docSnap)=>{
+    snapshot.forEach((docSnap)=>{
 
-const teacher = docSnap.data();
+        const teacher = docSnap.data();
 
-teacherTable.innerHTML += `...`;
+        teacherTable.innerHTML += `
+<tr>
 
-});
-
-}
+<td>
+<img src="${teacher.photo || 'teacher.png'}"
 class="teacher-list-photo">
 </td>
 
@@ -918,13 +918,7 @@ class="teacher-list-photo">
 <td>${teacher.subject}</td>
 
 <td>
-<span class="${
-teacher.status==="Active"
-?
-"status-active"
-:
-"status-inactive"
-}">
+<span class="${teacher.status==="Active" ? "status-active":"status-inactive"}">
 ${teacher.status}
 </span>
 </td>
@@ -933,27 +927,19 @@ ${teacher.status}
 
 <td>
 
-<button onclick="viewTeacher('${docSnap.id}')">
-View
-</button>
+<button onclick="viewTeacher('${docSnap.id}')">View</button>
 
-<button onclick="editTeacher('${docSnap.id}')">
-Edit
-</button>
+<button onclick="editTeacher('${docSnap.id}')">Edit</button>
 
-<button onclick="deleteTeacher('${docSnap.id}')">
-Delete
-</button>
+<button onclick="deleteTeacher('${docSnap.id}')">Delete</button>
 
 </td>
 
 </tr>
 `;
-
     });
 
 }
-
 // ==========================
 // Delete Teacher
 // ==========================
