@@ -888,21 +888,14 @@ if(teacherTable){
 
 async function loadTeacherTable(){
 
-    teacherTable.innerHTML="";
-
-    const snapshot=
-        await getDocs(
-            collection(db,"teachers")
-        );
-
-    snapshot.forEach((docSnap)=>{
-
-        const teacher=
-            docSnap.data();
-
-        teacherTable.innerHTML+=`
-
+    teacherTable.innerHTML += `
 <tr>
+
+<td>
+<img
+src="${teacher.photo || 'teacher.png'}"
+class="teacher-list-photo">
+</td>
 
 <td>${docSnap.id}</td>
 
@@ -911,17 +904,6 @@ async function loadTeacherTable(){
 <td>${teacher.subject}</td>
 
 <td>
-
-<img
-src="${teacher.photo || 'teacher.png'}"
-class="teacher-list-photo">
-
-</td>
-
-<td>${teacher.phone}</td>
-
-<td>
-
 <span class="${
 teacher.status==="Active"
 ?
@@ -929,37 +911,29 @@ teacher.status==="Active"
 :
 "status-inactive"
 }">
-
 ${teacher.status}
-
 </span>
-
 </td>
+
+<td>${teacher.phone}</td>
 
 <td>
 
-<button
-onclick="viewTeacher('${docSnap.id}')">
-
+<button onclick="viewTeacher('${docSnap.id}')">
 View
-
 </button>
 
 <button onclick="editTeacher('${docSnap.id}')">
 Edit
 </button>
 
-<button
-onclick="deleteTeacher('${docSnap.id}')">
-
+<button onclick="deleteTeacher('${docSnap.id}')">
 Delete
-
 </button>
 
 </td>
 
 </tr>
-
 `;
 
     });
@@ -1479,27 +1453,30 @@ logoRef
 }
 
     const profile={
+const profile = {
 
-        schoolName:
-        document.getElementById("schoolName").value.trim(),
+    schoolName:
+    document.getElementById("schoolName").value.trim(),
 
-        principalName:
-        document.getElementById("principalName").value.trim(),
+    principalName:
+    document.getElementById("principalName").value.trim(),
 
-        schoolAddress:
-        document.getElementById("schoolAddress").value.trim(),
+    schoolAddress:
+    document.getElementById("schoolAddress").value.trim(),
 
-        schoolPhone:
-        document.getElementById("schoolPhone").value.trim(),
+    schoolPhone:
+    document.getElementById("schoolPhone").value.trim(),
 
-        schoolEmail:
-        document.getElementById("schoolEmail").value.trim(),
+    schoolEmail:
+    document.getElementById("schoolEmail").value.trim(),
 
-        schoolWebsite:
-        document.getElementById("schoolWebsite").value.trim()
+    schoolWebsite:
+    document.getElementById("schoolWebsite").value.trim(),
 
-      logoURL: logoURL,
+    logoURL: logoURL
 
+};
+  
 const preview =
 
 document.getElementById("logoPreview");
@@ -1576,6 +1553,13 @@ async function loadSchoolProfile(){
 
     document.getElementById("schoolWebsite").value=
         data.schoolWebsite||"";
+
+  if(data.logoURL){
+
+document.getElementById("logoPreview").src =
+data.logoURL;
+
+  }
 
 }
 
