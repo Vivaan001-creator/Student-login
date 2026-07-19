@@ -22,8 +22,11 @@ href="admin.css">
 <h1>Edit Teacher</h1>
   <div class="teacher-photo-box">
 
-<img src="${teacher.photo || 'teacher.png'}">
-
+<img
+id="teacherPhotoPreview"
+src="teacher.png"
+alt="Teacher Photo">
+    
 <input
 type="file"
 id="teacherPhoto"
