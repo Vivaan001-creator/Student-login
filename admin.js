@@ -1488,3 +1488,222 @@ snap.data().count;
 loadTeacherCount();
 
      
+// ==========================
+// Save Teacher Profile Details
+// ==========================
+
+async function saveTeacherProfileDetails(){
+
+const id=localStorage.getItem("editTeacherId");
+
+if(!id){
+
+alert("Teacher ID Not Found");
+
+return;
+
+}
+
+await setDoc(
+doc(db,"teachers",id),
+{
+
+designation:document.getElementById("profileDesignation").value,
+
+department:document.getElementById("profileDepartment").value,
+
+employeeId:document.getElementById("profileEmployeeId").value,
+
+joiningDate:document.getElementById("profileJoiningDate").value,
+
+summary:document.getElementById("profileSummary").value,
+
+graduation:document.getElementById("profileGraduation").value,
+
+postGraduation:document.getElementById("profilePostGraduation").value,
+
+bed:document.getElementById("profileBed").value,
+
+ctet:document.getElementById("profileCTET").value,
+
+otherQualification:document.getElementById("profileOtherQualification").value,
+
+currentSchool:document.getElementById("profileCurrentSchool").value,
+
+previousSchool:document.getElementById("profilePreviousSchool").value,
+
+achievement:document.getElementById("profileAchievement").value,
+
+responsibility1:document.getElementById("responsibility1").value,
+
+responsibility2:document.getElementById("responsibility2").value,
+
+responsibility3:document.getElementById("responsibility3").value,
+
+responsibility4:document.getElementById("responsibility4").value,
+
+expertise1:document.getElementById("expertise1").value,
+
+expertise2:document.getElementById("expertise2").value,
+
+expertise3:document.getElementById("expertise3").value,
+
+expertise4:document.getElementById("expertise4").value,
+
+office:document.getElementById("profileOffice").value,
+
+address:document.getElementById("profileAddress").value,
+
+attendance:document.getElementById("profileAttendance").value
+
+},
+
+{merge:true}
+
+);
+
+alert("Teacher Profile Updated Successfully");
+
+window.location.href="teacher-profile.html";
+
+}
+
+window.saveTeacherProfileDetails=
+saveTeacherProfileDetails;
+
+// ==========================
+// Load Teacher Profile Details
+// ==========================
+
+async function loadTeacherProfileDetails(){
+
+const id=
+localStorage.getItem("editTeacherId");
+
+if(!id) return;
+
+const snap=
+await getDoc(
+doc(db,"teachers",id)
+);
+
+if(!snap.exists()) return;
+
+const teacher=
+snap.data();
+
+// Basic Details
+
+document.getElementById("profileName").textContent=
+teacher.name||"";
+
+document.getElementById("profileSubject").textContent=
+teacher.subject||"";
+
+document.getElementById("profilePhone").textContent=
+teacher.phone||"";
+
+document.getElementById("profileEmail").textContent=
+teacher.email||"";
+
+document.getElementById("profileQualification").textContent=
+teacher.qualification||"";
+
+document.getElementById("profileExperience").textContent=
+teacher.experience||"";
+
+document.getElementById("profileStatus").textContent=
+teacher.status||"";
+
+if(document.getElementById("profilePhoto")){
+
+document.getElementById("profilePhoto").src=
+teacher.photo||"teacher.png";
+
+}
+
+// Extra Details
+
+document.getElementById("profileDesignation").textContent=
+teacher.designation||"-";
+
+document.getElementById("profileDepartment").textContent=
+teacher.department||"-";
+
+document.getElementById("profileEmployeeId").textContent=
+teacher.employeeId||"-";
+
+document.getElementById("profileJoiningDate").textContent=
+teacher.joiningDate||"-";
+
+document.getElementById("profileSummary").textContent=
+teacher.summary||"-";
+
+document.getElementById("profileGraduation").textContent=
+teacher.graduation||"-";
+
+document.getElementById("profilePostGraduation").textContent=
+teacher.postGraduation||"-";
+
+document.getElementById("profileBed").textContent=
+teacher.bed||"-";
+
+document.getElementById("profileCTET").textContent=
+teacher.ctet||"-";
+
+document.getElementById("profileOtherQualification").textContent=
+teacher.otherQualification||"-";
+
+document.getElementById("profileCurrentSchool").textContent=
+teacher.currentSchool||"-";
+
+document.getElementById("profilePreviousSchool").textContent=
+teacher.previousSchool||"-";
+
+document.getElementById("profileAchievement").textContent=
+teacher.achievement||"-";
+
+document.getElementById("responsibility1").textContent=
+teacher.responsibility1||"-";
+
+document.getElementById("responsibility2").textContent=
+teacher.responsibility2||"-";
+
+document.getElementById("responsibility3").textContent=
+teacher.responsibility3||"-";
+
+document.getElementById("responsibility4").textContent=
+teacher.responsibility4||"-";
+
+document.getElementById("expertise1").textContent=
+teacher.expertise1||"-";
+
+document.getElementById("expertise2").textContent=
+teacher.expertise2||"-";
+
+document.getElementById("expertise3").textContent=
+teacher.expertise3||"-";
+
+document.getElementById("expertise4").textContent=
+teacher.expertise4||"-";
+
+document.getElementById("profileOffice").textContent=
+teacher.office||"-";
+
+document.getElementById("profileAddress").textContent=
+teacher.address||"-";
+
+document.getElementById("profileAttendance").textContent=
+teacher.attendance||"-";
+
+}
+
+if(
+window.location.pathname.includes(
+"teacher-profile.html"
+)
+){
+
+loadTeacherProfileDetails();
+
+}
