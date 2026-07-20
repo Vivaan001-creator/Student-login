@@ -22,33 +22,81 @@ id="schoolLogoImage"
 class="school-logo.png">
 
 <div class="dashboard">
+<h1 id="schoolTitle">
 
-<!-- Dashboard Header -->
+Dashboard
 
-<header class="dashboard-top">
+</h1>
 
-</header>
+<p>Welcome Back, Administrator</p>
 
+    <div id="dashboardClock"></div>
+    <div class="dashboard-stats">
 
-<!-- Dashboard Main -->
+    <div class="stat-card">
+       <h2 id="studentCount">0</h2>
+       <span>Total Students</span>
+    </div>
 
-<div class="dashboard-layout">
+    <div class="stat-card">
+        <h2 id="teacherCount">0</h2>
+        <span>Teachers</span>
+    </div>
 
-<!-- Sidebar -->
+    <div class="stat-card">
+        <h2 id="classCount">6</h2>
+        <span>Classes</span>
+    </div>
 
-<aside class="sidebar">
+    <div class="stat-card">
+        <h2 id="resultCount">0</h2>
+        <span>Published Results</span>
+    </div>
 
-</aside>
+    </div>
 
-
-<!-- Main Content -->
-
-<main class="dashboard-content">
-
-</main>
-
-</div>
+<div class="menu">
     
+<button onclick="window.location.href='students.html'">
+Student Records
+</button>
+
+<button onclick="window.location.href='add-student.html'">
+➕ Add Student
+</button>
+
+    <button
+onclick="window.location.href='teachers.html'">
+
+Teacher Management
+
+    </button>
+    
+<button id="marksBtn">
+Marks Management
+</button>
+
+<button id="resultBtn">
+Publish Result
+</button>
+
+<button onclick="window.location.href='change-password.html'">
+
+Change Password
+
+</button>
+
+    <button
+onclick="location.href='school-profile.html'">
+
+🏫 School Profile
+
+    </button>
+  
+  <button onclick="adminLogout()">
+    Logout
+  </button>
+
 </div>
 <script type="module" src="admin.js"></script>
 
@@ -61,4 +109,3 @@ School Management Portal
 </body>
 
 </html>
-
