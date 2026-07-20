@@ -1300,23 +1300,15 @@ showSchoolName();
 
 async function loadTeacherCount(){
 
-const teacherBox =
-document.getElementById("teacherCount");
+const snapshot=
+await getDocs(collection(db,"teachers"));
 
-if(!teacherBox) return;
-
-const snap =
-await getCountFromServer(
-collection(db,"teachers")
-);
-
-teacherBox.textContent =
-snap.data().count;
+document.getElementById("teacherCount").textContent=
+snapshot.size;
 
 }
 
 loadTeacherCount();
-
      
 // ==========================
 // Save Teacher Profile Details
