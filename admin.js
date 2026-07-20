@@ -56,6 +56,42 @@ function adminLogin() {
 
 window.adminLogin = adminLogin;
 
+document.addEventListener('DOMContentLoaded', function () {
+  const toggleEye = document.getElementById('toggleEye');
+  const passwordInput = document.getElementById('password');
+  const form = document.getElementById('loginForm');
+  const loginBtn = document.querySelector('.login-btn');
+
+  // Toggle password visibility
+  if (toggleEye && passwordInput) {
+    toggleEye.addEventListener('click', function () {
+      const isPassword = passwordInput.getAttribute('type') === 'password';
+      passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+
+      const icon = toggleEye.querySelector('i');
+      icon.classList.toggle('fa-eye-slash');
+      icon.classList.toggle('fa-eye');
+    });
+  }
+
+  // Simple submit interaction (loading state)
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      loginBtn.classList.add('loading');
+      const span = loginBtn.querySelector('span');
+      const originalText = span.textContent;
+      span.textContent = 'Logging in...';
+
+      setTimeout(function () {
+        span.textContent = originalText;
+        loginBtn.classList.remove('loading');
+      }, 1500);
+    });
+  }
+});
+
+
 
 // ==========================
 // Dashboard Security
