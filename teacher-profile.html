@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -7,22 +6,81 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-content="width=device-width,initial-scale=1.0">
+content="width=device-width, initial-scale=1.0">
 
 <title>Teacher Profile</title>
 
 <link rel="stylesheet"
 href="admin.css">
 
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
 </head>
 
 <body>
+
+<div class="profile-container">
+
+<!-- ================= HEADER ================= -->
+
+<header class="profile-header">
+
+<div class="school-logo">
+
+<img src="logo.png" alt="School Logo">
+
+<div>
+
+<h3>Modern International School</h3>
+
+<p>Teacher Management System</p>
+
+</div>
+
+</div>
+
+<h1>TEACHER PROFILE</h1>
+
+<div class="search-box">
+
+<input
+type="text"
+placeholder="Search...">
+
+<i class="fa-solid fa-magnifying-glass"></i>
+
+</div>
+
+</header>
+
+<!-- ================= BASIC INFO ================= -->
+
+<div class="profile-top">
+
+<div class="profile-info-card">
 
 <h2 id="profileName">
 
 Teacher Name
 
 </h2>
+
+<p>
+
+<b>Employee ID :</b>
+
+<span id="profileId"></span>
+
+</p>
+
+<p>
+
+<b>Designation :</b>
+
+<span id="profileDesignation"></span>
+
+</p>
 
 <p>
 
@@ -34,35 +92,17 @@ Teacher Name
 
 <p>
 
-<b>Phone :</b>
+<b>Department :</b>
 
-<span id="profilePhone"></span>
-
-</p>
-
-<p>
-
-<b>Email :</b>
-
-<span id="profileEmail"></span>
+<span id="profileDepartment"></span>
 
 </p>
 
 <p>
 
-<b>Qualification :</b>
+<b>Joining Date :</b>
 
-<span id="profileQualification"></span>
-
-</p>
-
-<p>
-
-<b>Experience :</b>
-
-<span id="profileExperience"></span>
-
-Years
+<span id="profileJoining"></span>
 
 </p>
 
@@ -74,12 +114,160 @@ Years
 
 </p>
 
+</div>
+
+<div class="summary-card">
+
+<h3>
+
+<i class="fa-solid fa-user"></i>
+
+Profile Summary
+
+</h3>
+
+<p id="profileSummary">
+
+No Summary
+
+</p>
+
+</div>
+
+</div>
+
+<!-- ================= SECOND ROW ================= -->
+
+<div class="profile-grid">
+
+<div class="card">
+
+<h3>
+
+<i class="fa-solid fa-graduation-cap"></i>
+
+Academic Qualification
+
+</h3>
+
+<p id="profileQualification"></p>
+
+</div>
+
+<div class="card">
+
+<h3>
+
+<i class="fa-solid fa-list-check"></i>
+
+Responsibilities
+
+</h3>
+
+<p id="profileResponsibilities"></p>
+
+</div>
+
+<div class="card">
+
+<h3>
+
+<i class="fa-solid fa-book"></i>
+
+Subject Assigned
+
+</h3>
+
+<p id="profileAssigned"></p>
+
+</div>
+
+<div class="card">
+
+<h3>
+
+<i class="fa-solid fa-briefcase"></i>
+
+Experience
+
+</h3>
+
+<p>
+
+<span id="profileExperience"></span>
+
+Years
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>
+
+<i class="fa-solid fa-star"></i>
+
+Expertise
+
+</h3>
+
+<p id="profileExpertise"></p>
+
+</div>
+
+<div class="card">
+
+<h3>
+
+<i class="fa-solid fa-address-card"></i>
+
+Contact Information
+
+</h3>
+
+<p>
+
+<i class="fa-solid fa-envelope"></i>
+
+<span id="profileEmail"></span>
+
+</p>
+
+<p>
+
+<i class="fa-solid fa-phone"></i>
+
+<span id="profilePhone"></span>
+
+</p>
+
+<p>
+
+<i class="fa-solid fa-location-dot"></i>
+
+<span id="profileAddress"></span>
+
+</p>
+
+</div>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+
+<div class="profile-footer">
+
 <button
 onclick="window.location.href='teachers.html'">
+
+<i class="fa-solid fa-arrow-left"></i>
 
 Back
 
 </button>
+
+</div>
 
 </div>
 
