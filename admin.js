@@ -1479,8 +1479,6 @@ teacher.experience||"";
 document.getElementById("profileStatus").textContent=
 teacher.status||"";
 
-// Extra Details
-
 document.getElementById("profileDesignation").textContent=
 teacher.designation||"-";
 
@@ -1568,35 +1566,45 @@ loadTeacherProfileDetails();
 
 }
 
+function editTeacherProfile(){
+
+const id =
+localStorage.getItem("profileTeacherId");
+
+localStorage.setItem(
+"editTeacherId",
+id
+);
+
+window.location.href =
+"edit-teacher.html";
+
+}
+
+window.editTeacherProfile =
+editTeacherProfile;
+
 async function loadEditTeacher(){
-  const id = localStorage.getItem("editTeacherId");
 
-console.log("Edit Teacher ID =", id);
+const id = localStorage.getItem("editTeacherId");
 
-alert("Edit Teacher ID = " + id);
+console.log(id);
 
-    const id =
-    localStorage.getItem("editTeacherId");
+if(!id){
+    alert("Teacher ID Not Found");
+    return;
+}
 
-    if(!id) return;
+const snap = await getDoc(
+    doc(db,"teachers",id)
+);
 
-    const snap =
-    await getDoc(doc(db,"teachers",id));
-
-  const snap = await getDoc(doc(db, "teachers", id));
-
-console.log(snap.exists());
-
-if (!snap.exists()) {
+if(!snap.exists()){
     alert("Teacher Not Found");
     return;
 }
 
-console.log(snap.data());
-
-    if(!snap.exists()) return;
-
-    const teacher = snap.data();
+const teacher = snap.data();
 
     document.getElementById("profileDesignation").value =
     teacher.designation || "";
@@ -1669,7 +1677,25 @@ console.log(snap.data());
 
     document.getElementById("profileAttendance").value =
     teacher.attendance || "";
+  
+document.getElementById("profileName").value =
+teacher.name || "";
 
+document.getElementById("profileSubject").value =
+teacher.subject || "";
+
+document.getElementById("profilePhone").value =
+teacher.phone || "";
+
+document.getElementById("profileEmail").value =
+teacher.email || "";
+
+document.getElementById("profileExperience").value =
+teacher.experience || "";
+
+document.getElementById("profileStatus").value =
+teacher.status || "Active";
+  
 }
 if(
 window.location.pathname.includes(
