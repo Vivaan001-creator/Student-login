@@ -1,143 +1,230 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="hi">
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Admin Dashboard</title>
-
-<link rel="stylesheet"
-href="admin.css">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern International School - Admin Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
 
-    <img
-id="schoolLogoImage"
-class="school-logo.png">
+<div class="app">
 
-<div class="dashboard">
-<div class="dashboard-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <button class="sidebar-toggle" aria-label="Toggle Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" title="Dashboard">
+        <i class="fa-solid fa-table-cells"></i>
+      </a>
+      <a href="#" class="nav-item" title="Profile">
+        <i class="fa-regular fa-user"></i>
+      </a>
+      <a href="#" class="nav-item" title="Library">
+        <i class="fa-solid fa-book-open"></i>
+      </a>
+      <a href="#" class="nav-item" title="Academics">
+        <i class="fa-solid fa-graduation-cap"></i>
+      </a>
+      <a href="#" class="nav-item" title="Analytics">
+        <i class="fa-solid fa-chart-line"></i>
+      </a>
+      <a href="#" class="nav-item" title="Institution">
+        <i class="fa-solid fa-building-columns"></i>
+      </a>
+      <a href="#" class="nav-item" title="Settings">
+        <i class="fa-solid fa-gear"></i>
+      </a>
+    </nav>
 
-        <div class="sidebar-logo">
-            <h2>MIS</h2>
+    <a href="#" class="nav-item logout-icon" title="Power Off">
+      <i class="fa-solid fa-power-off"></i>
+    </a>
+  </aside>
+
+  <!-- Main content -->
+  <div class="main">
+
+    <!-- Header -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1>Modern International School</h1>
+        <p>Admin Dashboard</p>
+      </div>
+      <div class="topbar-right">
+        <div class="notif-bell">
+          <i class="fa-regular fa-bell"></i>
+          <span class="notif-badge">3</span>
+        </div>
+        <div class="admin-profile">
+          <div class="avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <span>Admin</span>
+          <i class="fa-solid fa-chevron-down chevron"></i>
+        </div>
+      </div>
+      <div class="topbar-illustration"></div>
+    </header>
+
+    <main class="content">
+
+      <!-- Overview -->
+      <section class="card overview-card">
+        <div class="card-title">
+          <i class="fa-solid fa-chart-line"></i>
+          <h2>Overview</h2>
         </div>
 
-        <nav class="sidebar-menu">
-            <button>🏠</button>
-            <button>👨‍🎓</button>
-            <button>👨‍🏫</button>
-            <button>📊</button>
-            <button>⚙️</button>
-        </nav>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-icon purple"><i class="fa-solid fa-graduation-cap"></i></div>
+            <div class="stat-number">10</div>
+            <div class="stat-label">Students</div>
+            <div class="stat-bar purple"></div>
+          </div>
 
-    </aside>
+          <div class="stat-box">
+            <div class="stat-icon green"><i class="fa-solid fa-user"></i></div>
+            <div class="stat-number">2</div>
+            <div class="stat-label">Teachers</div>
+            <div class="stat-bar green"></div>
+          </div>
 
-    <!-- Main Content -->
-    <div class="dashboard-content">
+          <div class="stat-box">
+            <div class="stat-icon blue"><i class="fa-solid fa-book"></i></div>
+            <div class="stat-number">6</div>
+            <div class="stat-label">Classes</div>
+            <div class="stat-bar blue"></div>
+          </div>
 
-        <header class="dashboard-header">
+          <div class="stat-box">
+            <div class="stat-icon orange"><i class="fa-solid fa-file-lines"></i></div>
+            <div class="stat-number">0</div>
+            <div class="stat-label">Results Published</div>
+            <div class="stat-bar orange"></div>
+          </div>
+        </div>
+      </section>
 
-            <div class="welcome-box">
-                <h2 id="schoolTitle">
-                    Modern International School
-                </h2>
+      <!-- Quick Actions -->
+      <section class="card actions-card">
+        <div class="card-title">
+          <i class="fa-solid fa-bolt"></i>
+          <h2>Quick Actions</h2>
+        </div>
 
-                <p>
-                    Welcome Back, Administrator
-                </p>
+        <div class="actions-grid">
+
+          <a href="#" class="action-item">
+            <div class="action-icon purple"><i class="fa-solid fa-id-card"></i></div>
+            <div class="action-text">
+              <h3 class="purple-text">Student Records</h3>
+              <p>Manage Students</p>
             </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
 
-            <div id="dashboardClock"
-                 class="dashboard-time">
+          <a href="#" class="action-item">
+            <div class="action-icon green"><i class="fa-solid fa-user-plus"></i></div>
+            <div class="action-text">
+              <h3 class="green-text">Add Student</h3>
+              <p>Register New Student</p>
             </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
 
-        </header>
-    <div class="dashboard-stats">
+          <a href="#" class="action-item">
+            <div class="action-icon blue"><i class="fa-solid fa-chalkboard-user"></i></div>
+            <div class="action-text">
+              <h3 class="blue-text">Teacher Management</h3>
+              <p>Manage Teachers</p>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
 
-    <div class="stat-card">
-       <h2 id="studentCount">0</h2>
-       <span>Total Students</span>
-    </div>
+          <a href="#" class="action-item">
+            <div class="action-icon orange"><i class="fa-solid fa-file-pen"></i></div>
+            <div class="action-text">
+              <h3 class="orange-text">Marks Management</h3>
+              <p>Manage Marks &amp; Exams</p>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
 
-    <div class="stat-card">
-        <h2 id="teacherCount">0</h2>
-        <span>Teachers</span>
-    </div>
+          <a href="#" class="action-item">
+            <div class="action-icon pink"><i class="fa-solid fa-file-invoice"></i></div>
+            <div class="action-text">
+              <h3 class="pink-text">Publish Result</h3>
+              <p>Publish Student Results</p>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
 
-    <div class="stat-card">
-        <h2 id="classCount">6</h2>
-        <span>Classes</span>
-    </div>
+          <a href="#" class="action-item">
+            <div class="action-icon blue"><i class="fa-solid fa-lock"></i></div>
+            <div class="action-text">
+              <h3 class="blue-text">Change Password</h3>
+              <p>Update Password</p>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
 
-    <div class="stat-card">
-        <h2 id="resultCount">0</h2>
-        <span>Published Results</span>
-    </div>
+          <a href="#" class="action-item">
+            <div class="action-icon teal"><i class="fa-solid fa-building"></i></div>
+            <div class="action-text">
+              <h3 class="teal-text">School Profile</h3>
+              <p>View School Details</p>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
 
-    </div>
+          <a href="#" class="action-item">
+            <div class="action-icon red"><i class="fa-solid fa-right-from-bracket"></i></div>
+            <div class="action-text">
+              <h3 class="red-text">Logout</h3>
+              <p>Logout from Dashboard</p>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
 
-<div class="menu">
-    
-<button onclick="window.location.href='students.html'">
-Student Records
-</button>
+        </div>
+      </section>
 
-<button onclick="window.location.href='add-student.html'">
-➕ Add Student
-</button>
+      <!-- Welcome banner -->
+      <section class="welcome-banner">
+        <div class="welcome-icon"><i class="fa-regular fa-calendar"></i></div>
+        <div class="welcome-text">
+          <h3>Welcome back, Admin!</h3>
+          <p>Have a great day at Modern International School.</p>
+        </div>
+        <div class="welcome-illustration">
+          <div class="plant">
+            <i class="fa-solid fa-seedling"></i>
+          </div>
+          <div class="monitor">
+            <i class="fa-solid fa-display"></i>
+          </div>
+          <div class="mug">
+            <i class="fa-solid fa-mug-hot"></i>
+          </div>
+        </div>
+      </section>
 
-    <button
-onclick="window.location.href='teachers.html'">
+      <footer class="footer">
+        © 2025 Modern International School. All rights reserved.
+      </footer>
 
-Teacher Management
-
-    </button>
-    
-<button id="marksBtn">
-Marks Management
-</button>
-
-<button id="resultBtn">
-Publish Result
-</button>
-
-<button onclick="window.location.href='change-password.html'">
-
-Change Password
-
-</button>
-
-    <button
-onclick="location.href='school-profile.html'">
-
-🏫 School Profile
-
-    </button>
-  
-  <button onclick="adminLogout()">
-    Logout
-  </button>
-
+    </main>
+  </div>
 </div>
-    
-</div>
-<script type="module" src="admin.js"></script>
-
-    <footer class="dashboard-footer">
-School Management Portal
-<br>
-© 2026 All Rights Reserved
-    </footer>
 
 </body>
-
-</html>
+        </html>
+    
