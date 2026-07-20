@@ -350,6 +350,19 @@ async function loadStudent() {
     });
 
 }
+
+async function loadStudentCount(){
+
+const snapshot=
+await getDocs(collection(db,"students"));
+
+document.getElementById("studentCount").textContent=
+snapshot.size;
+
+}
+
+loadStudentCount();
+
 // ==========================
 // Load Months
 // ==========================
