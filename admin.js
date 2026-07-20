@@ -1567,3 +1567,91 @@ window.location.pathname.includes(
 loadTeacherProfileDetails();
 
 }
+
+async function loadEditTeacher(){
+
+    const id =
+    localStorage.getItem("editTeacherId");
+
+    if(!id) return;
+
+    const snap =
+    await getDoc(doc(db,"teachers",id));
+
+    if(!snap.exists()) return;
+
+    const teacher = snap.data();
+
+    document.getElementById("profileDesignation").value =
+    teacher.designation || "";
+
+    document.getElementById("profileDepartment").value =
+    teacher.department || "";
+
+    document.getElementById("profileEmployeeId").value =
+    teacher.employeeId || "";
+
+    document.getElementById("profileJoiningDate").value =
+    teacher.joiningDate || "";
+
+    document.getElementById("profileSummary").value =
+    teacher.summary || "";
+
+    document.getElementById("profileGraduation").value =
+    teacher.graduation || "";
+
+    document.getElementById("profilePostGraduation").value =
+    teacher.postGraduation || "";
+
+    document.getElementById("profileBed").value =
+    teacher.bed || "";
+
+    document.getElementById("profileCTET").value =
+    teacher.ctet || "";
+
+    document.getElementById("profileOtherQualification").value =
+    teacher.otherQualification || "";
+
+    document.getElementById("profileCurrentSchool").value =
+    teacher.currentSchool || "";
+
+    document.getElementById("profilePreviousSchool").value =
+    teacher.previousSchool || "";
+
+    document.getElementById("profileAchievement").value =
+    teacher.achievement || "";
+
+    document.getElementById("responsibility1").value =
+    teacher.responsibility1 || "";
+
+    document.getElementById("responsibility2").value =
+    teacher.responsibility2 || "";
+
+    document.getElementById("responsibility3").value =
+    teacher.responsibility3 || "";
+
+    document.getElementById("responsibility4").value =
+    teacher.responsibility4 || "";
+
+    document.getElementById("expertise1").value =
+    teacher.expertise1 || "";
+
+    document.getElementById("expertise2").value =
+    teacher.expertise2 || "";
+
+    document.getElementById("expertise3").value =
+    teacher.expertise3 || "";
+
+    document.getElementById("expertise4").value =
+    teacher.expertise4 || "";
+
+    document.getElementById("profileOffice").value =
+    teacher.office || "";
+
+    document.getElementById("profileAddress").value =
+    teacher.address || "";
+
+    document.getElementById("profileAttendance").value =
+    teacher.attendance || "";
+
+}
