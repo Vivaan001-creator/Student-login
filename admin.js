@@ -1052,55 +1052,7 @@ async function deleteTeacher(id){
 
 window.deleteTeacher=deleteTeacher;
 
-// ==========================
-// Edit Teacher
-// ==========================
 
-function editTeacher(id){
-
-    localStorage.setItem(
-        "editTeacherId",
-        id
-    );
-
-    window.location.href =
-        "edit-teacher.html";
-
-}
-
-window.editTeacher =
-editTeacher;
-
-// ==========================
-// Save Teacher
-// ==========================
-
-
-async function saveTeacher(){
-
-    const id = localStorage.getItem("editTeacherId");
-
-    console.log("Teacher ID:", id);
-    alert(id);
-
-    await setDoc(
-        doc(db,"teachers",id),
-        {
-            name: document.getElementById("teacherName").value,
-            subject: document.getElementById("teacherSubject").value,
-            phone: document.getElementById("teacherPhone").value,
-            email: document.getElementById("teacherEmail").value,
-            qualification: document.getElementById("teacherQualification").value,
-            experience: Number(document.getElementById("teacherExperience").value),
-            status: document.getElementById("teacherStatus").value,
-        },
-        { merge: true }
-    );
-
-    alert("Teacher Updated Successfully");
-
-    window.location.href = "teachers.html";
-}
 // ==========================
 // Load Teacher
 // ==========================
@@ -1210,130 +1162,6 @@ function searchTeacher(){
 
 window.searchTeacher = searchTeacher;
 
-
-
-// ==========================
-// View Teacher
-// ==========================
-
-function viewTeacher(id){
-
-localStorage.setItem(
-
-"profileTeacherId",
-
-id
-
-);
-
-window.location.href=
-
-"teacher-profile.html";
-
-}
-
-window.viewTeacher=viewTeacher;
-
-// ==========================
-// Load Teacher Profile
-// ==========================
-
-async function loadTeacherProfile(){
-
-const id=
-
-localStorage.getItem(
-
-"profileTeacherId"
-
-);
-
-if(!id) return;
-
-const snap=
-
-await getDoc(
-
-doc(db,"teachers",id)
-
-);
-
-if(!snap.exists()) return;
-
-const teacher=snap.data();
-
-
-document.getElementById(
-
-"profileName"
-
-).textContent=
-
-teacher.name;
-
-document.getElementById(
-
-"profileSubject"
-
-).textContent=
-
-teacher.subject;
-
-document.getElementById(
-
-"profilePhone"
-
-).textContent=
-
-teacher.phone;
-
-document.getElementById(
-
-"profileEmail"
-
-).textContent=
-
-teacher.email;
-
-document.getElementById(
-
-"profileQualification"
-
-).textContent=
-
-teacher.qualification;
-
-document.getElementById(
-
-"profileExperience"
-
-).textContent=
-
-teacher.experience;
-
-document.getElementById(
-
-"profileStatus"
-
-).textContent=
-
-teacher.status;
-
-}
-
-if(
-
-window.location.pathname.includes(
-
-"teacher-profile.html"
-
-)
-
-){
-
-loadTeacherProfile();
-
-}
 
 // ==========================
 // School Profile
@@ -1494,7 +1322,8 @@ loadTeacherCount();
 
 async function saveTeacherProfileDetails(){
 
-const id=localStorage.getItem("editTeacherId");
+const id =
+localStorage.getItem("editTeacherId");
 
 if(!id){
 
@@ -1577,8 +1406,8 @@ saveTeacherProfileDetails;
 
 async function loadTeacherProfileDetails(){
 
-const id=
-localStorage.getItem("editTeacherId");
+const id =
+localStorage.getItem("profileTeacherId");
 
 if(!id) return;
 
@@ -1614,13 +1443,6 @@ teacher.experience||"";
 
 document.getElementById("profileStatus").textContent=
 teacher.status||"";
-
-if(document.getElementById("profilePhoto")){
-
-document.getElementById("profilePhoto").src=
-teacher.photo||"teacher.png";
-
-}
 
 // Extra Details
 
