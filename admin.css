@@ -114,9 +114,11 @@ color:#666;
 
 .dashboard{
 
-width:95%;
+width:min(1400px,96vw);
 
-max-width:1200px;
+min-height:100vh;
+
+margin:auto;
 
 padding:30px;
 
@@ -1307,9 +1309,19 @@ background:linear-gradient(135deg,#eaf4ff,#d9ebff);
 .profile-container,
 .edit-profile-container{
 
-max-width:1200px;
+width:min(1400px,96vw);
 
-margin:auto;
+margin:25px auto;
+
+padding:25px;
+
+background:#fff;
+
+border-radius:20px;
+
+box-shadow:0 15px 35px rgba(0,0,0,.12);
+
+}
 
 background:#fff;
 
@@ -1644,6 +1656,24 @@ box-sizing:border-box;
 width:150px;
 
 height:150px;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.dashboard,
+.profile-container,
+.edit-profile-container{
+
+width:100%;
+
+margin:0;
+
+padding:15px;
+
+border-radius:0;
 
 }
 
