@@ -1569,6 +1569,11 @@ loadTeacherProfileDetails();
 }
 
 async function loadEditTeacher(){
+  const id = localStorage.getItem("editTeacherId");
+
+console.log("Edit Teacher ID =", id);
+
+alert("Edit Teacher ID = " + id);
 
     const id =
     localStorage.getItem("editTeacherId");
@@ -1577,6 +1582,17 @@ async function loadEditTeacher(){
 
     const snap =
     await getDoc(doc(db,"teachers",id));
+
+  const snap = await getDoc(doc(db, "teachers", id));
+
+console.log(snap.exists());
+
+if (!snap.exists()) {
+    alert("Teacher Not Found");
+    return;
+}
+
+console.log(snap.data());
 
     if(!snap.exists()) return;
 
