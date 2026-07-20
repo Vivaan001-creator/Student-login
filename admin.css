@@ -112,6 +112,43 @@ color:#666;
 
 }
 
+
+.dashboard{
+
+width:95%;
+
+max-width:1200px;
+
+padding:30px;
+
+border-radius:20px;
+
+background:transparent;
+
+box-shadow:none;
+
+text-align:left;
+
+color:white;
+
+}
+
+.dashboard h1{
+
+color:white;
+
+margin-bottom:10px;
+
+}
+
+.dashboard p{
+
+margin-bottom:30px;
+
+color:white;
+
+}
+
 .menu{
 
 display:grid;
