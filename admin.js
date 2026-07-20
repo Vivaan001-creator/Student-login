@@ -1655,3 +1655,9 @@ async function loadEditTeacher(){
     teacher.attendance || "";
 
 }
+if(
+window.location.pathname.includes(
+"edit-teacher.html"
+)){
+    loadEditTeacher();
+}
