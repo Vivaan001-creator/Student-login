@@ -6,52 +6,84 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-content="width=device-width,initial-scale=1.0">
+content="width=device-width, initial-scale=1.0">
 
-<title>Edit Teacher</title>
+<title>Edit Teacher Profile</title>
 
 <link rel="stylesheet"
 href="admin.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
 </head>
 
 <body>
 
-<div class="admin-box">
+<div class="edit-profile-container">
 
-<h1>Edit Teacher</h1>
+<h1>
+
+<i class="fa-solid fa-user-pen"></i>
+
+Edit Teacher Profile
+
+</h1>
+
+<!-- Photo -->
+
+<div class="card">
+
+<h2>Profile Photo</h2>
+
+<img
+id="teacherProfilePreview"
+src="teacher.png"
+class="profile-preview">
+
+<input
+type="file"
+id="teacherProfilePhoto"
+accept="image/*">
+
+</div>
+
+<!-- Basic Information -->
+
+<div class="card">
+
+<h2>Basic Information</h2>
 
 <input
 type="text"
-id="teacherName"
+id="profileName"
 placeholder="Teacher Name">
 
 <input
 type="text"
-id="teacherSubject"
-placeholder="Subject">
-
-<input
-type="tel"
-id="teacherPhone"
-placeholder="Mobile Number">
-
-<input
-type="email"
-id="teacherEmail"
-placeholder="Email">
+id="profileEmployeeId"
+placeholder="Employee ID">
 
 <input
 type="text"
-id="teacherQualification"
-placeholder="Qualification">
+id="profileDesignation"
+placeholder="Designation">
 
 <input
-type="number"
-id="teacherExperience"
-placeholder="Experience">
+type="text"
+id="profileDepartment"
+placeholder="Department">
 
-<select id="teacherStatus">
+<input
+type="text"
+id="profileSubject"
+placeholder="Subject">
+
+<input
+type="date"
+id="profileJoiningDate">
+
+<select id="profileStatus">
 
 <option value="Active">
 Active
@@ -63,21 +95,204 @@ Inactive
 
 </select>
 
-<button
-onclick="saveTeacher()">
+</div>
 
-Save Changes
+<!-- Profile Summary -->
+
+<div class="card">
+
+<h2>Profile Summary</h2>
+
+<textarea
+id="profileSummary"
+rows="5"
+placeholder="Write Teacher Profile Summary...">
+</textarea>
+
+</div>
+
+<!-- Qualification -->
+
+<div class="card">
+
+<h2>Academic Qualification</h2>
+
+<input
+type="text"
+id="profileGraduation"
+placeholder="Graduation">
+
+<input
+type="text"
+id="profilePostGraduation"
+placeholder="Post Graduation">
+
+<input
+type="text"
+id="profileBed"
+placeholder="B.Ed">
+
+<input
+type="text"
+id="profileCTET"
+placeholder="CTET / TET">
+
+<input
+type="text"
+id="profileOtherQualification"
+placeholder="Other Qualification">
+
+</div>
+
+<!-- Experience -->
+
+<div class="card">
+
+<h2>Experience</h2>
+
+<input
+type="number"
+id="profileExperience"
+placeholder="Total Experience (Years)">
+
+<input
+type="text"
+id="profileCurrentSchool"
+placeholder="Current School">
+
+<input
+type="text"
+id="profilePreviousSchool"
+placeholder="Previous School">
+
+<input
+type="text"
+id="profileAchievement"
+placeholder="Achievements">
+
+</div>
+
+<!-- Responsibilities -->
+
+<div class="card">
+
+<h2>Responsibilities</h2>
+
+<input
+type="text"
+id="responsibility1"
+placeholder="Responsibility 1">
+
+<input
+type="text"
+id="responsibility2"
+placeholder="Responsibility 2">
+
+<input
+type="text"
+id="responsibility3"
+placeholder="Responsibility 3">
+
+<input
+type="text"
+id="responsibility4"
+placeholder="Responsibility 4">
+
+</div>
+
+<!-- Expertise -->
+
+<div class="card">
+
+<h2>Expertise</h2>
+
+<input
+type="text"
+id="expertise1"
+placeholder="Expertise 1">
+
+<input
+type="text"
+id="expertise2"
+placeholder="Expertise 2">
+
+<input
+type="text"
+id="expertise3"
+placeholder="Expertise 3">
+
+<input
+type="text"
+id="expertise4"
+placeholder="Expertise 4">
+
+</div>
+
+<!-- Contact -->
+
+<div class="card">
+
+<h2>Contact Information</h2>
+
+<input
+type="tel"
+id="profilePhone"
+placeholder="Phone Number">
+
+<input
+type="email"
+id="profileEmail"
+placeholder="Email">
+
+<input
+type="text"
+id="profileOffice"
+placeholder="Office Room">
+
+<textarea
+id="profileAddress"
+rows="3"
+placeholder="Address">
+</textarea>
+
+</div>
+
+<!-- Attendance -->
+
+<div class="card">
+
+<h2>Attendance</h2>
+
+<input
+type="number"
+id="profileAttendance"
+placeholder="Attendance Percentage">
+
+</div>
+
+<!-- Buttons -->
+
+<div class="button-group">
+
+<button
+onclick="saveTeacherProfileDetails()">
+
+<i class="fa-solid fa-floppy-disk"></i>
+
+Save Profile
 
 </button>
 
-<br><br>
-
 <button
-onclick="window.location.href='teachers.html'">
+onclick="window.location.href='teacher-profile.html'">
+
+<i class="fa-solid fa-arrow-left"></i>
 
 Back
 
 </button>
+
+</div>
 
 </div>
 
@@ -89,4 +304,4 @@ src="admin.js">
 
 </body>
 
-</html>
+  </html>
