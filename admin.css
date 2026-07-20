@@ -12,7 +12,21 @@ font-family:Arial,sans-serif;
 
 body{
 
-height:100vh;
+margin:0;
+
+min-height:100vh;
+
+background:linear-gradient(135deg,#4e54c8,#8f54ff);
+
+font-family:Arial,sans-serif;
+
+overflow-x:hidden;
+
+}
+
+.admin-login{
+
+min-height:100vh;
 
 display:flex;
 
@@ -20,11 +34,7 @@ justify-content:center;
 
 align-items:center;
 
-background:linear-gradient(
-135deg,
-#4e54c8,
-#8f54ff
-);
+padding:20px;
 
 }
 
