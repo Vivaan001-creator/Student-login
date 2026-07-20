@@ -1670,3 +1670,15 @@ window.location.pathname.includes(
 )){
     loadEditTeacher();
 }
+
+async function loadResultCount(){
+
+const snapshot=
+await getDocs(collection(db,"results"));
+
+document.getElementById("resultCount").textContent=
+snapshot.size;
+
+}
+
+loadResultCount();
