@@ -22,15 +22,45 @@ id="schoolLogoImage"
 class="school-logo.png">
 
 <div class="dashboard">
-<h1 id="schoolTitle">
+<div class="dashboard-layout">
 
-Dashboard
+    <!-- Sidebar -->
+    <aside class="sidebar">
 
-</h1>
+        <div class="sidebar-logo">
+            <h2>MIS</h2>
+        </div>
 
-<p>Welcome Back, Administrator</p>
+        <nav class="sidebar-menu">
+            <button>🏠</button>
+            <button>👨‍🎓</button>
+            <button>👨‍🏫</button>
+            <button>📊</button>
+            <button>⚙️</button>
+        </nav>
 
-    <div id="dashboardClock"></div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="dashboard-content">
+
+        <header class="dashboard-header">
+
+            <div class="welcome-box">
+                <h2 id="schoolTitle">
+                    Modern International School
+                </h2>
+
+                <p>
+                    Welcome Back, Administrator
+                </p>
+            </div>
+
+            <div id="dashboardClock"
+                 class="dashboard-time">
+            </div>
+
+        </header>
     <div class="dashboard-stats">
 
     <div class="stat-card">
@@ -97,6 +127,8 @@ onclick="location.href='school-profile.html'">
     Logout
   </button>
 
+</div>
+    
 </div>
 <script type="module" src="admin.js"></script>
 
