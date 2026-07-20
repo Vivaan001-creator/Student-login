@@ -1017,6 +1017,41 @@ ${teacher.status}
 
 }
 // ==========================
+// View Teacher
+// ==========================
+function viewTeacher(id){
+
+    localStorage.setItem(
+        "profileTeacherId",
+        id
+    );
+
+    window.location.href =
+    "teacher-profile.html";
+
+}
+
+window.viewTeacher = viewTeacher;
+
+// ==========================
+// Edit Teacher
+// ==========================
+
+function editTeacher(id){
+
+    localStorage.setItem(
+        "editTeacherId",
+        id
+    );
+
+    window.location.href =
+    "edit-teacher.html";
+
+}
+
+window.editTeacher = editTeacher;
+
+// ==========================
 // Delete Teacher
 // ==========================
 
