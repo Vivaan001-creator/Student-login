@@ -1687,6 +1687,9 @@ teacher.expertise3||"-";
 document.getElementById("expertise4").textContent=
 teacher.expertise4||"-";
 
+  document.getElementById("profileAssigned").textContent =
+teacher.subject || "-";
+
 document.getElementById("profileOffice").textContent=
 teacher.office||"-";
 
