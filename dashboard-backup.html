@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard</title>
+
+<link rel="stylesheet"
+href="admin.css">
+
+</head>
+
+<body>
+
+    <img
+id="schoolLogoImage"
+class="school-logo.png">
+
+<div class="dashboard">
+<h1 id="schoolTitle">
+
+Dashboard
+
+</h1>
+
+<p>Welcome Back, Administrator</p>
+
+    <div id="dashboardClock"></div>
+    <div class="dashboard-stats">
+
+    <div class="stat-card">
+       <h2 id="studentCount">0</h2>
+       <span>Total Students</span>
+    </div>
+
+    <div class="stat-card">
+        <h2 id="teacherCount">0</h2>
+        <span>Teachers</span>
+    </div>
+
+    <div class="stat-card">
+        <h2 id="classCount">6</h2>
+        <span>Classes</span>
+    </div>
+
+    <div class="stat-card">
+        <h2 id="resultCount">0</h2>
+        <span>Published Results</span>
+    </div>
+
+    </div>
+
+<div class="menu">
+    
+<button onclick="window.location.href='students.html'">
+Student Records
+</button>
+
+<button onclick="window.location.href='add-student.html'">
+➕ Add Student
+</button>
+
+    <button
+onclick="window.location.href='teachers.html'">
+
+Teacher Management
+
+    </button>
+    
+<button id="marksBtn">
+Marks Management
+</button>
+
+<button id="resultBtn">
+Publish Result
+</button>
+
+<button onclick="window.location.href='change-password.html'">
+
+Change Password
+
+</button>
+
+    <button
+onclick="location.href='school-profile.html'">
+
+🏫 School Profile
+
+    </button>
+  
+  <button onclick="adminLogout()">
+    Logout
+  </button>
+
+</div>
+<script type="module" src="admin.js"></script>
+
+    <footer class="dashboard-footer">
+School Management Portal
+<br>
+© 2026 All Rights Reserved
+    </footer>
+
+</body>
+
+</html>
