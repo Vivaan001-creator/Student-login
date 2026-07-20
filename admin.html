@@ -1,189 +1,141 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modern International School - Teacher Login</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="admin.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern International School - Teacher Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&amp;display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="container">
+        <!-- Background Decorative Elements -->
+        <div class="bg-circle circle1"></div>
+        <div class="bg-circle circle2"></div>
+        <div class="bg-dots dots1"></div>
+        <div class="bg-dots dots2"></div>
 
-<!-- Decorative background elements -->
-<div class="bg-blob-top-left"></div>
-<div class="bg-dots bg-dots-top-right"></div>
-<div class="bg-dots bg-dots-bottom-left"></div>
-<div class="bg-ring bg-ring-mid-right"></div>
-<div class="bg-dot bg-dot-mid-left"></div>
-<div class="bg-arc bg-arc-bottom-right"></div>
+        <!-- Header Illustration -->
+        <div class="illustration">
+            <svg width="280" height="180" viewBox="0 0 280 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Clouds -->
+                <ellipse cx="60" cy="35" rx="18" ry="12" fill="#E0E7FF"/>
+                <ellipse cx="220" cy="45" rx="22" ry="14" fill="#E0E7FF"/>
+                
+                <!-- Trees -->
+                <path d="M35 95 Q25 75 45 75 Q35 55 55 65 Z" fill="#A5B4FC"/>
+                <path d="M245 95 Q235 75 255 75 Q245 55 265 65 Z" fill="#A5B4FC"/>
+                
+                <!-- School Building -->
+                <rect x="95" y="55" width="90" height="70" rx="8" fill="#6366F1"/>
+                <!-- Roof -->
+                <polygon points="85,55 140,35 195,55" fill="#4F46E5"/>
+                <!-- Flag -->
+                <line x1="140" y1="35" x2="140" y2="25" stroke="#1E2937" stroke-width="4"/>
+                <polygon points="140,25 155,30 140,35" fill="#EF4444"/>
+                
+                <!-- Windows -->
+                <rect x="105" y="65" width="12" height="12" fill="#E0E7FF"/>
+                <rect x="125" y="65" width="12" height="12" fill="#E0E7FF"/>
+                <rect x="155" y="65" width="12" height="12" fill="#E0E7FF"/>
+                <rect x="175" y="65" width="12" height="12" fill="#E0E7FF"/>
+                
+                <!-- Door -->
+                <rect x="135" y="90" width="18" height="35" fill="#1E2937"/>
+                <circle cx="147" cy="107" r="2" fill="#E0E7FF"/>
+                
+                <!-- Clock -->
+                <circle cx="140" cy="48" r="8" fill="#E0E7FF"/>
+                <line x1="140" y1="48" x2="140" y2="42" stroke="#1E2937" stroke-width="2"/>
+                <line x1="140" y1="48" x2="145" y2="50" stroke="#1E2937" stroke-width="2"/>
+            </svg>
+        </div>
 
-<div class="page">
+        <h1 class="school-title">Modern International School</h1>
+        <div class="login-subtitle">
+            <span class="line"></span>
+            Teacher Login
+            <span class="line"></span>
+        </div>
 
-  <!-- School illustration -->
-  <div class="illustration-wrap">
-    <svg class="school-illustration" viewBox="0 0 400 260" aria-hidden="true">
+        <!-- Login Card -->
+        <div class="login-card">
+            <div class="avatar">
+                <svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="35" cy="35" r="35" fill="#E0E7FF"/>
+                    <path d="M35 42C28 42 23 47 23 54H47C47 47 42 42 35 42Z" fill="#6366F1"/>
+                    <circle cx="35" cy="28" r="10" fill="#6366F1"/>
+                </svg>
+            </div>
 
-      <!-- ground shadow -->
-      <ellipse cx="200" cy="248" rx="180" ry="8" fill="#e7e4fb"/>
+            <h2 class="welcome">Welcome Back!</h2>
+            <p class="subtitle-text">Login to your account to continue</p>
 
-      <!-- birds -->
-      <path class="bird bird-1" d="M60,55 q6,-8 12,0 q6,-8 12,0" fill="none" stroke="#3a3a5c" stroke-width="2.5" stroke-linecap="round"/>
-      <path class="bird bird-2" d="M100,35 q5,-7 10,0 q5,-7 10,0" fill="none" stroke="#3a3a5c" stroke-width="2.2" stroke-linecap="round"/>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label>Username / Email</label>
+                    <div class="input-wrapper">
+                        <span class="icon">👤</span>
+                        <input type="text" placeholder="Enter your username or email" required>
+                    </div>
+                </div>
 
-      <!-- clouds -->
-      <g class="cloud cloud-1" fill="#d9d6f7">
-        <ellipse cx="70" cy="80" rx="26" ry="14"/>
-        <ellipse cx="92" cy="74" rx="18" ry="12"/>
-        <ellipse cx="52" cy="76" rx="16" ry="10"/>
-      </g>
-      <g class="cloud cloud-2" fill="#d9d6f7">
-        <ellipse cx="320" cy="70" rx="24" ry="13"/>
-        <ellipse cx="340" cy="65" rx="16" ry="11"/>
-        <ellipse cx="302" cy="67" rx="14" ry="9"/>
-      </g>
+                <div class="input-group">
+                    <label>Password</label>
+                    <div class="input-wrapper password-wrapper">
+                        <span class="icon">🔒</span>
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                        <button type="button" class="toggle-password">👁️</button>
+                    </div>
+                </div>
 
-      <!-- left tree -->
-      <g class="tree tree-1">
-        <rect x="76" y="178" width="8" height="50" fill="#8b86e0"/>
-        <circle cx="80" cy="150" r="34" fill="#a8a3ec"/>
-        <circle cx="60" cy="168" r="22" fill="#b6b1f0"/>
-        <circle cx="102" cy="168" r="22" fill="#b6b1f0"/>
-      </g>
+                <div class="options">
+                    <label class="remember">
+                        <input type="checkbox">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#" class="forgot">Forgot Password?</a>
+                </div>
 
-      <!-- right tree -->
-      <g class="tree tree-2">
-        <rect x="316" y="178" width="8" height="50" fill="#8b86e0"/>
-        <circle cx="320" cy="150" r="34" fill="#a8a3ec"/>
-        <circle cx="300" cy="168" r="22" fill="#b6b1f0"/>
-        <circle cx="342" cy="168" r="22" fill="#b6b1f0"/>
-      </g>
+                <button type="submit" class="login-btn">
+                    <span class="btn-icon">👤</span>
+                    Login
+                </button>
+            </form>
 
-      <!-- small bushes -->
-      <g fill="#c7c3f5">
-        <circle cx="135" cy="222" r="10"/>
-        <circle cx="150" cy="226" r="7"/>
-        <circle cx="250" cy="222" r="10"/>
-        <circle cx="265" cy="226" r="7"/>
-      </g>
-
-      <!-- flag pole -->
-      <rect x="199" y="30" width="3" height="40" fill="#4b3fd6"/>
-      <path class="flag" d="M202,30 L226,37 L202,44 Z" fill="#5b52e5"/>
-
-      <!-- roof tower -->
-      <polygon points="200,45 178,80 222,80" fill="#241f4d"/>
-
-      <!-- main roof -->
-      <polygon points="200,70 145,112 255,112" fill="#241f4d"/>
-
-      <!-- building body -->
-      <rect x="150" y="108" width="100" height="118" rx="4" fill="url(#buildingGrad)"/>
-
-      <!-- clock circle -->
-      <circle cx="200" cy="100" r="15" fill="#ffffff"/>
-      <line x1="200" y1="100" x2="200" y2="91" stroke="#5b52e5" stroke-width="2.4" stroke-linecap="round"/>
-      <line x1="200" y1="100" x2="207" y2="100" stroke="#5b52e5" stroke-width="2.4" stroke-linecap="round"/>
-
-      <!-- windows left -->
-      <g fill="#ffffff" opacity="0.95">
-        <rect x="163" y="130" width="12" height="12" rx="1.5"/>
-        <rect x="179" y="130" width="12" height="12" rx="1.5"/>
-        <rect x="163" y="150" width="12" height="12" rx="1.5"/>
-        <rect x="179" y="150" width="12" height="12" rx="1.5"/>
-      </g>
-
-      <!-- windows right -->
-      <g fill="#ffffff" opacity="0.95">
-        <rect x="209" y="130" width="12" height="12" rx="1.5"/>
-        <rect x="225" y="130" width="12" height="12" rx="1.5"/>
-        <rect x="209" y="150" width="12" height="12" rx="1.5"/>
-        <rect x="225" y="150" width="12" height="12" rx="1.5"/>
-      </g>
-
-      <!-- door -->
-      <path d="M188,226 L188,196 Q188,182 200,182 Q212,182 212,196 L212,226 Z" fill="#ede9ff"/>
-
-      <defs>
-        <linearGradient id="buildingGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#6b62ee"/>
-          <stop offset="100%" stop-color="#4f45d8"/>
-        </linearGradient>
-      </defs>
-    </svg>
-  </div>
-
-  <!-- Title -->
-  <h1 class="school-title">
-    Modern International<br>
-    <span>School</span>
-  </h1>
-
-  <div class="subtitle-divider">
-    <span class="line"></span>
-    <span class="dot"></span>
-    <span class="subtitle-text">Teacher Login</span>
-    <span class="dot"></span>
-    <span class="line"></span>
-  </div>
-
-  <!-- Login card -->
-  <div class="login-card">
-
-    <div class="avatar-circle">
-      <div class="avatar-inner">
-        <i class="fa-solid fa-user"></i>
-      </div>
+            <div class="secure">
+                <span class="shield">🛡️</span>
+                Secure Login
+            </div>
+        </div>
     </div>
 
-    <h2 class="welcome-title">Welcome Back!</h2>
-    <p class="welcome-subtitle">Login to your account to continue</p>
+    <script>
+        // Password toggle
+        const toggleBtn = document.querySelector('.toggle-password');
+        const passwordInput = document.getElementById('password');
+        
+        toggleBtn.addEventListener('click', () => {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.textContent = '👁️';
+            }
+        });
 
-    <form id="loginForm" novalidate>
-
-      <label class="field-label" for="username">Username / Email</label>
-      <div class="input-wrap">
-        <i class="fa-regular fa-user input-icon"></i>
-        <input type="text" id="username" name="username" placeholder="Enter your username or email" autocomplete="username">
-      </div>
-
-      <label class="field-label" for="password">Password</label>
-      <div class="input-wrap">
-        <i class="fa-solid fa-lock input-icon"></i>
-        <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password">
-        <button type="button" class="toggle-eye" id="toggleEye" aria-label="Toggle password visibility">
-          <i class="fa-regular fa-eye-slash"></i>
-        </button>
-      </div>
-
-      <div class="row-between">
-        <label class="remember-me">
-          <input type="checkbox" id="remember">
-          <span class="checkbox-box"></span>
-          Remember me
-        </label>
-        <a href="#" class="forgot-link">Forgot Password?</a>
-      </div>
-
-      <button type="submit" class="login-btn">
-        <i class="fa-solid fa-user"></i>
-        <span>Login</span>
-      </button>
-
-      <div class="secure-login">
-        <span class="line"></span>
-        <i class="fa-solid fa-shield-halved"></i>
-        <span>Secure Login</span>
-        <span class="line"></span>
-      </div>
-
-    </form>
-  </div>
-
-</div>
-
-<script src="admin.js"></script>
+        // Form submission animation
+        const form = document.getElementById('loginForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = form.querySelector('.login-btn');
+            btn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                btn.style.transform = 'scale(1)';
+                alert('Login successful! (Demo)');
+            }, 200);
+        });
+    </script>
 </body>
-        </html>
-                                               
+</html>
