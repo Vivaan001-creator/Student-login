@@ -986,10 +986,6 @@ async function loadTeacherTable(){
         teacherTable.innerHTML += `
 <tr>
 
-<td>
-<img src="${teacher.photo || 'teacher.png'}"
-class="teacher-list-photo">
-</td>
 
 <td>${docSnap.id}</td>
 
@@ -1087,12 +1083,6 @@ async function saveTeacher(){
     console.log("Teacher ID:", id);
     alert(id);
 
-    const file =
-    document.getElementById("teacherPhoto").files[0];
-
-    const photoURL =
-    document.getElementById("teacherPhotoPreview").src;
-
     await setDoc(
         doc(db,"teachers",id),
         {
@@ -1103,7 +1093,6 @@ async function saveTeacher(){
             qualification: document.getElementById("teacherQualification").value,
             experience: Number(document.getElementById("teacherExperience").value),
             status: document.getElementById("teacherStatus").value,
-            photo: photoURL
         },
         { merge: true }
     );
@@ -1142,12 +1131,6 @@ async function loadTeacher(){
     const teacher =
         teacherSnap.data();
 
-if(teacher.photo){
-
-    document.getElementById("teacherPhotoPreview").src =
-teacher.photo;
-
-}
   
     document.getElementById("teacherName").value =
         teacher.name || "";
@@ -1227,35 +1210,7 @@ function searchTeacher(){
 
 window.searchTeacher = searchTeacher;
 
-// ==========================
-// Teacher Photo Preview
-// ==========================
 
-const teacherPhotoInput =
-document.getElementById("teacherPhoto");
-
-if (teacherPhotoInput) {
-
-    teacherPhotoInput.addEventListener("change", function () {
-
-        const file = this.files[0];
-
-        if (!file) return;
-
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-
-            document.getElementById("teacherPhotoPreview").src =
-            e.target.result;
-
-        };
-
-        reader.readAsDataURL(file);
-
-    });
-
-}
 
 // ==========================
 // View Teacher
@@ -1307,15 +1262,6 @@ if(!snap.exists()) return;
 
 const teacher=snap.data();
 
-document.getElementById(
-
-"profilePhoto"
-
-).src=
-
-teacher.photo||
-
-"teacher.png";
 
 document.getElementById(
 
@@ -1477,12 +1423,6 @@ data.schoolEmail || "";
 document.getElementById("schoolWebsite").value =
 data.schoolWebsite || "";
 
-if(data.logoURL){
-
-document.getElementById("logoPreview").src =
-data.logoURL;
-
-}
 }
 
 
@@ -1512,15 +1452,6 @@ async function showSchoolName(){
             schoolTitle.textContent =
                 profileSnap.data().schoolName;
 
-const logo =
-document.getElementById("schoolLogoImage");
-
-if(logo){
-
-logo.src =
-profileSnap.data().logoURL || "";
-
-}
           
         }
 
