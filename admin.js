@@ -1,5 +1,5 @@
 alert("admin.js started");
-//import { db, storage } from "./Firebase.js";
+//import { db, storage } from "./Firebase.js";//
 
 //import {
   doc,
@@ -9,13 +9,13 @@ alert("admin.js started");
   collection,
   getDocs,
   getCountFromServer
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";//
 
 //import {
   ref,
   uploadBytes,
   getDownloadURL
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";//
 
 console.log("admin.js started");
 alert("admin.js loaded");
