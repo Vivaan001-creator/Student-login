@@ -350,6 +350,19 @@ async function loadStudent() {
     });
 
 }
+
+async function loadStudentCount(){
+
+const snapshot=
+await getDocs(collection(db,"students"));
+
+document.getElementById("studentCount").textContent=
+snapshot.size;
+
+}
+
+loadStudentCount();
+
 // ==========================
 // Load Months
 // ==========================
@@ -1165,8 +1178,6 @@ function searchTeacher(){
 window.searchTeacher = searchTeacher;
 
 
-
-
 // ==========================
 // School Profile
 // ==========================
@@ -1302,23 +1313,15 @@ showSchoolName();
 
 async function loadTeacherCount(){
 
-const teacherBox =
-document.getElementById("teacherCount");
+const snapshot=
+await getDocs(collection(db,"teachers"));
 
-if(!teacherBox) return;
-
-const snap =
-await getCountFromServer(
-collection(db,"teachers")
-);
-
-teacherBox.textContent =
-snap.data().count;
+document.getElementById("teacherCount").textContent=
+snapshot.size;
 
 }
 
 loadTeacherCount();
-
      
 // ==========================
 // Save Teacher Profile Details
@@ -1671,4 +1674,16 @@ window.location.pathname.includes(
 "edit-teacher.html"
 )){
     loadEditTeacher();
-      }
+}
+
+async function loadResultCount(){
+
+const snapshot=
+await getDocs(collection(db,"results"));
+
+document.getElementById("resultCount").textContent=
+snapshot.size;
+
+}
+
+loadResultCount();
