@@ -1800,3 +1800,15 @@ new Date().toLocaleString()
 })
 
 );
+
+const logout=
+
+document.querySelector(".logout-icon");
+
+logout.onclick=()=>{
+
+localStorage.removeItem("admin");
+
+location.href="admin.html";
+
+};
