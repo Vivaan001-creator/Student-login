@@ -2194,3 +2194,32 @@ html, body {
 
 .welcome-text h3 {
   font-size
+
+  .login-info{
+
+color:white;
+
+text-align:right;
+
+margin-left:20px;
+
+}
+
+.login-info p{
+
+font-size:12px;
+
+opacity:.8;
+
+}
+
+.login-info h4{
+
+margin-top:5px;
+
+font-size:15px;
+
+font-weight:600;
+
+}
+
