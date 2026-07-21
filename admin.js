@@ -1759,3 +1759,28 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
+
+function loadAdmin(){
+
+const admin=
+
+JSON.parse(
+
+localStorage.getItem("admin")
+
+);
+
+if(!admin) return;
+
+document.getElementById("adminName").textContent=
+
+admin.name;
+
+document.getElementById("lastLogin").textContent=
+
+admin.lastLogin;
+
+}
+
+loadAdmin();
