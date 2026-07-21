@@ -141,7 +141,6 @@ a {
 .tree-2 { animation-delay: 0.4s; }
 
 .flag {
-  animation: waveFlag 1.8s ease-in-out infinite;
   transform-origin: left center;
 }
 
