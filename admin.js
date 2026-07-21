@@ -1,6 +1,7 @@
-import { db, storage } from "./Firebase.js";
+alert("admin.js started");
+//import { db, storage } from "./Firebase.js";
 
-import {
+//import {
   doc,
   setDoc,
   getDoc,
@@ -10,7 +11,7 @@ import {
   getCountFromServer
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-import {
+//import {
   ref,
   uploadBytes,
   getDownloadURL
