@@ -16,8 +16,6 @@ import {
   getDownloadURL
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
 
-console.log("admin.js started");
-alert("admin.js loaded");
 // ==========================
 // Default Admin Password
 // ==========================
@@ -26,15 +24,13 @@ if (!localStorage.getItem("adminPassword")) {
     localStorage.setItem("adminPassword", "12345");
 }
 
-alert("Calling adminLogin...");
-adminLogin();
+
 // ==========================
 // Admin Login
 // ==========================
 
 function adminLogin() {
 
-    alert("adminLogin function called");
 
     const username = document.getElementById("username");
     const password = document.getElementById("password");
@@ -42,18 +38,15 @@ function adminLogin() {
     if (!username || !password) return;
 
     if (
-    username.value.trim() === "admin" &&
-    password.value.trim() === localStorage.getItem("adminPassword")
-)
-    {
-    alert("Login Success");
+        username.value.trim() === "admin" &&
+        password.value.trim() === localStorage.getItem("adminPassword")
+    ) {
 
-    sessionStorage.setItem("adminLoggedIn", "true");
-    window.location.href = "dashboard.html";
-    }
-    
-    
-    else {
+        sessionStorage.setItem("adminLoggedIn", "true");
+
+        window.location.href = "dashboard.html";
+
+    } else {
 
         alert("Invalid Username or Password");
 
@@ -62,49 +55,6 @@ function adminLogin() {
 }
 
 window.adminLogin = adminLogin;
-
-document.addEventListener('DOMContentLoaded', function () {
-  const toggleEye = document.getElementById('toggleEye');
-  const passwordInput = document.getElementById('password');
-  const form = document.getElementById('loginForm');
-  const loginBtn = document.querySelector('.login-btn');
-
-  // Toggle password visibility
-  if (toggleEye && passwordInput) {
-    toggleEye.addEventListener('click', function () {
-      const isPassword = passwordInput.getAttribute('type') === 'password';
-      passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
-
-      const icon = toggleEye.querySelector('i');
-      icon.classList.toggle('fa-eye-slash');
-      icon.classList.toggle('fa-eye');
-    });
-  }
-
-if (form) {
-    form.addEventListener("submit", function (e) {
-
-        e.preventDefault();
-
-        loginBtn.classList.add("loading");
-
-        const span = loginBtn.querySelector("span");
-        const originalText = span.textContent;
-
-        span.textContent = "Logging in...";
-
-        setTimeout(function () {
-
-            loginBtn.classList.remove("loading");
-
-            span.textContent = originalText;
-
-            adminLogin(); // Login check karega
-
-        }, 1000);
-
-    });
-}
 
 
 // ==========================
@@ -1737,4 +1687,3 @@ snapshot.size;
 }
 
 loadResultCount();
-
