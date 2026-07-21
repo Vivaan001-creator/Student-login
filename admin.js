@@ -74,23 +74,30 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Simple submit interaction (loading state)
-  if (form) {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      loginBtn.classList.add('loading');
-      const span = loginBtn.querySelector('span');
-      const originalText = span.textContent;
-      span.textContent = 'Logging in...';
+if (form) {
+    form.addEventListener("submit", function (e) {
 
-      setTimeout(function () {
-        span.textContent = originalText;
-        loginBtn.classList.remove('loading');
-      }, 1500);
+        e.preventDefault();
+
+        loginBtn.classList.add("loading");
+
+        const span = loginBtn.querySelector("span");
+        const originalText = span.textContent;
+
+        span.textContent = "Logging in...";
+
+        setTimeout(function () {
+
+            loginBtn.classList.remove("loading");
+
+            span.textContent = originalText;
+
+            adminLogin(); // Login check karega
+
+        }, 1000);
+
     });
-  }
-});
-
+}
 
 
 // ==========================
