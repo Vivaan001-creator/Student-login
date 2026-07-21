@@ -1,0 +1,444 @@
+/* ==========================================
+   RESET & BASE STYLES
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f3f3fd;
+    background-image: radial-gradient(#e0dcfc 1px, transparent 1px);
+    background-size: 24px 24px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow-x: hidden;
+    padding: 20px 0;
+}
+
+/* ==========================================
+   BACKGROUND DECORATIONS
+   ========================================== */
+.bg-shape {
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.dot-pattern {
+    width: 100px;
+    height: 100px;
+    background-image: radial-gradient(#c5c3fb 2px, transparent 2px);
+    background-size: 12px 12px;
+}
+
+.top-right {
+    top: 30px;
+    right: 40px;
+}
+
+.bottom-left {
+    bottom: 30px;
+    left: 40px;
+}
+
+.circle-1 {
+    width: 32px;
+    height: 32px;
+    background-color: #dcd8fc;
+    border-radius: 50%;
+    top: 320px;
+    left: 13%;
+}
+
+.circle-2 {
+    width: 22px;
+    height: 22px;
+    border: 4px solid #c5c3fb;
+    border-radius: 50%;
+    top: 360px;
+    right: 13%;
+}
+
+.circle-arch {
+    width: 380px;
+    height: 380px;
+    border: 35px solid #e7e5fc;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -150px;
+    right: -100px;
+    opacity: 0.6;
+}
+
+/* ==========================================
+   MAIN WRAPPER & CONTAINER
+   ========================================== */
+.login-wrapper {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 15px;
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* ==========================================
+   HEADER SECTION
+   ========================================== */
+.header-section {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.school-illustration {
+    width: 260px;
+    height: 140px;
+    margin: 0 auto 10px auto;
+    transition: transform 0.3s ease;
+}
+
+.school-illustration:hover {
+    transform: translateY(-4px);
+}
+
+.school-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a3a;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+}
+
+.school-title .highlight {
+    color: #534be8;
+}
+
+.sub-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.sub-divider .line {
+    width: 35px;
+    height: 1.5px;
+    background-color: #8c89f2;
+    display: inline-block;
+}
+
+.sub-divider .dot {
+    width: 5px;
+    height: 5px;
+    background-color: #534be8;
+    border-radius: 50%;
+}
+
+.sub-divider .subtitle {
+    font-size: 15px;
+    font-weight: 600;
+    color: #4a4a68;
+}
+
+/* ==========================================
+   CARD DESIGN
+   ========================================== */
+.login-card {
+    background: #ffffff;
+    width: 100%;
+    border-radius: 24px;
+    padding: 35px 35px 30px 35px;
+    box-shadow: 0 15px 35px rgba(83, 75, 232, 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-card:hover {
+    box-shadow: 0 20px 40px rgba(83, 75, 232, 0.12);
+}
+
+/* Avatar Badge */
+.avatar-badge {
+    width: 72px;
+    height: 72px;
+    background-color: #f0effe;
+    border: 4px solid #ffffff;
+    box-shadow: 0 0 0 1px #e2e0fd;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.avatar-badge i {
+    font-size: 32px;
+    color: #534be8;
+}
+
+.welcome-text {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a3a;
+    margin-bottom: 4px;
+}
+
+.welcome-subtext {
+    font-size: 13.5px;
+    color: #8282a2;
+    margin-bottom: 25px;
+}
+
+/* ==========================================
+   FORM STYLES
+   ========================================== */
+.login-form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 18px;
+    width: 100%;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a1a3a;
+    margin-bottom: 8px;
+}
+
+.input-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 16px;
+    color: #a0a0c0;
+    font-size: 15px;
+    transition: color 0.3s ease;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 13px 16px 13px 44px;
+    border: 1.5px solid #eaeaf5;
+    border-radius: 10px;
+    font-size: 13.5px;
+    color: #2b2b4a;
+    background-color: #ffffff;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.input-box input::placeholder {
+    color: #b0b0cc;
+}
+
+.input-box input:focus {
+    border-color: #534be8;
+    box-shadow: 0 0 0 4px rgba(83, 75, 232, 0.1);
+}
+
+.input-box input:focus + .input-icon,
+.input-box input:focus ~ .input-icon {
+    color: #534be8;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 16px;
+    color: #a0a0c0;
+    font-size: 15px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.toggle-password:hover {
+    color: #534be8;
+}
+
+/* ==========================================
+   OPTIONS (Checkbox & Forgot Password)
+   ========================================== */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    font-size: 13px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    height: 18px;
+    width: 18px;
+    background-color: #fff;
+    border: 1.5px solid #d0d0e8;
+    border-radius: 4px;
+    margin-right: 8px;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+    border-color: #534be8;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: #534be8;
+    border-color: #534be8;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 5px;
+    top: 2px;
+    width: 4px;
+    height: 8px;
+    border: solid stroke;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.label-text {
+    color: #555577;
+    font-weight: 500;
+}
+
+.forgot-link {
+    color: #534be8;
+    text-decoration: none;
+    font-weight: 600;
+    transition: opacity 0.2s ease;
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
+    opacity: 0.85;
+}
+
+/* ==========================================
+   BUTTON & FOOTER
+   ========================================== */
+.login-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #534be8;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 8px 20px rgba(83, 75, 232, 0.3);
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #423acb;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(83, 75, 232, 0.4);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+.secure-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+    width: 100%;
+}
+
+.secure-line {
+    flex: 1;
+    height: 1px;
+    background-color: #ececf8;
+}
+
+.secure-text {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #727298;
+}
+
+.secure-text i {
+    color: #534be8;
+    font-size: 13px;
+}
+
+/* ==========================================
+   ANIMATIONS
+   ========================================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 25px 20px;
+    }
+    .school-title {
+        font-size: 24px;
+    }
+    }
+    
