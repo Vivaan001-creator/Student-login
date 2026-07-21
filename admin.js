@@ -366,11 +366,13 @@ async function loadStudent() {
 
 async function loadStudentCount(){
 
-const snapshot=
-await getDocs(collection(db,"students"));
+const box = document.getElementById("studentCount");
 
-document.getElementById("studentCount").textContent=
-snapshot.size;
+if(!box) return;
+
+const snapshot = await getDocs(collection(db,"students"));
+
+box.textContent = snapshot.size;
 
 }
 
@@ -1326,10 +1328,15 @@ showSchoolName();
 
 async function loadTeacherCount(){
 
-const snapshot=
+const box =
+document.getElementById("teacherCount");
+
+if(!box) return;
+
+const snapshot =
 await getDocs(collection(db,"teachers"));
 
-document.getElementById("teacherCount").textContent=
+box.textContent =
 snapshot.size;
 
 }
@@ -1691,10 +1698,15 @@ window.location.pathname.includes(
 
 async function loadResultCount(){
 
-const snapshot=
+const box =
+document.getElementById("resultCount");
+
+if(!box) return;
+
+const snapshot =
 await getDocs(collection(db,"results"));
 
-document.getElementById("resultCount").textContent=
+box.textContent =
 snapshot.size;
 
 }
