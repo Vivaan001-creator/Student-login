@@ -781,7 +781,7 @@ async function loadSchoolStats() {
 
     if (classBox) {
 
-        classBox.textContent = "6";
+        classBox.textContent = "13";
 
     }
 
@@ -792,18 +792,7 @@ async function loadSchoolStats() {
 
     if (publishBox) {
 
-        publishBox.textContent = "0";
-
-    }
-
-    // Pending Results
-
-    const pendingBox =
-        document.getElementById("pendingCount");
-
-    if (pendingBox) {
-
-        pendingBox.textContent = "0";
+        publishBox.textContent = "";
 
     }
 
