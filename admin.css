@@ -2056,10 +2056,10 @@ html, body {
 }
 
 /* ===== Quick Actions ===== */
-.actions-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+.actions-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
 }
 
 .action-item {
@@ -2237,27 +2237,35 @@ html, body {
 }
 
 @media (max-width: 640px) {
+
   .sidebar {
     width: 70px;
   }
-  .nav-item, .logout-icon {
+
+  .nav-item,
+  .logout-icon {
     width: 44px;
     height: 44px;
     font-size: 16px;
   }
+
   .topbar {
     padding: 24px 20px 110px 20px;
   }
+
   .content {
     padding: 0 16px 24px 16px;
   }
+
   .stats-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
+
   .actions-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
+
   .welcome-illustration {
     display: none;
   }
-  }
+}
