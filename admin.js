@@ -1784,3 +1784,19 @@ admin.lastLogin;
 }
 
 loadAdmin();
+
+localStorage.setItem(
+
+"admin",
+
+JSON.stringify({
+
+name:"Administrator",
+
+lastLogin:
+
+new Date().toLocaleString()
+
+})
+
+);
