@@ -56,6 +56,19 @@ function adminLogin() {
 
 window.adminLogin = adminLogin;
 
+const loginForm = document.getElementById("loginForm");
+
+if (loginForm) {
+
+    loginForm.addEventListener("submit", function (e) {
+
+        e.preventDefault();
+
+        adminLogin();
+
+    });
+
+}
 
 // ==========================
 // Dashboard Security
