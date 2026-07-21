@@ -38,15 +38,18 @@ function adminLogin() {
     if (!username || !password) return;
 
     if (
-        username.value.trim() === "admin" &&
-        password.value.trim() === localStorage.getItem("adminPassword")
-    ) {
+    username.value.trim() === "admin" &&
+    password.value.trim() === localStorage.getItem("adminPassword")
+)
+    {
+    alert("Login Success");
 
-        sessionStorage.setItem("adminLoggedIn", "true");
-
-        window.location.href = "dashboard.html";
-
-    } else {
+    sessionStorage.setItem("adminLoggedIn", "true");
+    window.location.href = "dashboard.html";
+    }
+    
+    
+    else {
 
         alert("Invalid Username or Password");
 
