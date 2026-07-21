@@ -24,13 +24,15 @@ if (!localStorage.getItem("adminPassword")) {
     localStorage.setItem("adminPassword", "12345");
 }
 
-
+alert("Calling adminLogin...");
+adminLogin();
 // ==========================
 // Admin Login
 // ==========================
 
 function adminLogin() {
 
+    alert("adminLogin function called");
 
     const username = document.getElementById("username");
     const password = document.getElementById("password");
