@@ -1969,10 +1969,11 @@ html, body {
 }
 
 /* ===== Overview stats ===== */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+    margin-top:20px;
 }
 
 .stat-box {
