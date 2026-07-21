@@ -1812,3 +1812,45 @@ localStorage.removeItem("admin");
 location.href="admin.html";
 
 };
+
+function updateClock(){
+
+const now=new Date();
+
+document.getElementById("liveClock").textContent=
+
+now.toLocaleTimeString();
+
+}
+
+updateClock();
+
+setInterval(updateClock,1000);
+
+function updateGreeting(){
+
+const hour=new Date().getHours();
+
+let text="";
+
+if(hour<12){
+
+text=" Good Morning";
+
+}
+
+else if(hour<17){
+
+text=" Good Afternoon";
+
+}
+
+else{
+
+text=" Good Evening";
+
+}
+
+document.getElementById("greeting").textContent=text;
+
+}
