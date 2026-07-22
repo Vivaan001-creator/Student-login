@@ -51,7 +51,7 @@ async function adminLogin() {
 
         sessionStorage.setItem("adminLoggedIn", "true");
 
-alert(sessionStorage.getItem("adminLoggedIn"));
+
 
         window.location.href = "dashboard.html";
 
@@ -79,7 +79,7 @@ if (loginForm) {
 // ==========================
 // Dashboard Security
 // ==========================
-alert(sessionStorage.getItem("adminLoggedIn"));
+
 const page = location.pathname;
 
 if (
