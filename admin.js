@@ -77,7 +77,7 @@ if (loginForm) {
 // ==========================
 // Dashboard Security
 // ==========================
-(sessionStorage.getItem("adminLoggedIn"));
+alert(sessionStorage.getItem("adminLoggedIn"));
 const page = location.pathname;
 
 if (
