@@ -1722,7 +1722,7 @@ loadResultCount();
 
 
 const btn = document.getElementById("resetBtn");
-alert(btn);
+
 if (btn) {
 
     btn.addEventListener("click", async (e) => {
@@ -1740,7 +1740,7 @@ if (btn) {
         }
 
         try {
-alert("Button Clicked");
+
             await sendPasswordResetEmail(auth, email);
 
             alert("Reset Link Sent Successfully");
