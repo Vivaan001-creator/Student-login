@@ -47,7 +47,7 @@ async function adminLogin() {
 
         await signInWithEmailAndPassword(auth, email, password);
 
-        alert("Firebase Login Success");
+        
 
         sessionStorage.setItem("adminLoggedIn", "true");
 
