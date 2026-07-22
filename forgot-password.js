@@ -47,3 +47,25 @@ alert(error.message);
 });
 
 
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('fpForm');
+  const resetBtn = document.querySelector('.reset-btn');
+
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      resetBtn.classList.add('loading');
+      const span = resetBtn.querySelector('span');
+      const originalText = span.textContent;
+      span.textContent = 'Sending...';
+
+      setTimeout(function () {
+        span.textContent = 'Link Sent!';
+        setTimeout(function () {
+          span.textContent = originalText;
+          resetBtn.classList.remove('loading');
+        }, 1800);
+      }, 1400);
+    });
+  }
+});
