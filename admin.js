@@ -35,23 +35,29 @@ alert("admin.js Loaded");
 
 async function adminLogin() {
 
-const email = document.getElementById("username").value.trim();
+    alert("Login Function Called");
 
-const password = document.getElementById("password").value.trim();
+    const email = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-try{
+    alert(email);
 
-await signInWithEmailAndPassword(auth,email,password);
+    try {
 
-sessionStorage.setItem("adminLoggedIn","true");
+        await signInWithEmailAndPassword(auth, email, password);
 
-window.location.href="dashboard.html";
+        alert("Firebase Login Success");
 
-}catch(error){
+        sessionStorage.setItem("adminLoggedIn", "true");
 
-alert(error.message);
+        window.location.href = "dashboard.html";
 
-}
+    } catch (error) {
+
+        alert(error.code);
+        alert(error.message);
+
+    }
 
 }
 
