@@ -1,3 +1,9 @@
+import { auth } from "./Firebase.js";
+
+import {
+  signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
 import { db, storage } from "./Firebase.js";
 
 import {
@@ -20,35 +26,49 @@ import {
 // Default Admin Password
 // ==========================
 
-if (!localStorage.getItem("adminPassword")) {
-    localStorage.setItem("adminPassword", "12345");
-}
 
 
 // ==========================
 // Admin Login
 // ==========================
 
-function adminLogin() {
+async function adminLogin() {
 
+    const email =
+    document.getElementById("username").value.trim();
 
-    const username = document.getElementById("username");
-    const password = document.getElementById("password");
+    const password =
+    document.getElementById("password").value.trim();
 
-    if (!username || !password) return;
+    if (!email || !password) {
 
-    if (
-        username.value.trim() === "admin" &&
-        password.value.trim() === localStorage.getItem("adminPassword")
-    ) {
+        alert("Please enter Email and Password.");
 
-        sessionStorage.setItem("adminLoggedIn", "true");
+        return;
 
-        window.location.href = "dashboard.html";
+    }
 
-    } else {
+    try {
 
-        alert("Invalid Username or Password");
+        await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
+
+        sessionStorage.setItem(
+            "adminLoggedIn",
+            "true"
+        );
+
+        window.location.href =
+        "dashboard.html";
+
+    }
+
+    catch (error) {
+
+        alert(error.message);
 
     }
 
