@@ -1778,7 +1778,3 @@ snapshot.size;
 loadResultCount();
 
 
-document.getElementById("studentCount").textContent = students.length;
-document.getElementById("teacherCount").textContent = teachers.length;
-document.getElementById("classCount").textContent = classes.length;
-document.getElementById("resultCount").textContent = results.length;
