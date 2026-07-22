@@ -1,3 +1,17 @@
+import {
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut,
+    setPersistence,
+    browserLocalPersistence,
+    browserSessionPersistence
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
 import { auth } from "./Firebase.js";
 
 import {
@@ -40,6 +54,9 @@ async function adminLogin() {
     const password =
     document.getElementById("password").value.trim();
 
+const remember =
+document.getElementById("remember").checked;
+  
     if (!email || !password) {
 
         alert("Please enter Email and Password.");
@@ -49,6 +66,16 @@ async function adminLogin() {
     }
 
     try {
+
+      await setPersistence(
+
+    auth,
+
+    remember
+        ? browserLocalPersistence
+        : browserSessionPersistence
+
+);
 
         await signInWithEmailAndPassword(
             auth,
@@ -94,44 +121,72 @@ if (loginForm) {
 // Dashboard Security
 // ==========================
 
-const page = location.pathname;
+const protectedPages = [
 
-if (
-    page.includes("dashboard.html") ||
-    page.includes("students.html") ||
-    page.includes("edit-student.html") ||
-    page.includes("change-password.html") ||
-    page.includes("teachers.html") ||
-page.includes("add-teacher.html") ||
-page.includes("edit-teacher.html") ||
-page.includes("teacher-profile.html") ||
-page.includes("school-profile.html")
-) {
+"dashboard.html",
 
-    if (sessionStorage.getItem("adminLoggedIn") !== "true") {
+"students.html",
 
-        window.location.replace("admin.html");
+"edit-student.html",
 
-    }
+"teachers.html",
+
+"add-teacher.html",
+
+"edit-teacher.html",
+
+"teacher-profile.html",
+
+"school-profile.html",
+
+"change-password.html"
+
+];
+
+const currentPage =
+location.pathname.split("/").pop();
+
+if(protectedPages.includes(currentPage)){
+
+onAuthStateChanged(auth,(user)=>{
+
+if(user){
+
+console.log("Admin Logged In");
+
+}else{
+
+window.location.replace("admin.html");
 
 }
 
+});
+
+}
 
 // ==========================
 // Logout
 // ==========================
 
-function adminLogout() {
+async function adminLogout(){
 
+try{
 
-    sessionStorage.clear();
+await signOut(auth);
 
-    window.location.replace("admin.html");
+window.location.replace("admin.html");
+
+}
+
+catch(error){
+
+alert(error.message);
+
+}
 
 }
 
 window.adminLogout = adminLogout;
-
 
 // ==========================
 // Console Test
