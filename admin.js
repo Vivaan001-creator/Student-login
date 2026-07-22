@@ -1727,7 +1727,7 @@ if (btn) {
             .trim();
 
         if (!email) {
-            alert("Please enter your registered email.");
+            alert("Enter Email");
             return;
         }
 
@@ -1735,29 +1735,13 @@ if (btn) {
 
             await sendPasswordResetEmail(auth, email);
 
-            alert("Password Reset Link Sent Successfully.");
+            alert("Reset Link Sent Successfully");
 
-        }
+        } catch (error) {
 
-        catch (error) {
+            console.log(error);
 
-            console.log(error.code);
-
-            if (error.code === "auth/user-not-found") {
-
-                alert("No account found with this email.");
-
-            }
-            else if (error.code === "auth/invalid-email") {
-
-                alert("Invalid Email Address.");
-
-            }
-            else {
-
-                alert(error.message);
-
-            }
+            alert(error.code);
 
         }
 
