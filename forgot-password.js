@@ -11,17 +11,6 @@ document.getElementById("email");
 const sendBtn =
 document.getElementById("sendCodeBtn");
 
-sendBtn.addEventListener("click", async () => {
-
-const email = emailInput.value.trim();
-
-if(email===""){
-alert("Please enter email.");
-return;
-}
-
-});
-
 
 sendBtn.addEventListener("click", async () => {
 
