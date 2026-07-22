@@ -47,9 +47,11 @@ async function adminLogin() {
 
         await signInWithEmailAndPassword(auth, email, password);
 
-        sessionStorage.setItem("adminLoggedIn", "true");
+        sessionStorage.setItem("adminLoggedIn","true");
 
-        window.location.href = "dashboard.html";
+alert(sessionStorage.getItem("adminLoggedIn"));
+
+window.location.href="dashboard.html";
 
     } catch (error) {
 
@@ -75,11 +77,11 @@ if (loginForm) {
 // ==========================
 // Dashboard Security
 // ==========================
-
+(sessionStorage.getItem("adminLoggedIn"));
 const page = location.pathname;
 
 if (
-if (
+
     page.includes("dashboard.html") ||
     page.includes("students.html") ||
     page.includes("edit-student.html") ||
