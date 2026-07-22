@@ -5,39 +5,36 @@ sendPasswordResetEmail
 }
 from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-const emailInput =
-document.getElementById("email");
 
-const sendBtn =
-document.getElementById("sendCodeBtn");
 
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('fpForm');
-  const resetBtn = document.querySelector('.reset-btn');
+document.addEventListener("DOMContentLoaded", async () => {
 
-  if (form) {
-  form.addEventListener("submit", async function(e){
+    const form = document.getElementById("fpForm");
+    const emailInput = document.getElementById("email");
 
-    e.preventDefault();
+    form.addEventListener("submit", async (e) => {
 
-    const email = emailInput.value.trim();
+        e.preventDefault();
 
-    if(email===""){
-      alert("Please enter email");
-      return;
-    }
+        const email = emailInput.value.trim();
 
-    try{
+        if (!email) {
+            alert("Please enter your email.");
+            return;
+        }
 
-      await sendPasswordResetEmail(auth,email);
+        try {
 
-      alert("Reset link sent successfully.");
+            await sendPasswordResetEmail(auth, email);
 
-    }catch(error){
+            alert("Password reset link sent successfully.");
 
-      alert(error.message);
+        } catch (error) {
 
-    }
+            alert(error.code + "\n" + error.message);
 
-  });
-  }
+        }
+
+    });
+
+});
