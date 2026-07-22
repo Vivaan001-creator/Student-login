@@ -41,20 +41,30 @@ document.addEventListener('DOMContentLoaded', function () {
   const resetBtn = document.querySelector('.reset-btn');
 
   if (form) {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      resetBtn.classList.add('loading');
-      const span = resetBtn.querySelector('span');
-      const originalText = span.textContent;
-      span.textContent = 'Sending...';
-sendPasswordResetEmail()
-      setTimeout(function () {
-        span.textContent = 'Link Sent!';
-        setTimeout(function () {
-          span.textContent = originalText;
-          resetBtn.classList.remove('loading');
-        }, 1800);
-      }, 1400);
-    });
-  }
+    form.addEventListener("submit", async function(e){
+
+e.preventDefault();
+
+const email = emailInput.value.trim();
+
+if(email===""){
+alert("Please enter email");
+return;
+}
+
+try{
+
+await sendPasswordResetEmail(auth,email);
+
+alert("Reset link sent successfully.");
+
+}catch(error){
+
+alert(error.message);
+
+}
+
 });
+  }
+}
+                                                                           
