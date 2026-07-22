@@ -61,6 +61,18 @@ async function adminLogin() {
 
 }
 
+window.adminLogin = adminLogin;
+
+const loginForm = document.getElementById("loginForm");
+
+if (loginForm) {
+    loginForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        await adminLogin();
+    });
+}
+
+
 // ==========================
 // Dashboard Security
 // ==========================
