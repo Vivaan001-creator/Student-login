@@ -1,4 +1,4 @@
-import { db, storage } from "./Firebase.js";
+import { db, storage, auth } from "./Firebase.js";
 
 import {
   doc,
@@ -16,9 +16,9 @@ import {
   getDownloadURL
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
 
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-
-const auth = getAuth();
+import {
+    sendPasswordResetEmail
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 // ==========================
 // Default Admin Password
@@ -1713,23 +1713,54 @@ document.getElementById("classCount").textContent = classes.length;
 document.getElementById("resultCount").textContent = results.length;
 
 
-const btn=document.getElementById("resetBtn");
-btn.onclick=()=>{
+const btn = document.getElementById("resetBtn");
 
-const email=document.getElementById("resetEmail").value;
+if (btn) {
 
-sendPasswordResetEmail(auth,email)
+    btn.addEventListener("click", async (e) => {
 
-.then(()=>{
+        e.preventDefault();
 
-alert("Reset link sent");
+        const email = document
+            .getElementById("resetEmail")
+            .value
+            .trim();
 
-})
+        if (!email) {
+            alert("Please enter your registered email.");
+            return;
+        }
 
-.catch((error)=>{
+        try {
 
-alert(error.message);
+            await sendPasswordResetEmail(auth, email);
 
-});
+            alert("Password Reset Link Sent Successfully.");
+
+        }
+
+        catch (error) {
+
+            console.log(error.code);
+
+            if (error.code === "auth/user-not-found") {
+
+                alert("No account found with this email.");
+
+            }
+            else if (error.code === "auth/invalid-email") {
+
+                alert("Invalid Email Address.");
+
+            }
+            else {
+
+                alert(error.message);
+
+            }
+
+        }
+
+    });
 
 }
