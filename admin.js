@@ -79,6 +79,7 @@ if (loginForm) {
 const page = location.pathname;
 
 if (
+if (
     page.includes("dashboard.html") ||
     page.includes("students.html") ||
     page.includes("edit-student.html") ||
@@ -90,16 +91,11 @@ if (
     page.includes("school-profile.html")
 ) {
 
-    if (
-sessionStorage.getItem("adminLoggedIn") !== "true" ||
-!auth.currentUser
-){
-    window.location.replace("admin.html");
+    if (sessionStorage.getItem("adminLoggedIn") !== "true") {
+        window.location.replace("admin.html");
     }
-    
 
 }
-
 
 // ==========================
 // Logout
