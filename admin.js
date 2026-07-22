@@ -49,10 +49,6 @@ async function adminLogin() {
 
         
 
-        sessionStorage.setItem("adminLoggedIn", "true");
-
-
-
         window.location.href = "dashboard.html";
 
     } catch (error) {
