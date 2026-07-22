@@ -16,6 +16,10 @@ import {
   getDownloadURL
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
 
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+
+const auth = getAuth();
+
 // ==========================
 // Default Admin Password
 // ==========================
@@ -1707,3 +1711,25 @@ document.getElementById("studentCount").textContent = students.length;
 document.getElementById("teacherCount").textContent = teachers.length;
 document.getElementById("classCount").textContent = classes.length;
 document.getElementById("resultCount").textContent = results.length;
+
+
+const btn=document.getElementById("resetBtn");
+btn.onclick=()=>{
+
+const email=document.getElementById("resetEmail").value;
+
+sendPasswordResetEmail(auth,email)
+
+.then(()=>{
+
+alert("Reset link sent");
+
+})
+
+.catch((error)=>{
+
+alert(error.message);
+
+});
+
+}
