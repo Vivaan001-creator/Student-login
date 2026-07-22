@@ -33,7 +33,7 @@ import {
 // ==========================
 // Admin Login
 // ==========================
-alert(sessionStorage.getItem("adminLoggedIn"));
+
 async function adminLogin() {
 
     
@@ -49,7 +49,6 @@ async function adminLogin() {
 
         sessionStorage.setItem("adminLoggedIn","true");
 
-(sessionStorage.getItem("adminLoggedIn"));
 
 window.location.href="dashboard.html";
 
