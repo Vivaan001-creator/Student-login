@@ -41,7 +41,7 @@ async function adminLogin() {
     const email = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
 
-    alert(email);
+    
 
     try {
 
@@ -49,7 +49,7 @@ async function adminLogin() {
 
         sessionStorage.setItem("adminLoggedIn","true");
 
-alert(sessionStorage.getItem("adminLoggedIn"));
+(sessionStorage.getItem("adminLoggedIn"));
 
 window.location.href="dashboard.html";
 
@@ -77,7 +77,7 @@ if (loginForm) {
 // ==========================
 // Dashboard Security
 // ==========================
-alert(sessionStorage.getItem("adminLoggedIn"));
+
 const page = location.pathname;
 
 if (
