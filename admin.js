@@ -51,6 +51,8 @@ async function adminLogin() {
 
         sessionStorage.setItem("adminLoggedIn", "true");
 
+alert(sessionStorage.getItem("adminLoggedIn"));
+
         window.location.href = "dashboard.html";
 
     } catch (error) {
@@ -77,7 +79,7 @@ if (loginForm) {
 // ==========================
 // Dashboard Security
 // ==========================
-
+alert(sessionStorage.getItem("adminLoggedIn"));
 const page = location.pathname;
 
 if (
@@ -86,21 +88,16 @@ if (
     page.includes("edit-student.html") ||
     page.includes("change-password.html") ||
     page.includes("teachers.html") ||
-page.includes("add-teacher.html") ||
-page.includes("edit-teacher.html") ||
-page.includes("teacher-profile.html") ||
-page.includes("school-profile.html")
-) 
+    page.includes("add-teacher.html") ||
+    page.includes("edit-teacher.html") ||
+    page.includes("teacher-profile.html") ||
+    page.includes("school-profile.html")
+) {
 
+    if (sessionStorage.getItem("adminLoggedIn") !== "true") {
+        window.location.replace("admin.html");
+    }
 
-{
-
- if (
-sessionStorage.getItem("adminLoggedIn") !== "true" ||
-!auth.currentUser
-){
-    window.location.replace("admin.html");
- }
 }
 
 
