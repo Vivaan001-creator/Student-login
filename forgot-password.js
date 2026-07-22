@@ -1,5 +1,5 @@
 alert("forgot-password.js loaded");
-import { auth } from "./firebase.js";
+import { auth } from "./Firebase.js";
 
 import {
 sendPasswordResetEmail
