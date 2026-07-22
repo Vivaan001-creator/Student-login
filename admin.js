@@ -1707,44 +1707,15 @@ snapshot.size;
 loadResultCount();
 
 
-document.getElementById("studentCount").textContent = students.length;
-document.getElementById("teacherCount").textContent = teachers.length;
-document.getElementById("classCount").textContent = classes.length;
-document.getElementById("resultCount").textContent = results.length;
-
-
 const btn = document.getElementById("resetBtn");
 
-if (btn) {
+if(btn){
 
-    btn.addEventListener("click", async (e) => {
+console.log("Button Found");
 
-        e.preventDefault();
+btn.addEventListener("click",async()=>{
 
-        const email = document
-            .getElementById("resetEmail")
-            .value
-            .trim();
+console.log("Button Clicked");
 
-        if (!email) {
-            alert("Enter Email");
-            return;
-        }
-
-        try {
-
-            await sendPasswordResetEmail(auth, email);
-
-            alert("Reset Link Sent Successfully");
-
-        } catch (error) {
-
-            console.log(error);
-
-            alert(error.code);
-
-        }
-
-    });
-
+});
 }
