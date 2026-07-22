@@ -11,60 +11,33 @@ document.getElementById("email");
 const sendBtn =
 document.getElementById("sendCodeBtn");
 
-
-sendBtn.addEventListener("click", async () => {
-
-const email = emailInput.value.trim();
-
-if(email===""){
-alert("Please enter email.");
-return;
-}
-
-try{
-
-await sendPasswordResetEmail(auth,email);
-
-alert("Password reset link sent successfully.");
-
-}catch(error){
-
-alert(error.message);
-
-}
-
-});
-
-
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('fpForm');
   const resetBtn = document.querySelector('.reset-btn');
 
   if (form) {
-    form.addEventListener("submit", async function(e){
+  form.addEventListener("submit", async function(e){
 
-e.preventDefault();
+    e.preventDefault();
 
-const email = emailInput.value.trim();
+    const email = emailInput.value.trim();
 
-if(email===""){
-alert("Please enter email");
-return;
-}
+    if(email===""){
+      alert("Please enter email");
+      return;
+    }
 
-try{
+    try{
 
-await sendPasswordResetEmail(auth,email);
+      await sendPasswordResetEmail(auth,email);
 
-alert("Reset link sent successfully.");
+      alert("Reset link sent successfully.");
 
-}catch(error){
+    }catch(error){
 
-alert(error.message);
+      alert(error.message);
 
-}
+    }
 
-});
+  });
   }
-}
-                                                                           
