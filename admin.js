@@ -90,9 +90,13 @@ if (
     page.includes("school-profile.html")
 ) {
 
-    if (sessionStorage.getItem("adminLoggedIn") !== "true") {
-        window.location.replace("admin.html");
+    if (
+sessionStorage.getItem("adminLoggedIn") !== "true" ||
+!auth.currentUser
+){
+    window.location.replace("admin.html");
     }
+    
 
 }
 
