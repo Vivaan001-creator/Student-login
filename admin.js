@@ -1,7 +1,8 @@
 import { db, storage, auth } from "./Firebase.js";
 
 import {
-signInWithEmailAndPassword
+signInWithEmailAndPassword,
+signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
@@ -35,7 +36,7 @@ alert("admin.js Loaded");
 
 async function adminLogin() {
 
-    alert("Login Function Called");
+    
 
     const email = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
@@ -104,12 +105,24 @@ page.includes("school-profile.html")
 // Logout
 // ==========================
 
-function adminLogout() {
+async function adminLogout() {
 
+    try {
 
-    sessionStorage.clear();
+        await signOut(auth);
 
-    window.location.replace("admin.html");
+        sessionStorage.clear();
+        localStorage.removeItem("editRoll");
+        localStorage.removeItem("editTeacherId");
+        localStorage.removeItem("profileTeacherId");
+
+        window.location.replace("admin.html");
+
+    } catch (error) {
+
+        alert(error.message);
+
+    }
 
 }
 
@@ -120,7 +133,6 @@ window.adminLogout = adminLogout;
 // Console Test
 // ==========================
 
-console.log("admin.js Loaded Successfully");
 
 
 // ==========================
