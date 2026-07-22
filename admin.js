@@ -47,7 +47,7 @@ async function adminLogin() {
 
         await signInWithEmailAndPassword(auth, email, password);
 
-        
+        sessionStorage.setItem("adminLoggedIn", "true");
 
         window.location.href = "dashboard.html";
 
