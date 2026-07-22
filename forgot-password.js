@@ -1,3 +1,4 @@
+alert("forgot-password.js loaded");
 import { auth } from "./firebase.js";
 
 import {
