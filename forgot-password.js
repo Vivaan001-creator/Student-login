@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const span = resetBtn.querySelector('span');
       const originalText = span.textContent;
       span.textContent = 'Sending...';
-
+sendPasswordResetEmail()
       setTimeout(function () {
         span.textContent = 'Link Sent!';
         setTimeout(function () {
