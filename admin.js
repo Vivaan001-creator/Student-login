@@ -676,26 +676,63 @@ window.addStudent = addStudent;
 // ===== UI-only helpers (do not touch Firebase logic above) =====
 document.addEventListener('DOMContentLoaded', function () {
 
-  // Sidebar "Students" submenu toggle
-  const studentsToggle = document.getElementById('studentsToggle');
-  const studentsSubmenu = document.getElementById('studentsSubmenu');
+  // ===== Sidebar collapse / expand (hamburger drawer) =====
+  const sidebar = document.getElementById('sidebar');
+  const menuToggle = document.getElementById('menuToggle');
+  const sidebarBackdrop = document.getElementById('sidebarBackdrop');
 
-  if (studentsToggle && studentsSubmenu) {
-    studentsToggle.addEventListener('click', function () {
-      studentsToggle.classList.toggle('expanded');
-      studentsSubmenu.classList.toggle('collapsed');
-      const chevron = studentsToggle.querySelector('.chevron');
-      chevron.style.transform = studentsSubmenu.classList.contains('collapsed')
-        ? 'rotate(180deg)'
-        : 'rotate(0deg)';
+  function closeSidebar() {
+    if (sidebar) sidebar.classList.remove('expanded');
+    if (sidebarBackdrop) sidebarBackdrop.classList.remove('active');
+  }
+
+  if (menuToggle && sidebar) {
+    menuToggle.addEventListener('click', function () {
+      sidebar.classList.toggle('expanded');
+      if (sidebarBackdrop) sidebarBackdrop.classList.toggle('active');
     });
   }
 
-  
+  if (sidebarBackdrop) {
+    sidebarBackdrop.addEventListener('click', closeSidebar);
+  }
 
-  // Cancel button resets the form
+  // ===== Sidebar submenu toggles (Students, Teachers, or any future group) =====
+  // Works for any number of .nav-parent buttons, each paired with the
+  // .submenu that immediately follows it in the markup.
+  document.querySelectorAll('.nav-parent').forEach(function (toggleBtn) {
+    const submenu = toggleBtn.nextElementSibling;
+    if (!submenu || !submenu.classList.contains('submenu')) return;
+
+    toggleBtn.addEventListener('click', function () {
+      toggleBtn.classList.toggle('expanded');
+      submenu.classList.toggle('collapsed');
+      const chevron = toggleBtn.querySelector('.chevron');
+      if (chevron) {
+        chevron.style.transform = submenu.classList.contains('collapsed')
+          ? 'rotate(180deg)'
+          : 'rotate(0deg)';
+      }
+    });
+  });
+
+  // ===== Add Student page: photo upload preview =====
+  const photoUpload = document.getElementById('photoUpload');
+  const uploadFilename = document.getElementById('uploadFilename');
+
+  if (photoUpload && uploadFilename) {
+    photoUpload.addEventListener('change', function () {
+      if (photoUpload.files && photoUpload.files[0]) {
+        uploadFilename.textContent = 'Selected: ' + photoUpload.files[0].name;
+      } else {
+        uploadFilename.textContent = '';
+      }
+    });
+  }
+
+  // ===== Cancel button resets the form (Add Student page) =====
   const form = document.getElementById('studentForm');
-  const cancelBtn = document.querySelector('.btn-secondary');
+  const cancelBtn = form ? form.querySelector('.btn-secondary') : null;
   if (cancelBtn && form) {
     cancelBtn.addEventListener('click', function () {
       form.reset();
@@ -1025,6 +1062,8 @@ ${teacher.status}
     });
 
 }
+
+
 // ==========================
 // View Teacher
 // ==========================
