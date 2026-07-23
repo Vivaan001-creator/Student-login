@@ -3487,41 +3487,8 @@ button { cursor: pointer; }
    does not shift), with a dimmed backdrop behind it.
    ========================================================= */
 
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 76px;
-  background: #12112b;
-  display: flex;
-  flex-direction: column;
-  padding: 14px 10px 18px 10px;
-  z-index: 200;
-  overflow-x: hidden;
-  overflow-y: auto;
-  transition: width 0.32s cubic-bezier(0.22, 1, 0.36, 1);
-}
 
-.sidebar.expanded {
-  width: 272px;
-  box-shadow: 16px 0 46px rgba(10, 8, 30, 0.35);
-}
 
-.sidebar-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(10, 8, 25, 0.35);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 190;
-  transition: opacity 0.3s ease;
-}
-
-.sidebar-backdrop.active {
-  opacity: 1;
-  pointer-events: auto;
-}
 
 /* Hamburger toggle — pinned at the very top of the sidebar */
 .menu-toggle {
@@ -3545,7 +3512,7 @@ button { cursor: pointer; }
 }
 
 .sidebar.expanded .menu-toggle {
-  transform: rotate(90deg);
+  transform: rotate(0deg);
 }
 
 /* Brand */
@@ -3759,16 +3726,16 @@ button { cursor: pointer; }
    Scoped under .dashboard-hero so it can never collide with
    the plain inner-page .topbar used on other admin pages.
    ========================================================= */
-
 .dashboard-hero {
   position: relative;
-  background: linear-gradient(120deg, #5f5be0 0%, #7c6ff0 55%, #8b7bf5 100%);
-  padding: 34px 40px 130px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  min-height: 200px;
+  padding: 30px 40px 60px 40px; /* Extra bottom padding so it doesn't overlap */
+  background: linear-gradient(135deg, #6a5ff0 0%, #8378f5 100%);
+  border-radius: 0 0 24px 24px;
+  color: #ffffff;
   overflow: hidden;
 }
+
 
 .dashboard-hero .topbar-left {
   position: relative;
@@ -3877,12 +3844,12 @@ button { cursor: pointer; }
 }
 
 /* ===== Dashboard content ===== */
+/* Main Content Spacing */
 .content {
-  flex: 1;
-  padding: 30px 32px 40px 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+  padding: 30px;
+  margin-top: 0; /* Ensure content starts right after hero/header */
+  position: relative;
+  z-index: 2;
 }
 
 /* Dashboard-only: pull the first card up so it overlaps the
@@ -3892,13 +3859,13 @@ button { cursor: pointer; }
   margin-top: -95px;
 }
 
-.card {
+/* Overview Card adjustment */
+.overview-card {
+  margin-top: -30px; /* Clean overlay effect without blocking hero header text */
   background: #ffffff;
-  border-radius: 22px;
-  padding: 30px 32px;
-  box-shadow: 0 10px 30px rgba(30, 30, 80, 0.06);
-  opacity: 0;
-  animation: fadeInUp 0.6s ease forwards;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(106, 95, 240, 0.08);
 }
 
 .overview-card { animation-delay: 0.05s; }
