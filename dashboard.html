@@ -14,75 +14,39 @@
 <div class="app">
 
   
+
 <!-- Sidebar -->
   <aside class="sidebar">
-    <div class="sidebar-brand">
-      <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-      <div class="brand-text">
-        <h1><span class="accent">Modern</span></h1>
-        <p>International School</p>
-      </div>
-    </div>
+    <button class="sidebar-toggle" aria-label="Toggle Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
 
     <nav class="sidebar-nav">
-      <a href="dashboard.html" class="nav-link">
-        <i class="fa-solid fa-house"></i> Dashboard
+      <a href="dashboard.html" class="nav-item active" title="Dashboard">
+        <i class="fa-solid fa-table-cells"></i>
       </a>
-      <a href="#" class="nav-link">
-        <i class="fa-solid fa-chalkboard"></i> My Classes
+      <a href="teacher-profile.html" class="nav-item" title="Profile">
+        <i class="fa-regular fa-user"></i>
       </a>
-
-      <button class="nav-link nav-parent expanded" id="studentsToggle">
-        <i class="fa-solid fa-user-group"></i> Students
-        <i class="fa-solid fa-chevron-up chevron"></i>
-      </button>
-      <div class="submenu" id="studentsSubmenu">
-        <a href="students.html" class="sub-link">
-          <i class="fa-regular fa-user"></i> All Students
-        </a>
-        <a href="add-student.html" class="sub-link active">
-          <i class="fa-solid fa-circle-plus"></i> Add Student
-        </a>
-      </div>
-
-<button class="nav-link nav-parent expanded" id="teachersToggle">
-        <i class="fa-solid fa-user-group"></i> Teachers
-        <i class="fa-solid fa-chevron-up chevron"></i>
-      </button>
-      <div class="submenu" id="teachersSubmenu">
-        <a href="teachers.html" class="sub-link">
-          <i class="fa-regular fa-user"></i> All Teachers
-        </a>
-        <a href="add-teacher.html" class="sub-link active">
-          <i class="fa-solid fa-circle-plus"></i> Add Teacher
-        </a>
-      </div>
-
-      <a href="#" class="nav-link">
-        <i class="fa-regular fa-square-check"></i> Attendance
+      <a href="students.html" class="nav-item" title="Library">
+        <i class="fa-solid fa-book-open"></i>
       </a>
-      <a href="#" class="nav-link">
-        <i class="fa-solid fa-file-lines"></i> Assignments
+      <a href="marks-management.html" class="nav-item" title="Academics">
+        <i class="fa-solid fa-graduation-cap"></i>
       </a>
-      <a href="#" class="nav-link">
-        <i class="fa-solid fa-file-pen"></i> Exams
+      <a href="publish-result.html" class="nav-item" title="Analytics">
+        <i class="fa-solid fa-chart-line"></i>
       </a>
-      <a href="#" class="nav-link">
-        <i class="fa-solid fa-chart-column"></i> Results
+      <a href="school-profile.html" class="nav-item" title="Institution">
+        <i class="fa-solid fa-building-columns"></i>
       </a>
-      <a href="#" class="nav-link">
-        <i class="fa-regular fa-envelope"></i> Messages
-      </a>
-      <a href="school-profile.html" class="nav-link">
-        <i class="fa-regular fa-user"></i> School Profile
-      </a>
-      <a href="change-password.html" class="nav-link">
-        <i class="fa-solid fa-gear"></i> Settings
+      <a href="change-password.html" class="nav-item" title="Settings">
+        <i class="fa-solid fa-gear"></i>
       </a>
     </nav>
 
-    <a href="admin.html" class="logout-link">
-      <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+<a href="#" onclick="adminLogout()" class="nav-item logout-icon" title="Logout">
+      <i class="fa-solid fa-power-off"></i>
     </a>
   </aside>
 
