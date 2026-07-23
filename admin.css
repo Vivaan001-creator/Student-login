@@ -3486,7 +3486,52 @@ button { cursor: pointer; }
    labeled drawer that OVERLAPS the page (page underneath
    does not shift), with a dimmed backdrop behind it.
    ========================================================= */
+/* ==========================================
+   1. FIXED SIDEBAR & COLLAPSED ICONS
+   ========================================== */
+.sidebar {
+  width: 260px;
+  transition: width 0.3s ease, transform 0.3s ease;
+  overflow-x: hidden;
+  /* Sidebar padding & alignment setup */
+}
 
+/* Jab Sidebar Collapsed / Closed Ho */
+.sidebar.collapsed {
+  width: 80px; /* Collapsed state me sirf icons ki jagah */
+}
+
+/* Sidebar links jab closed ho */
+.sidebar.collapsed .sidebar-brand .brand-text,
+.sidebar.collapsed .link-text,
+.sidebar.collapsed .chevron,
+.sidebar.collapsed .submenu {
+  display: none !important; /* Text aur dropdown arrows ko chupayein */
+}
+
+/* Collapsed Sidebar me Icons center aur clean dikhenge */
+.sidebar.collapsed .nav-link,
+.sidebar.collapsed .nav-parent,
+.sidebar.collapsed .logout-link {
+  justify-content: center;
+  padding: 14px 0;
+  width: 100%;
+}
+
+.sidebar.collapsed .nav-link i,
+.sidebar.collapsed .nav-parent i,
+.sidebar.collapsed .logout-link i {
+  font-size: 20px;
+  margin-right: 0 !important;
+  display: inline-block;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Adjust Main content area based on sidebar state */
+.sidebar.collapsed ~ .main {
+  margin-left: 80px;
+}
 
 
 
