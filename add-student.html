@@ -13,6 +13,64 @@
 
 <div class="app">
 
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+      <div class="brand-text">
+        <h1><span class="accent">Modern</span></h1>
+        <p>International School</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-link">
+        <i class="fa-solid fa-house"></i> Dashboard
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-solid fa-chalkboard"></i> My Classes
+      </a>
+
+      <button class="nav-link nav-parent expanded" id="studentsToggle">
+        <i class="fa-solid fa-user-group"></i> Students
+        <i class="fa-solid fa-chevron-up chevron"></i>
+      </button>
+      <div class="submenu" id="studentsSubmenu">
+        <a href="#" class="sub-link">
+          <i class="fa-regular fa-user"></i> All Students
+        </a>
+        <a href="add-student.html" class="sub-link active">
+          <i class="fa-solid fa-circle-plus"></i> Add Student
+        </a>
+      </div>
+
+      <a href="#" class="nav-link">
+        <i class="fa-regular fa-square-check"></i> Attendance
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-solid fa-file-lines"></i> Assignments
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-solid fa-file-pen"></i> Exams
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-solid fa-chart-column"></i> Results
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-regular fa-envelope"></i> Messages
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-regular fa-user"></i> Profile
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-solid fa-gear"></i> Settings
+      </a>
+    </nav>
+
+    <a href="admin.html" class="logout-link">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+    </a>
+  </aside>
 
   <!-- Main -->
   <div class="main">
@@ -76,7 +134,7 @@
               <label>Roll Number <span class="required">*</span></label>
               <div class="input-wrap">
                 <i class="fa-solid fa-id-badge input-icon"></i>
-                <input type="text" placeholder="Enter roll number">
+                <input type="text" id="roll" placeholder="Enter roll number">
               </div>
             </div>
 
@@ -84,7 +142,7 @@
               <label>Student Name <span class="required">*</span></label>
               <div class="input-wrap">
                 <i class="fa-regular fa-user input-icon"></i>
-                <input type="text" placeholder="Enter student name">
+                <input type="text" id="studentName" placeholder="Enter student name">
               </div>
             </div>
 
@@ -92,7 +150,7 @@
               <label>Father Name <span class="required">*</span></label>
               <div class="input-wrap">
                 <i class="fa-regular fa-user input-icon"></i>
-                <input type="text" placeholder="Enter father's name">
+                <input type="text" id="fatherName" placeholder="Enter father's name">
               </div>
             </div>
 
@@ -107,13 +165,21 @@
             <div class="field">
               <label>Class <span class="required">*</span></label>
               <div class="input-wrap select-wrap">
-                <select>
+                <select id="studentClass">
                   <option value="" disabled selected>Select class</option>
+                  <option>Nursery</option>
+                  <option>L.K.G</option>
+                  <option>U.K.G</option>
                   <option>Class 1</option>
                   <option>Class 2</option>
                   <option>Class 3</option>
                   <option>Class 4</option>
                   <option>Class 5</option>
+                  <option>Class 6</option>
+                  <option>Class 7</option>
+                  <option>Class 8</option>
+                  <option>Class 9</option>
+                  <option>Class 10</option>
                 </select>
                 <i class="fa-solid fa-chevron-down select-icon"></i>
               </div>
@@ -187,10 +253,14 @@
               </div>
             </div>
 
+
+
           </div>
 
+          <input type="hidden" id="attendance" value="0">
+
           <div class="form-actions">
-            <button type="submit" class="btn-primary">
+            <button type="button" class="btn-primary" onclick="addStudent()">
               <i class="fa-regular fa-floppy-disk"></i> Save Student
             </button>
             <button type="button" class="btn-secondary">
@@ -212,4 +282,7 @@
 src="admin.js"></script>
 </body>
   </html>
+  
+
+
         
