@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern International School - Admin Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+      <div class="brand-text">
+        <h1><span class="accent">Modern</span></h1>
+        <p>International School</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-link active">
+        <i class="fa-solid fa-house"></i>
+        <span class="link-text">Dashboard</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-solid fa-chalkboard"></i>
+        <span class="link-text">My Classes</span>
+      </a>
+
+      <button class="nav-parent" id="studentsToggle">
+        <i class="fa-solid fa-user-group"></i>
+        <span class="link-text">Students</span>
+        <i class="fa-solid fa-chevron-down chevron"></i>
+      </button>
+      <div class="submenu collapsed" id="studentsSubmenu">
+        <a href="students.html" class="sub-link">
+          <i class="fa-regular fa-user"></i> All Students
+        </a>
+        <a href="add-student.html" class="sub-link">
+          <i class="fa-solid fa-circle-plus"></i> Add Student
+        </a>
+      </div>
+
+      <button class="nav-parent" id="teachersToggle">
+        <i class="fa-solid fa-chalkboard-user"></i>
+        <span class="link-text">Teachers</span>
+        <i class="fa-solid fa-chevron-down chevron"></i>
+      </button>
+      <div class="submenu collapsed" id="teachersSubmenu">
+        <a href="teachers.html" class="sub-link">
+          <i class="fa-regular fa-user"></i> All Teachers
+        </a>
+        <a href="add-teacher.html" class="sub-link">
+          <i class="fa-solid fa-circle-plus"></i> Add Teacher
+        </a>
+      </div>
+
+      <a href="#" class="nav-link">
+        <i class="fa-regular fa-square-check"></i>
+        <span class="link-text">Attendance</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-solid fa-file-lines"></i>
+        <span class="link-text">Assignments</span>
+      </a>
+      <a href="marks-management.html" class="nav-link">
+        <i class="fa-solid fa-file-pen"></i>
+        <span class="link-text">Exams</span>
+      </a>
+      <a href="publish-result.html" class="nav-link">
+        <i class="fa-solid fa-chart-column"></i>
+        <span class="link-text">Results</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-regular fa-envelope"></i>
+        <span class="link-text">Messages</span>
+      </a>
+      <a href="school-profile.html" class="nav-link">
+        <i class="fa-solid fa-building-columns"></i>
+        <span class="link-text">School Profile</span>
+      </a>
+      <a href="change-password.html" class="nav-link">
+        <i class="fa-solid fa-gear"></i>
+        <span class="link-text">Settings</span>
+      </a>
+    </nav>
+
+    <a href="#" onclick="adminLogout()" class="logout-link">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      <span class="link-text">Logout</span>
+    </a>
+  </aside>
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- Main content -->
+  <div class="main">
+
+    <!-- Header -->
+    <header class="dashboard-hero">
+
+      <div class="topbar-left">
+        <h1>Modern International School</h1>
+        <p>Welcome back, Administrator</p>
+      </div>
+
+      <div class="topbar-right">
+
+        <div class="notif-bell">
+          <i class="fa-regular fa-bell"></i>
+          <span class="notif-badge">3</span>
+        </div>
+
+        <div class="admin-profile">
+          <div class="avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <span id="adminName">Vivaan</span>
+          <i class="fa-solid fa-chevron-down chevron"></i>
+        </div>
+
+      </div>
+
+      <svg class="topbar-illustration" viewBox="0 0 1000 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <!-- rolling hills -->
+        <path d="M0,300 Q180,235 380,262 T760,248 Q880,240 1000,255 L1000,300 Z" fill="rgba(255,255,255,0.07)"/>
+        <path d="M0,300 Q220,260 460,278 T900,270 L1000,278 L1000,300 Z" fill="rgba(255,255,255,0.10)"/>
+
+        <!-- left small trees -->
+        <g fill="rgba(255,255,255,0.14)">
+          <ellipse cx="120" cy="222" rx="26" ry="30"/>
+          <rect x="115" y="248" width="10" height="22"/>
+          <ellipse cx="170" cy="235" rx="18" ry="21"/>
+          <rect x="166" y="253" width="8" height="17"/>
+        </g>
+
+        <!-- main building -->
+        <g transform="translate(430,45)" fill="rgba(255,255,255,0.20)">
+          <rect x="10" y="95" width="150" height="120"/>
+          <polygon points="-10,95 85,35 180,95"/>
+          <rect x="80" y="6" width="4" height="34"/>
+          <polygon points="84,8 84,24 108,16"/>
+          <circle cx="85" cy="60" r="8"/>
+          <circle cx="85" cy="128" r="16" fill="rgba(124,111,240,0.35)"/>
+          <rect x="26" y="160" width="14" height="55"/>
+          <rect x="54" y="160" width="14" height="55"/>
+          <rect x="102" y="160" width="14" height="55"/>
+          <rect x="130" y="160" width="14" height="55"/>
+          <rect x="0" y="210" width="170" height="8"/>
+        </g>
+
+        <!-- right cluster of trees -->
+        <g fill="rgba(255,255,255,0.16)">
+          <ellipse cx="760" cy="195" rx="34" ry="38"/>
+          <rect x="753" y="228" width="14" height="30"/>
+          <ellipse cx="825" cy="215" rx="24" ry="27"/>
+          <rect x="819" y="238" width="11" height="24"/>
+          <ellipse cx="880" cy="198" rx="30" ry="34"/>
+          <rect x="873" y="228" width="13" height="28"/>
+          <ellipse cx="935" cy="220" rx="20" ry="23"/>
+          <rect x="930" y="240" width="10" height="20"/>
+        </g>
+
+        <!-- soft clouds -->
+        <g fill="rgba(255,255,255,0.12)">
+          <ellipse cx="230" cy="70" rx="34" ry="14"/>
+          <ellipse cx="258" cy="62" rx="24" ry="12"/>
+          <ellipse cx="600" cy="45" rx="30" ry="12"/>
+          <ellipse cx="625" cy="38" rx="20" ry="10"/>
+        </g>
+      </svg>
+
+    </header>
+
+    <main class="content">
+
+      <!-- Overview -->
+      <section class="card overview-card">
+        <div class="card-title">
+          <i class="fa-solid fa-chart-line"></i>
+          <h2>Overview</h2>
+        </div>
+
+        <div class="stats-grid">
+
+          <div class="stat-box">
+            <div class="stat-icon purple">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div class="stat-number" id="studentCount">0</div>
+            <div class="stat-label">Students</div>
+            <div class="stat-bar purple"></div>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-icon green">
+              <i class="fa-solid fa-user"></i>
+            </div>
+            <div class="stat-number" id="teacherCount">0</div>
+            <div class="stat-label">Teachers</div>
+            <div class="stat-bar green"></div>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-icon blue">
+              <i class="fa-solid fa-book"></i>
+            </div>
+            <div class="stat-number" id="classCount">0</div>
+            <div class="stat-label">Classes</div>
+            <div class="stat-bar blue"></div>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-icon orange">
+              <i class="fa-solid fa-file-lines"></i>
+            </div>
+            <div class="stat-number" id="resultCount">0</div>
+            <div class="stat-label">Results Published</div>
+            <div class="stat-bar orange"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Quick Actions -->
+      <section class="card actions-card">
+        <div class="card-title">
+          <i class="fa-solid fa-bolt"></i>
+          <h2>Quick Actions</h2>
+        </div>
+
+        <div class="actions-grid">
+
+          <a href="students.html" class="action-item">
+            <div class="action-icon purple"><i class="fa-solid fa-id-card"></i></div>
+            <div class="action-text">
+              <h3 class="purple-text">Student Records</h3>
+              <p>Manage Students</p>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
+
+          <a href="add-student.html" class="action-item">
+            <div class="action-icon green"><i class="fa-solid fa-user-plus"></i></div>
+            <div class="action-text">
+              <h3 class="green-text">Add Student</h3>
+              <p>Register New Student</p>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
+
+          <a href="teachers.html" class="action-item">
+            <div class="action-icon blue"><i class="fa-solid fa-chalkboard-user"></i></div>
+            <div class="action-text">
+              <h3 class="blue-text">Teacher Management</h3>
+              <p>Manage Teachers</p>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
+
+          <a href="marks-management.html" class="action-item">
+            <div class="action-icon orange"><i class="fa-solid fa-file-pen"></i></div>
+            <div class="action-text">
+              <h3 class="orange-text">Marks Management</h3>
+              <p>Manage Marks &amp; Exams</p>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
+
+          <a href="publish-result.html" class="action-item">
+            <div class="action-icon pink"><i class="fa-solid fa-file-invoice"></i></div>
+            <div class="action-text">
+              <h3 class="pink-text">Publish Result</h3>
+              <p>Publish Student Results</p>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
+
+          <a href="change-password.html" class="action-item">
+            <div class="action-icon blue"><i class="fa-solid fa-lock"></i></div>
+            <div class="action-text">
+              <h3 class="blue-text">Change Password</h3>
+              <p>Update Password</p>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
+
+          <a href="school-profile.html" class="action-item">
+            <div class="action-icon teal"><i class="fa-solid fa-building"></i></div>
+            <div class="action-text">
+              <h3 class="teal-text">School Profile</h3>
+              <p>View School Details</p>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
+
+          <a href="#" onclick="adminLogout()" class="action-item">
+            <div class="action-icon red"><i class="fa-solid fa-right-from-bracket"></i></div>
+            <div class="action-text">
+              <h3 class="red-text">Logout</h3>
+              <p>Logout from Dashboard</p>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- Welcome banner -->
+      <section class="welcome-banner">
+        <div class="welcome-icon"><i class="fa-regular fa-calendar"></i></div>
+        <div class="welcome-text">
+          <h3>Welcome back, Admin!</h3>
+          <p>Have a great day at Modern International School.</p>
+        </div>
+        <div class="welcome-illustration">
+          <div class="plant"><i class="fa-solid fa-seedling"></i></div>
+          <div class="monitor"><i class="fa-solid fa-display"></i></div>
+          <div class="mug"><i class="fa-solid fa-mug-hot"></i></div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        © 2026 Modern International School. All rights reserved.
+      </footer>
+
+    </main>
+  </div>
+</div>
+<script type="module" src="admin.js"></script>
+</body>
+        </html>
+                                 
