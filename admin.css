@@ -3461,7 +3461,18 @@ body {
 }
 
 a { text-decoration: none; color: inherit; }
-button { font-family: inherit; cursor: pointer; }
+button { cursor: pointer; }
+
+/* Defensive: guarantee Font Awesome glyphs always render inside
+   the sidebar, regardless of any font-family inherited from
+   buttons/links/body elsewhere in the page. */
+.sidebar i[class*="fa-"] {
+  font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", sans-serif !important;
+  font-style: normal !important;
+}
+
+.sidebar .fa-solid { font-weight: 900 !important; }
+.sidebar .fa-regular { font-weight: 400 !important; }
 
 /* ===== App shell ===== */
 .app {
@@ -3624,6 +3635,8 @@ button { font-family: inherit; cursor: pointer; }
   text-align: center;
   font-size: 16px;
   flex-shrink: 0;
+  color: inherit;
+  display: inline-block;
 }
 
 .link-text {
@@ -4450,7 +4463,11 @@ button { font-family: inherit; cursor: pointer; }
   .form-grid { grid-template-columns: 1fr; }
   .content { padding: 22px 16px 30px 16px; }
   .form-card { padding: 24px 20px 28px 20px; }
-  .dashboard-hero { padding: 24px 20px 110px 20px; }
+  .dashboard-hero { padding: 20px 18px 70px 18px; }
+  .dashboard-hero .topbar-left h1 { font-size: 20px; }
+  .dashboard-hero .topbar-right { gap: 10px; }
+  .dashboard-hero .admin-profile span { display: none; }
+  .dashboard-hero + .content .overview-card { margin-top: -40px; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .actions-grid { grid-template-columns: 1fr; }
   .welcome-illustration { display: none; }
