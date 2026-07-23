@@ -13,9 +13,12 @@
 
 <div class="app">
 
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
 
-<!-- Sidebar -->
-  <aside class="sidebar">
     <div class="sidebar-brand">
       <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
       <div class="brand-text">
@@ -26,17 +29,20 @@
 
     <nav class="sidebar-nav">
       <a href="dashboard.html" class="nav-link">
-        <i class="fa-solid fa-house"></i> Dashboard
+        <i class="fa-solid fa-house"></i>
+        <span class="link-text">Dashboard</span>
       </a>
       <a href="#" class="nav-link">
-        <i class="fa-solid fa-chalkboard"></i> My Classes
+        <i class="fa-solid fa-chalkboard"></i>
+        <span class="link-text">My Classes</span>
       </a>
 
-      <button class="nav-link nav-parent expanded" id="studentsToggle">
-        <i class="fa-solid fa-user-group"></i> Students
-        <i class="fa-solid fa-chevron-up chevron"></i>
+      <button class="nav-parent" id="studentsToggle">
+        <i class="fa-solid fa-user-group"></i>
+        <span class="link-text">Students</span>
+        <i class="fa-solid fa-chevron-down chevron"></i>
       </button>
-      <div class="submenu" id="studentsSubmenu">
+      <div class="submenu collapsed" id="studentsSubmenu">
         <a href="students.html" class="sub-link">
           <i class="fa-regular fa-user"></i> All Students
         </a>
@@ -45,46 +51,57 @@
         </a>
       </div>
 
-<button class="nav-link nav-parent expanded" id="teachersToggle">
-        <i class="fa-solid fa-user-group"></i> Teachers
-        <i class="fa-solid fa-chevron-up chevron"></i>
+      <button class="nav-parent" id="teachersToggle">
+        <i class="fa-solid fa-chalkboard-user"></i>
+        <span class="link-text">Teachers</span>
+        <i class="fa-solid fa-chevron-down chevron"></i>
       </button>
-      <div class="submenu" id="teachersSubmenu">
+      <div class="submenu collapsed" id="teachersSubmenu">
         <a href="teachers.html" class="sub-link">
           <i class="fa-regular fa-user"></i> All Teachers
         </a>
-        <a href="add-teacher.html" class="sub-link active">
+        <a href="add-teacher.html" class="sub-link">
           <i class="fa-solid fa-circle-plus"></i> Add Teacher
         </a>
       </div>
 
       <a href="#" class="nav-link">
-        <i class="fa-regular fa-square-check"></i> Attendance
+        <i class="fa-regular fa-square-check"></i>
+        <span class="link-text">Attendance</span>
       </a>
       <a href="#" class="nav-link">
-        <i class="fa-solid fa-file-lines"></i> Assignments
+        <i class="fa-solid fa-file-lines"></i>
+        <span class="link-text">Assignments</span>
       </a>
       <a href="#" class="nav-link">
-        <i class="fa-solid fa-file-pen"></i> Exams
+        <i class="fa-solid fa-file-pen"></i>
+        <span class="link-text">Exams</span>
       </a>
       <a href="#" class="nav-link">
-        <i class="fa-solid fa-chart-column"></i> Results
+        <i class="fa-solid fa-chart-column"></i>
+        <span class="link-text">Results</span>
       </a>
       <a href="#" class="nav-link">
-        <i class="fa-regular fa-envelope"></i> Messages
+        <i class="fa-regular fa-envelope"></i>
+        <span class="link-text">Messages</span>
       </a>
       <a href="school-profile.html" class="nav-link">
-        <i class="fa-regular fa-user"></i> School Profile
+        <i class="fa-solid fa-building-columns"></i>
+        <span class="link-text">School Profile</span>
       </a>
-      <a href="change-password.html" class="nav-link">
-        <i class="fa-solid fa-gear"></i> Settings
+      <a href="#" class="nav-link">
+        <i class="fa-solid fa-gear"></i>
+        <span class="link-text">Settings</span>
       </a>
     </nav>
 
-    <a href="admin.html" class="logout-link">
-      <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+    <a href="#" onclick="adminLogout()" class="logout-link">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      <span class="link-text">Logout</span>
     </a>
-        </aside>
+  </aside>
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
   <!-- Main -->
   <div class="main">
@@ -92,7 +109,6 @@
     <!-- Topbar -->
     <header class="topbar">
       <div class="topbar-left">
-        <button class="hamburger"><i class="fa-solid fa-bars"></i></button>
         <h2>Add New Student</h2>
       </div>
       <div class="topbar-right">
@@ -181,19 +197,11 @@
               <div class="input-wrap select-wrap">
                 <select id="studentClass">
                   <option value="" disabled selected>Select class</option>
-                  <option>Nursery</option>
-                  <option>L.K.G</option>
-                  <option>U.K.G</option>
                   <option>Class 1</option>
                   <option>Class 2</option>
                   <option>Class 3</option>
                   <option>Class 4</option>
                   <option>Class 5</option>
-                  <option>Class 6</option>
-                  <option>Class 7</option>
-                  <option>Class 8</option>
-                  <option>Class 9</option>
-                  <option>Class 10</option>
                 </select>
                 <i class="fa-solid fa-chevron-down select-icon"></i>
               </div>
@@ -267,7 +275,16 @@
               </div>
             </div>
 
-
+            <div class="field full-width">
+              <label>Upload Photo <span class="optional">(Optional)</span></label>
+              <label class="upload-box" for="photoUpload">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span class="upload-title">Click to upload photo</span>
+                <span class="upload-sub">JPG, PNG up to 2MB</span>
+                <input type="file" id="photoUpload" accept=".jpg,.jpeg,.png" hidden>
+              </label>
+              <p class="upload-filename" id="uploadFilename"></p>
+            </div>
 
           </div>
 
@@ -285,18 +302,14 @@
       </section>
 
       <footer class="footer">
-        © 2026 Modern International School. All rights reserved.
+        © 2024 Modern International School. All rights reserved.
       </footer>
 
     </main>
   </div>
 </div>
 
-<script type="module"
-src="admin.js"></script>
+<script type="module" src="admin.js"></script>
 </body>
   </html>
-  
-
-
         
