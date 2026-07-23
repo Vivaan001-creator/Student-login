@@ -637,59 +637,72 @@ function searchStudent() {
 
 window.searchStudent = searchStudent;
 
+
+// ===== Add Student (Firebase) =====
 async function addStudent() {
+  const roll = document.getElementById("roll").value.trim();
+  const name = document.getElementById("studentName").value.trim();
+  const father = document.getElementById("fatherName").value.trim();
+  const studentClass = document.getElementById("studentClass").value;
+  const attendance = document.getElementById("attendance").value.trim();
 
-    const roll = document.getElementById("roll").value.trim();
+  if (!roll || !name || !father || !studentClass || !attendance) {
+    alert("Please fill all fields.");
+    return;
+  }
 
-    const name = document.getElementById("studentName").value.trim();
+  const studentRef = doc(db, "students", roll);
+  const studentSnap = await getDoc(studentRef);
 
-    const father = document.getElementById("fatherName").value.trim();
+  if (studentSnap.exists()) {
+    alert("Roll Number already exists.");
+    return;
+  }
 
-    const studentClass = document.getElementById("studentClass").value;
+  await setDoc(studentRef, {
+    name: name,
+    father: father,
+    class: studentClass,
+    attendance: attendance,
+    publishStatus: "unpublished"
+  });
 
-    const attendance = document.getElementById("attendance").value.trim();
-
-    if (!roll || !name || !father || !studentClass || !attendance) {
-
-        alert("Please fill all fields.");
-
-        return;
-
-    }
-
-    const studentRef = doc(db, "students", roll);
-
-    const studentSnap = await getDoc(studentRef);
-
-    if (studentSnap.exists()) {
-
-        alert("Roll Number already exists.");
-
-        return;
-
-    }
-
-    await setDoc(studentRef, {
-
-        name: name,
-
-        father: father,
-
-        class: studentClass,
-
-        attendance: attendance,
-
-        publishStatus: "unpublished"
-
-    });
-
-    alert("Student Added Successfully");
-
-    window.location.href = "students.html";
-
+  alert("Student Added Successfully");
+  window.location.href = "students.html";
 }
 
 window.addStudent = addStudent;
+
+// ===== UI-only helpers (do not touch Firebase logic above) =====
+document.addEventListener('DOMContentLoaded', function () {
+
+  // Sidebar "Students" submenu toggle
+  const studentsToggle = document.getElementById('studentsToggle');
+  const studentsSubmenu = document.getElementById('studentsSubmenu');
+
+  if (studentsToggle && studentsSubmenu) {
+    studentsToggle.addEventListener('click', function () {
+      studentsToggle.classList.toggle('expanded');
+      studentsSubmenu.classList.toggle('collapsed');
+      const chevron = studentsToggle.querySelector('.chevron');
+      chevron.style.transform = studentsSubmenu.classList.contains('collapsed')
+        ? 'rotate(180deg)'
+        : 'rotate(0deg)';
+    });
+  }
+
+  
+
+  // Cancel button resets the form
+  const form = document.getElementById('studentForm');
+  const cancelBtn = document.querySelector('.btn-secondary');
+  if (cancelBtn && form) {
+    cancelBtn.addEventListener('click', function () {
+      form.reset();
+      if (uploadFilename) uploadFilename.textContent = '';
+    });
+  }
+});
 
 async function deleteStudent(roll) {
 
