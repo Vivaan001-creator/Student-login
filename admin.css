@@ -4472,3 +4472,81 @@ button { cursor: pointer; }
   .actions-grid { grid-template-columns: 1fr; }
   .welcome-illustration { display: none; }
 }
+
+/* ==========================================
+   1. FIXED SIDEBAR & COLLAPSED ICONS
+   ========================================== */
+.sidebar {
+  width: 260px;
+  transition: width 0.3s ease, transform 0.3s ease;
+  overflow-x: hidden;
+  /* Sidebar padding & alignment setup */
+}
+
+/* Jab Sidebar Collapsed / Closed Ho */
+.sidebar.collapsed {
+  width: 80px; /* Collapsed state me sirf icons ki jagah */
+}
+
+/* Sidebar links jab closed ho */
+.sidebar.collapsed .sidebar-brand .brand-text,
+.sidebar.collapsed .link-text,
+.sidebar.collapsed .chevron,
+.sidebar.collapsed .submenu {
+  display: none !important; /* Text aur dropdown arrows ko chupayein */
+}
+
+/* Collapsed Sidebar me Icons center aur clean dikhenge */
+.sidebar.collapsed .nav-link,
+.sidebar.collapsed .nav-parent,
+.sidebar.collapsed .logout-link {
+  justify-content: center;
+  padding: 14px 0;
+  width: 100%;
+}
+
+.sidebar.collapsed .nav-link i,
+.sidebar.collapsed .nav-parent i,
+.sidebar.collapsed .logout-link i {
+  font-size: 20px;
+  margin-right: 0 !important;
+  display: inline-block;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Adjust Main content area based on sidebar state */
+.sidebar.collapsed ~ .main {
+  margin-left: 80px;
+}
+
+
+/* ==========================================
+   2. FIX OVERVIEW OVERLAPPING (DASHBOARD HERO)
+   ========================================== */
+.dashboard-hero {
+  position: relative;
+  min-height: 200px;
+  padding: 30px 40px 60px 40px; /* Extra bottom padding so it doesn't overlap */
+  background: linear-gradient(135deg, #6a5ff0 0%, #8378f5 100%);
+  border-radius: 0 0 24px 24px;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+/* Main Content Spacing */
+.content {
+  padding: 30px;
+  margin-top: 0; /* Ensure content starts right after hero/header */
+  position: relative;
+  z-index: 2;
+}
+
+/* Overview Card adjustment */
+.overview-card {
+  margin-top: -30px; /* Clean overlay effect without blocking hero header text */
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(106, 95, 240, 0.08);
+}
