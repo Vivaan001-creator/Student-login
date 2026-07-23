@@ -3557,7 +3557,7 @@ button { cursor: pointer; }
 }
 
 .sidebar.expanded .menu-toggle {
-  transform: rotate(0deg);
+  transform: rotate(90deg);
 }
 
 /* Brand */
