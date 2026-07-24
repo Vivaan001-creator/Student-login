@@ -137,8 +137,8 @@
     <ellipse cx="820" cy="80" rx="34" ry="13"/>
     <ellipse cx="850" cy="72" rx="22" ry="11"/>
     <ellipse cx="790" cy="86" rx="18" ry="9"/>
-    <ellipse cx="500" cy="60" rx="28" ry="11"/>
-    <ellipse cx="525" cy="54" rx="18" ry="9"/>
+    <ellipse cx="500" cy="55" rx="26" ry="10"/>
+    <ellipse cx="524" cy="50" rx="16" ry="8"/>
   </g>
 
   <!-- rolling hills -->
@@ -170,37 +170,49 @@
   </g>
   <rect x="185" y="280" width="160" height="6" fill="rgba(255,255,255,0.20)"/>
 
-  <!-- center pavilion -->
-  <polygon points="360,155 545,155 452.5,70" fill="rgba(255,255,255,0.24)"/>
-  <circle cx="452.5" cy="120" r="10" fill="rgba(255,255,255,0.32)"/>
+  <!-- ============ CENTER PAVILION (rebuilt to match reference) ============ -->
+  <!-- pediment -->
+  <polygon points="368,170 546,170 457,75" fill="rgba(255,255,255,0.24)"/>
+  <circle cx="457" cy="122" r="10" fill="rgba(255,255,255,0.34)"/>
 
   <!-- flagpole -->
-  <rect x="450.5" y="28" width="3" height="42" fill="rgba(255,255,255,0.32)"/>
-  <polygon points="453.5,28 453.5,44 477,35" fill="rgba(255,255,255,0.34)"/>
+  <rect x="455" y="30" width="3" height="45" fill="rgba(255,255,255,0.34)"/>
+  <polygon points="458,30 458,47 483,37" fill="rgba(255,255,255,0.36)"/>
 
-  <rect x="370" y="155" width="165" height="130" fill="rgba(255,255,255,0.22)"/>
+  <!-- pavilion body -->
+  <rect x="368" y="170" width="178" height="110" fill="rgba(255,255,255,0.22)"/>
 
-  <!-- columns -->
-  <g fill="rgba(255,255,255,0.42)">
-    <rect x="380" y="164" width="10" height="106"/>
-    <rect x="415" y="164" width="10" height="106"/>
-    <rect x="447" y="164" width="10" height="106"/>
-    <rect x="479" y="164" width="10" height="106"/>
-    <rect x="515" y="164" width="10" height="106"/>
+  <!-- 4 columns / 3 bays -->
+  <g fill="rgba(255,255,255,0.44)">
+    <rect x="363" y="170" width="10" height="110"/>
+    <rect x="422" y="170" width="10" height="110"/>
+    <rect x="481" y="170" width="10" height="110"/>
+    <rect x="541" y="170" width="10" height="110"/>
   </g>
 
-  <!-- arched top-floor windows -->
+  <!-- upper floor: 3 arched windows (one per bay) -->
   <g fill="rgba(124,111,240,0.42)">
-    <path d="M393,196 q11,-16 22,0 v24 h-22 z"/>
-    <path d="M486,196 q11,-16 22,0 v24 h-22 z"/>
+    <path d="M387,220 L387,200 Q400,178 413,200 L413,220 Z"/>
+    <path d="M444,220 L444,200 Q457,178 470,200 L470,220 Z"/>
+    <path d="M501,220 L501,200 Q514,178 527,200 L527,220 Z"/>
   </g>
 
-  <!-- entry door -->
-  <path d="M437,275 L437,232 A16,22 0 0 1 469,232 L469,275 Z" fill="rgba(90,80,180,0.48)"/>
+  <!-- ground floor: canopy over door -->
+  <polygon points="437,210 477,210 457,192" fill="rgba(255,255,255,0.28)"/>
+
+  <!-- ground floor: side arched windows -->
+  <g fill="rgba(124,111,240,0.42)">
+    <path d="M387,270 L387,245 Q400,225 413,245 L413,270 Z"/>
+    <path d="M501,270 L501,245 Q514,225 527,245 L527,270 Z"/>
+  </g>
+
+  <!-- ground floor: entry door -->
+  <path d="M442,280 L442,225 Q457,205 472,225 L472,280 Z" fill="rgba(90,80,180,0.48)"/>
 
   <!-- steps -->
-  <rect x="417" y="273" width="90" height="6" fill="rgba(255,255,255,0.26)"/>
-  <rect x="422" y="279" width="80" height="6" fill="rgba(255,255,255,0.22)"/>
+  <rect x="425" y="278" width="64" height="6" fill="rgba(255,255,255,0.26)"/>
+  <rect x="430" y="284" width="54" height="6" fill="rgba(255,255,255,0.22)"/>
+  <!-- ============ END CENTER PAVILION ============ -->
 
   <!-- right wing -->
   <polygon points="545,185 630,130 715,185" fill="rgba(255,255,255,0.20)"/>
@@ -228,7 +240,7 @@
     <ellipse cx="955" cy="232" rx="18" ry="21"/>
     <rect x="950" y="251" width="10" height="18"/>
   </g>
-  </svg>
+      </svg>
 
     </header>
 
