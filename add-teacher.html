@@ -1,98 +1,276 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0">
-
-<title>Add Teacher</title>
-
-<link rel="stylesheet"
-href="admin.css">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add New Teacher | Modern International School</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
 </head>
-
 <body>
 
-<div class="admin-box">
+  <div class="app-shell">
 
-<h1>Add Teacher</h1>
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="logo-text">
+          <span class="logo-title">Modern</span>
+          <span class="logo-subtitle">International School</span>
+        </div>
+      </div>
 
-  
-<input
-type="text"
-id="teacherId"
-placeholder="Teacher ID">
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item">
+          <i class="fa-solid fa-house nav-icon"></i>
+          <span>Dashboard</span>
+        </a>
 
-<input
-type="text"
-id="teacherName"
-placeholder="Teacher Name">
+        <a href="#" class="nav-item">
+          <i class="fa-solid fa-user-graduate nav-icon"></i>
+          <span>Students</span>
+        </a>
 
-<input
-type="text"
-id="teacherSubject"
-placeholder="Subject">
+        <div class="nav-group">
+          <a href="#" class="nav-item nav-parent active-parent">
+            <i class="fa-solid fa-chalkboard-user nav-icon"></i>
+            <span>Teachers</span>
+            <i class="fa-solid fa-chevron-up nav-caret"></i>
+          </a>
 
-<input
-type="tel"
-id="teacherPhone"
-placeholder="Mobile Number">
+          <div class="nav-submenu open">
+            <a href="add-teacher.html" class="nav-subitem active">
+              <i class="fa-solid fa-user-plus nav-icon"></i>
+              <span>Add Teacher</span>
+            </a>
+            <a href="#" class="nav-subitem">
+              <i class="fa-solid fa-users nav-icon"></i>
+              <span>All Teachers</span>
+            </a>
+          </div>
+        </div>
 
-<input
-type="email"
-id="teacherEmail"
-placeholder="Email Address">
+        <a href="#" class="nav-item">
+          <i class="fa-solid fa-chalkboard nav-icon"></i>
+          <span>Classes</span>
+        </a>
 
-<input
-type="text"
-id="teacherQualification"
-placeholder="Qualification">
+        <a href="#" class="nav-item">
+          <i class="fa-solid fa-book nav-icon"></i>
+          <span>Subjects</span>
+        </a>
 
-<input
-type="number"
-id="teacherExperience"
-placeholder="Experience (Years)">
+        <a href="#" class="nav-item">
+          <i class="fa-solid fa-clipboard-check nav-icon"></i>
+          <span>Attendance</span>
+        </a>
 
-<select id="teacherStatus">
+        <a href="#" class="nav-item">
+          <i class="fa-solid fa-file-lines nav-icon"></i>
+          <span>Exams</span>
+        </a>
 
-<option value="Active">
+        <a href="#" class="nav-item">
+          <i class="fa-solid fa-envelope nav-icon"></i>
+          <span>Messages</span>
+        </a>
 
-Active
+        <a href="#" class="nav-item">
+          <i class="fa-solid fa-gear nav-icon"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
 
-</option>
+      <div class="sidebar-footer">
+        <a href="#" class="nav-item logout">
+          <i class="fa-solid fa-arrow-right-from-bracket nav-icon"></i>
+          <span>Logout</span>
+        </a>
+      </div>
+    </aside>
 
-<option value="Inactive">
+    <!-- ================= MAIN ================= -->
+    <div class="main-area">
 
-Inactive
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-btn menu-toggle" aria-label="Toggle menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <h1 class="topbar-title">Add New Teacher</h1>
+        </div>
 
-</option>
+        <div class="topbar-right">
+          <button class="icon-btn bell-btn" aria-label="Notifications">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge">3</span>
+          </button>
 
-</select>
-  
-<button onclick="addTeacher()">
+          <div class="admin-chip">
+            <div class="admin-avatar"><i class="fa-solid fa-user"></i></div>
+            <span class="admin-name">Admin</span>
+            <i class="fa-solid fa-chevron-down admin-caret"></i>
+          </div>
+        </div>
+      </header>
 
-Save Teacher
+      <!-- Content -->
+      <main class="content">
 
-</button>
+        <section class="hero-card">
+          <div class="hero-left">
+            <div class="hero-icon"><i class="fa-solid fa-user-plus"></i></div>
+            <div class="hero-text">
+              <h2>Add New Teacher</h2>
+              <p>Fill in the details below to add a new teacher to the system.</p>
+            </div>
+          </div>
+          <div class="hero-illustration">
+            <div class="illu-card">
+              <div class="illu-avatar"><i class="fa-solid fa-user"></i></div>
+              <div class="illu-line line-1"></div>
+              <div class="illu-line line-2"></div>
+              <div class="illu-line line-3"></div>
+            </div>
+            <div class="illu-fab"><i class="fa-solid fa-plus"></i></div>
+          </div>
+        </section>
 
-<br><br>
+        <section class="form-card">
 
-<button
-onclick="window.location.href='teachers.html'">
+          <h3 class="section-title">Personal Information</h3>
 
-Back
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Teacher ID <span class="req">*</span></label>
+              <div class="input-wrap">
+                <i class="fa-regular fa-id-badge field-icon"></i>
+                <input type="text" placeholder="Enter teacher ID">
+              </div>
+            </div>
 
-</button>
+            <div class="form-field">
+              <label>Full Name <span class="req">*</span></label>
+              <div class="input-wrap">
+                <i class="fa-regular fa-user field-icon"></i>
+                <input type="text" placeholder="Enter full name">
+              </div>
+            </div>
 
-</div>
+            <div class="form-field">
+              <label>Email Address <span class="req">*</span></label>
+              <div class="input-wrap">
+                <i class="fa-regular fa-envelope field-icon"></i>
+                <input type="email" placeholder="Enter email address">
+              </div>
+            </div>
 
-<script type="module"
-src="admin.js"></script>
+            <div class="form-field">
+              <label>Mobile Number <span class="req">*</span></label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-phone field-icon"></i>
+                <input type="tel" placeholder="Enter mobile number">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Subject <span class="req">*</span></label>
+              <div class="input-wrap select-wrap">
+                <select>
+                  <option value="" selected disabled>Select subject</option>
+                  <option>Mathematics</option>
+                  <option>Science</option>
+                  <option>English</option>
+                  <option>History</option>
+                  <option>Computer Science</option>
+                </select>
+                <i class="fa-solid fa-chevron-down field-icon-right"></i>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Qualification <span class="req">*</span></label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-graduation-cap field-icon"></i>
+                <input type="text" placeholder="Enter qualification">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Experience (Years)</label>
+              <div class="input-wrap">
+                <i class="fa-regular fa-briefcase field-icon"></i>
+                <input type="number" placeholder="Enter experience">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Date of Joining <span class="req">*</span></label>
+              <div class="input-wrap">
+                <input type="text" placeholder="dd-mm-yyyy">
+                <i class="fa-regular fa-calendar field-icon-right"></i>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Status <span class="req">*</span></label>
+              <div class="input-wrap select-wrap">
+                <select>
+                  <option value="" selected disabled>Select status</option>
+                  <option>Active</option>
+                  <option>Inactive</option>
+                  <option>On Leave</option>
+                </select>
+                <i class="fa-solid fa-chevron-down field-icon-right"></i>
+              </div>
+            </div>
+          </div>
+
+          <hr class="divider">
+
+          <h3 class="section-title">Additional Information</h3>
+
+          <div class="form-grid two-col">
+            <div class="form-field">
+              <label>Address</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-location-dot field-icon"></i>
+                <input type="text" placeholder="Enter full address">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Password (For Login) <span class="req">*</span></label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-lock field-icon"></i>
+                <input type="password" placeholder="Enter password">
+                <button type="button" class="toggle-password" aria-label="Show password">
+                  <i class="fa-regular fa-eye field-icon-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-primary">
+              <i class="fa-regular fa-floppy-disk"></i>
+              Save Teacher
+            </button>
+            <button type="button" class="btn btn-secondary">
+              <i class="fa-solid fa-xmark"></i>
+              Cancel
+            </button>
+          </div>
+
+        </section>
+
+      </main>
+    </div>
+  </div>
 
 </body>
-
 </html>
