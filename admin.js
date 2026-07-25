@@ -48,6 +48,7 @@ async function adminLogin() {
         await signInWithEmailAndPassword(auth, email, password);
 
         sessionStorage.setItem("adminLoggedIn","true");
+        sessionStorage.setItem("role","admin");
 
 
 window.location.href="dashboard.html";
@@ -74,26 +75,151 @@ if (loginForm) {
 
 
 // ==========================
-// Dashboard Security
+// Teacher Login (separate from Admin — checks the
+// "teachers" Firestore collection instead of Firebase Auth)
+// ==========================
+
+async function teacherLogin() {
+
+    const identifier =
+        document.getElementById("username").value.trim();
+
+    const password =
+        document.getElementById("password").value.trim();
+
+    if (!identifier || !password) {
+        alert("Please enter your Teacher ID / Email and Password.");
+        return;
+    }
+
+    try {
+
+        let matchedTeacher = null;
+        let matchedId = null;
+
+        // 1) try as a direct Teacher ID lookup
+        const directSnap = await getDoc(doc(db, "teachers", identifier));
+
+        if (directSnap.exists()) {
+
+            matchedTeacher = directSnap.data();
+            matchedId = directSnap.id;
+
+        } else {
+
+            // 2) fall back to matching by email
+            const allTeachers = await getDocs(collection(db, "teachers"));
+
+            allTeachers.forEach((docSnap) => {
+
+                const t = docSnap.data();
+
+                if (
+                    t.email &&
+                    t.email.toLowerCase() === identifier.toLowerCase()
+                ) {
+                    matchedTeacher = t;
+                    matchedId = docSnap.id;
+                }
+
+            });
+
+        }
+
+        if (!matchedTeacher) {
+            alert("No teacher account found with that Teacher ID or Email.");
+            return;
+        }
+
+        if (matchedTeacher.status && matchedTeacher.status !== "Active") {
+            alert("Your account is not active. Please contact the school admin.");
+            return;
+        }
+
+        if (matchedTeacher.password !== password) {
+            alert("Incorrect password.");
+            return;
+        }
+
+        sessionStorage.setItem("role", "teacher");
+        sessionStorage.setItem("teacherLoggedIn", "true");
+        sessionStorage.setItem("teacherId", matchedId);
+        sessionStorage.setItem("teacherName", matchedTeacher.name || "");
+
+        window.location.href = "teacher-dashboard.html";
+
+    } catch (error) {
+
+        console.error(error);
+        alert(error.message);
+
+    }
+
+}
+
+window.teacherLogin = teacherLogin;
+
+const teacherLoginForm = document.getElementById("teacherLoginForm");
+
+if (teacherLoginForm) {
+    teacherLoginForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        await teacherLogin();
+    });
+}
+
+
+// ==========================
+// Role-Based Access Control
 // ==========================
 
 const page = location.pathname;
 
-if (
+// Pages only an Admin may open
+const adminOnlyPages = [
+    "dashboard.html",
+    "classes.html",
+    "students.html",
+    "add-student.html",
+    "edit-student.html",
+    "teachers.html",
+    "add-teacher.html",
+    "edit-teacher.html",
+    "teacher-profile.html",
+    "school-profile.html",
+    "change-password.html",
+    "marks-management.html",
+    "publish-result.html"
+];
 
-    page.includes("dashboard.html") ||
-    page.includes("students.html") ||
-    page.includes("edit-student.html") ||
-    page.includes("change-password.html") ||
-    page.includes("teachers.html") ||
-    page.includes("add-teacher.html") ||
-    page.includes("edit-teacher.html") ||
-    page.includes("teacher-profile.html") ||
-    page.includes("school-profile.html")
-) {
+// Pages only a logged-in Teacher may open
+// (teacher-dashboard.html will be built in the next phase —
+//  this list is ready for it and any teacher-only page after it)
+const teacherOnlyPages = [
+    "teacher-dashboard.html"
+];
 
-    if (sessionStorage.getItem("adminLoggedIn") !== "true") {
+const isAdminPage = adminOnlyPages.some(p => page.includes(p));
+const isTeacherPage = teacherOnlyPages.some(p => page.includes(p));
+
+if (isAdminPage) {
+
+    if (
+        sessionStorage.getItem("role") !== "admin" ||
+        sessionStorage.getItem("adminLoggedIn") !== "true"
+    ) {
         window.location.replace("admin.html");
+    }
+
+}
+
+if (isTeacherPage) {
+
+    if (
+        sessionStorage.getItem("role") !== "teacher" ||
+        sessionStorage.getItem("teacherLoggedIn") !== "true"
+    ) {
+        window.location.replace("teacher-login.html");
     }
 
 }
@@ -124,6 +250,22 @@ async function adminLogout() {
 }
 
 window.adminLogout = adminLogout;
+
+
+// ==========================
+// Teacher Logout
+// ==========================
+
+function teacherLogout() {
+
+    sessionStorage.clear();
+    localStorage.removeItem("editRoll");
+
+    window.location.replace("teacher-login.html");
+
+}
+
+window.teacherLogout = teacherLogout;
 
 
 // ==========================
@@ -638,22 +780,6 @@ function searchStudent() {
 window.searchStudent = searchStudent;
 
 
-// ===== Date helper: dd-mm-yyyy or yyyy-mm-dd -> canonical yyyy-mm-dd =====
-// (kept in sync with the same helper in student.js so the Student Portal
-// login check compares against exactly what gets saved here)
-function toISODate(value) {
-  if (!value) return "";
-  const str = value.trim();
-
-  let m = str.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
-  if (m) return `${m[1]}-${m[2].padStart(2, "0")}-${m[3].padStart(2, "0")}`;
-
-  m = str.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})$/);
-  if (m) return `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}`;
-
-  return str;
-}
-
 // ===== Add Student (Firebase) =====
 async function addStudent() {
   const roll = document.getElementById("roll").value.trim();
@@ -661,11 +787,9 @@ async function addStudent() {
   const father = document.getElementById("fatherName").value.trim();
   const studentClass = document.getElementById("studentClass").value;
   const attendance = document.getElementById("attendance").value.trim();
-  const dobField = document.getElementById("dob");
-  const dob = dobField ? toISODate(dobField.value.trim()) : "";
 
-  if (!roll || !name || !father || !studentClass || !attendance || !dob) {
-    alert("Please fill all fields (Date of Birth is needed for the student's portal login too).");
+  if (!roll || !name || !father || !studentClass || !attendance) {
+    alert("Please fill all fields.");
     return;
   }
 
@@ -682,7 +806,6 @@ async function addStudent() {
     father: father,
     class: studentClass,
     attendance: attendance,
-    dob: dob,
     publishStatus: "unpublished"
   });
 
@@ -960,13 +1083,17 @@ async function addTeacher(){
     const teacherSubject =
         document.getElementById("teacherSubject")?.value.trim();
 
+    const teacherPassword =
+        document.getElementById("teacherPassword")?.value.trim();
+
     if(
         !teacherId ||
         !teacherName ||
-        !teacherSubject
+        !teacherSubject ||
+        !teacherPassword
     ){
 
-        alert("Please fill all fields.");
+        alert("Please fill all fields, including the login password.");
 
         return;
 
@@ -983,6 +1110,8 @@ async function addTeacher(){
     name:teacherName,
 
     subject:teacherSubject,
+
+    password:teacherPassword,
 
     phone:
 document.getElementById("teacherPhone").value.trim(),
