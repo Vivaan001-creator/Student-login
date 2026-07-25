@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern International School - Home</title>
+<meta name="description" content="Modern International School — Nursery to Class 10. Admissions open. Experienced faculty, smart classrooms and a caring campus across four academic wings.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="home.css">
+</head>
+<body>
+
+<!-- Decorative background -->
+<div class="hp-blob hp-blob-1"></div>
+<div class="hp-blob hp-blob-2"></div>
+<div class="hp-dots hp-dots-1"></div>
+
+<!-- ===== Navbar ===== -->
+<header class="hp-nav" id="hpNav">
+  <div class="hp-nav-inner">
+    <a href="#home" class="hp-brand">
+      <div class="hp-brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+      <div class="hp-brand-text">
+        <span class="hp-brand-name"><span class="accent">Modern</span> International</span>
+        <span class="hp-brand-sub">School</span>
+      </div>
+    </a>
+
+    <nav class="hp-menu" id="hpMenu">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#admission">Admission</a>
+      <a href="#academics">Academics</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#contact">Contact</a>
+
+      <div class="hp-login-wrap" id="hpLoginWrap">
+        <button class="hp-login-btn" id="hpLoginToggle" aria-haspopup="true" aria-expanded="false">
+          <i class="fa-solid fa-right-to-bracket"></i> Login
+          <i class="fa-solid fa-chevron-down hp-login-chevron"></i>
+        </button>
+        <div class="hp-login-panel" id="hpLoginPanel">
+          <a href="student-login.html">
+            <i class="fa-solid fa-user-graduate"></i>
+            <span>Student / Parent Login</span>
+          </a>
+          <a href="admin.html">
+            <i class="fa-solid fa-user-tie"></i>
+            <span>Staff Login</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <button class="hp-nav-toggle" id="hpNavToggle" aria-label="Toggle Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+</header>
+
+<div class="hp-nav-backdrop" id="hpNavBackdrop"></div>
+
+<main>
+
+  <!-- ===== Hero ===== -->
+  <section class="hp-hero" id="home">
+    <div class="hp-hero-text hp-reveal">
+      <span class="hp-eyebrow">Modern International School</span>
+      <h1>Four Wings.<br>One Journey.</h1>
+      <p class="hp-hero-lead">
+        From a child's first day in Nursery to the day they walk out of Class 10, every
+        student here moves through four wings of learning — Primary, Middle, Secondary
+        and Senior — each one built to meet them exactly where they are.
+      </p>
+
+      <div class="hp-hero-cta">
+        <a href="student-login.html" class="hp-btn hp-btn-primary">
+          <i class="fa-solid fa-user-graduate"></i> Student &amp; Parent Login
+        </a>
+        <a href="#academics" class="hp-btn hp-btn-ghost">
+          Explore Our Wings <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <div class="hp-hero-stats" id="hpHeroStats">
+        <div class="hp-stat">
+          <span class="hp-stat-num" id="statStudents">–</span>
+          <span class="hp-stat-label">Students</span>
+        </div>
+        <div class="hp-stat">
+          <span class="hp-stat-num" id="statTeachers">–</span>
+          <span class="hp-stat-label">Teachers</span>
+        </div>
+        <div class="hp-stat">
+          <span class="hp-stat-num" id="statClasses">–</span>
+          <span class="hp-stat-label">Classes</span>
+        </div>
+        <div class="hp-stat">
+          <span class="hp-stat-num">4</span>
+          <span class="hp-stat-label">Wings</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hp-hero-art hp-reveal">
+      <svg class="hp-campus" viewBox="0 0 460 380" aria-hidden="true">
+
+        <ellipse cx="230" cy="362" rx="200" ry="10" fill="#e7e4fb"/>
+
+        <path class="hp-bird hp-bird-1" d="M60,60 q6,-8 12,0 q6,-8 12,0" fill="none" stroke="#3a3a5c" stroke-width="2.5" stroke-linecap="round"/>
+        <path class="hp-bird hp-bird-2" d="M110,40 q5,-7 10,0 q5,-7 10,0" fill="none" stroke="#3a3a5c" stroke-width="2.2" stroke-linecap="round"/>
+
+        <g class="hp-cloud hp-cloud-1" fill="#d9d6f7">
+          <ellipse cx="75" cy="90" rx="26" ry="14"/>
+          <ellipse cx="97" cy="84" rx="18" ry="12"/>
+          <ellipse cx="57" cy="86" rx="16" ry="10"/>
+        </g>
+        <g class="hp-cloud hp-cloud-2" fill="#d9d6f7">
+          <ellipse cx="375" cy="76" rx="24" ry="13"/>
+          <ellipse cx="395" cy="71" rx="16" ry="11"/>
+          <ellipse cx="357" cy="73" rx="14" ry="9"/>
+        </g>
+
+        <g class="hp-tree hp-tree-1">
+          <rect x="52" y="300" width="9" height="48" fill="#8b86e0"/>
+          <ellipse cx="56" cy="258" rx="26" ry="24" fill="#c3bff5"/>
+          <ellipse cx="27" cy="278" rx="23" ry="25" fill="#a8a3ec"/>
+          <ellipse cx="85" cy="278" rx="23" ry="25" fill="#a8a3ec"/>
+        </g>
+
+        <g class="hp-tree hp-tree-2">
+          <rect x="392" y="300" width="9" height="48" fill="#8b86e0"/>
+          <ellipse cx="396" cy="258" rx="26" ry="24" fill="#c3bff5"/>
+          <ellipse cx="367" cy="278" rx="23" ry="25" fill="#a8a3ec"/>
+          <ellipse cx="425" cy="278" rx="23" ry="25" fill="#a8a3ec"/>
+        </g>
+
+        <!-- side wing -->
+        <rect x="120" y="230" width="70" height="118" fill="#d8d4f8"/>
+        <polygon points="155,205 115,230 195,230" fill="#4f45d8" opacity="0.55"/>
+        <g fill="#ffffff" opacity="0.95">
+          <rect x="132" y="248" width="14" height="14" rx="2"/>
+          <rect x="154" y="248" width="14" height="14" rx="2"/>
+          <rect x="132" y="272" width="14" height="14" rx="2"/>
+          <rect x="154" y="272" width="14" height="14" rx="2"/>
+        </g>
+
+        <rect x="270" y="230" width="70" height="118" fill="#d8d4f8"/>
+        <polygon points="305,205 265,230 345,230" fill="#4f45d8" opacity="0.55"/>
+        <g fill="#ffffff" opacity="0.95">
+          <rect x="282" y="248" width="14" height="14" rx="2"/>
+          <rect x="304" y="248" width="14" height="14" rx="2"/>
+          <rect x="282" y="272" width="14" height="14" rx="2"/>
+          <rect x="304" y="272" width="14" height="14" rx="2"/>
+        </g>
+
+        <!-- main building -->
+        <rect x="238" y="150" width="4" height="60" fill="#4b3fd6"/>
+        <path class="hp-flag" d="M242,150 L272,160 L242,170 Z" fill="#5b52e5"/>
+
+        <polygon points="240,190 150,255 330,255" fill="#241f4d"/>
+        <rect x="146" y="250" width="188" height="9" rx="2" fill="#241f4d"/>
+
+        <rect x="170" y="230" width="140" height="118" rx="5" fill="url(#hpBuildingGrad)"/>
+
+        <circle cx="240" cy="230" r="21" fill="#ffffff"/>
+        <line x1="240" y1="230" x2="240" y2="216" stroke="#5b52e5" stroke-width="2.6" stroke-linecap="round"/>
+        <line x1="240" y1="230" x2="251" y2="230" stroke="#5b52e5" stroke-width="2.6" stroke-linecap="round"/>
+
+        <g fill="#ffffff" opacity="0.95">
+          <rect x="184" y="258" width="16" height="16" rx="2"/>
+          <rect x="206" y="258" width="16" height="16" rx="2"/>
+          <rect x="258" y="258" width="16" height="16" rx="2"/>
+          <rect x="280" y="258" width="16" height="16" rx="2"/>
+        </g>
+
+        <path d="M222,348 L222,306 Q222,290 240,290 Q258,290 258,306 L258,348 Z" fill="#ede9ff"/>
+
+        <g fill="#c7c3f5">
+          <circle cx="205" cy="340" r="12"/>
+          <circle cx="228" cy="345" r="8"/>
+          <circle cx="275" cy="340" r="12"/>
+          <circle cx="252" cy="345" r="8"/>
+        </g>
+
+        <defs>
+          <linearGradient id="hpBuildingGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#6b62ee"/>
+            <stop offset="100%" stop-color="#4f45d8"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ===== About ===== -->
+  <section class="hp-section" id="about">
+    <div class="hp-section-inner">
+
+      <div class="hp-about-grid">
+        <div class="hp-reveal">
+          <span class="hp-eyebrow">About Us</span>
+          <h2 class="hp-h2">A school that knows every child by name</h2>
+          <p class="hp-p">
+            Modern International School brings together experienced faculty, modern
+            classrooms and a genuine focus on every student's growth — inside the
+            classroom and beyond it. Whether a child is taking their first steps in
+            Nursery or preparing for board exams in Class 10, our teachers know them
+            by name, not just by roll number.
+          </p>
+
+          <div class="hp-highlight-grid">
+            <div class="hp-highlight">
+              <div class="hp-highlight-icon purple"><i class="fa-solid fa-users"></i></div>
+              <div>
+                <h4>Experienced Faculty</h4>
+                <p>Teachers who mentor as much as they teach.</p>
+              </div>
+            </div>
+            <div class="hp-highlight">
+              <div class="hp-highlight-icon blue"><i class="fa-solid fa-chalkboard"></i></div>
+              <div>
+                <h4>Smart Classrooms</h4>
+                <p>Modern teaching tools across every wing.</p>
+              </div>
+            </div>
+            <div class="hp-highlight">
+              <div class="hp-highlight-icon green"><i class="fa-solid fa-shield-heart"></i></div>
+              <div>
+                <h4>Safe &amp; Caring Campus</h4>
+                <p>A secure, supportive environment for every child.</p>
+              </div>
+            </div>
+            <div class="hp-highlight">
+              <div class="hp-highlight-icon orange"><i class="fa-solid fa-trophy"></i></div>
+              <div>
+                <h4>Sports &amp; Activities</h4>
+                <p>Room to grow well beyond the textbook.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hp-principal-card hp-reveal">
+          <i class="fa-solid fa-quote-left hp-quote-icon"></i>
+          <p class="hp-principal-msg">
+            Every child who walks through our gates has something worth discovering —
+            our job is simply to help them find it. I invite every parent to visit our
+            campus and see the difference for themselves.
+          </p>
+          <div class="hp-principal-sign">
+            <div class="hp-principal-avatar"><i class="fa-solid fa-user-tie"></i></div>
+            <div>
+              <strong id="principalNameText">The Principal</strong>
+              <span>Principal's Message</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== Admission ===== -->
+  <section class="hp-section hp-section-tint" id="admission">
+    <div class="hp-section-inner">
+      <span class="hp-eyebrow hp-reveal">Admissions</span>
+      <h2 class="hp-h2 hp-reveal">Joining Modern International School</h2>
+      <p class="hp-p hp-reveal" style="max-width:640px;">
+        Admissions for the new academic session are open across Nursery to Class 10.
+        Here's how the process works, from first enquiry to your child's first day.
+      </p>
+
+      <div class="hp-steps hp-reveal">
+        <div class="hp-step">
+          <span class="hp-step-num">01</span>
+          <h4>Enquiry</h4>
+          <p>Reach out to our admission office with your child's details.</p>
+        </div>
+        <div class="hp-step">
+          <span class="hp-step-num">02</span>
+          <h4>Document Verification</h4>
+          <p>Submit birth certificate, previous school records and address proof.</p>
+        </div>
+        <div class="hp-step">
+          <span class="hp-step-num">03</span>
+          <h4>Fee Payment</h4>
+          <p>Complete the admission fee to confirm your child's seat.</p>
+        </div>
+        <div class="hp-step">
+          <span class="hp-step-num">04</span>
+          <h4>Confirmation</h4>
+          <p>Receive your child's roll number, class and section.</p>
+        </div>
+      </div>
+
+      <a href="#contact" class="hp-btn hp-btn-primary hp-reveal">
+        <i class="fa-regular fa-envelope"></i> Contact Admission Office
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== Academics ===== -->
+  <section class="hp-section" id="academics">
+    <div class="hp-section-inner">
+      <span class="hp-eyebrow hp-reveal">Academics</span>
+      <h2 class="hp-h2 hp-reveal">Four wings, every age group</h2>
+      <p class="hp-p hp-reveal" style="max-width:640px;">
+        Every class at Modern International School belongs to one of four wings —
+        each with its own teachers, rhythm and focus.
+      </p>
+
+      <div class="hp-wings-grid hp-reveal" id="wingsGrid">
+        <!-- populated by home.js; falls back to static cards if Firestore has no classes yet -->
+        <div class="hp-wing-card">
+          <div class="hp-wing-icon purple"><i class="fa-solid fa-graduation-cap"></i></div>
+          <h4>Primary Wing</h4>
+          <p class="hp-wing-note">Class details coming soon.</p>
+        </div>
+        <div class="hp-wing-card">
+          <div class="hp-wing-icon blue"><i class="fa-solid fa-calculator"></i></div>
+          <h4>Middle Wing</h4>
+          <p class="hp-wing-note">Class details coming soon.</p>
+        </div>
+        <div class="hp-wing-card">
+          <div class="hp-wing-icon green"><i class="fa-solid fa-flask"></i></div>
+          <h4>Secondary Wing</h4>
+          <p class="hp-wing-note">Class details coming soon.</p>
+        </div>
+        <div class="hp-wing-card">
+          <div class="hp-wing-icon orange"><i class="fa-solid fa-star"></i></div>
+          <h4>Senior Wing</h4>
+          <p class="hp-wing-note">Class details coming soon.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Notices ===== -->
+  <section class="hp-section hp-section-tint" id="notices">
+    <div class="hp-section-inner">
+      <span class="hp-eyebrow hp-reveal">Stay Updated</span>
+      <h2 class="hp-h2 hp-reveal">Notices &amp; Announcements</h2>
+
+      <div class="hp-notice-list hp-reveal" id="noticeList">
+        <!-- populated by home.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Gallery ===== -->
+  <section class="hp-section" id="gallery">
+    <div class="hp-section-inner">
+      <span class="hp-eyebrow hp-reveal">Campus Life</span>
+      <h2 class="hp-h2 hp-reveal">Moments from our campus</h2>
+
+      <div class="hp-gallery-grid hp-reveal">
+        <div class="hp-gallery-tile orange">
+          <i class="fa-solid fa-trophy"></i>
+          <span>Sports Day</span>
+        </div>
+        <div class="hp-gallery-tile pink">
+          <i class="fa-solid fa-masks-theater"></i>
+          <span>Annual Function</span>
+        </div>
+        <div class="hp-gallery-tile blue">
+          <i class="fa-solid fa-flask"></i>
+          <span>Science Exhibition</span>
+        </div>
+        <div class="hp-gallery-tile green">
+          <i class="fa-solid fa-flag"></i>
+          <span>Independence Day</span>
+        </div>
+        <div class="hp-gallery-tile purple">
+          <i class="fa-solid fa-palette"></i>
+          <span>Art &amp; Craft</span>
+        </div>
+        <div class="hp-gallery-tile teal">
+          <i class="fa-solid fa-bus"></i>
+          <span>Field Trip</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Contact ===== -->
+  <section class="hp-section hp-section-tint" id="contact">
+    <div class="hp-section-inner">
+      <span class="hp-eyebrow hp-reveal">Get In Touch</span>
+      <h2 class="hp-h2 hp-reveal">Visit or reach out to us</h2>
+
+      <div class="hp-contact-grid hp-reveal">
+
+        <div class="hp-contact-info">
+          <div class="hp-contact-row">
+            <div class="hp-contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div>
+              <h4>Address</h4>
+              <p id="contactAddress">School address coming soon.</p>
+            </div>
+          </div>
+          <div class="hp-contact-row">
+            <div class="hp-contact-icon"><i class="fa-solid fa-phone"></i></div>
+            <div>
+              <h4>Phone</h4>
+              <p id="contactPhone">To be announced</p>
+            </div>
+          </div>
+          <div class="hp-contact-row">
+            <div class="hp-contact-icon"><i class="fa-regular fa-envelope"></i></div>
+            <div>
+              <h4>Email</h4>
+              <p id="contactEmail">To be announced</p>
+            </div>
+          </div>
+          <div class="hp-contact-row">
+            <div class="hp-contact-icon"><i class="fa-solid fa-globe"></i></div>
+            <div>
+              <h4>Website</h4>
+              <p id="contactWebsite">To be announced</p>
+            </div>
+          </div>
+
+          <div class="hp-map-wrap">
+            <iframe id="contactMap" class="hp-map" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps?q=Modern%20International%20School&output=embed">
+            </iframe>
+          </div>
+        </div>
+
+        <form class="hp-contact-form" id="contactForm" novalidate>
+          <h3>Send us a message</h3>
+
+          <label class="hp-field-label" for="cfName">Your Name</label>
+          <div class="hp-input-wrap">
+            <i class="fa-regular fa-user"></i>
+            <input type="text" id="cfName" placeholder="Enter your name" required>
+          </div>
+
+          <label class="hp-field-label" for="cfContact">Phone or Email</label>
+          <div class="hp-input-wrap">
+            <i class="fa-solid fa-phone"></i>
+            <input type="text" id="cfContact" placeholder="How should we reach you?" required>
+          </div>
+
+          <label class="hp-field-label" for="cfMessage">Message</label>
+          <div class="hp-input-wrap hp-textarea-wrap">
+            <textarea id="cfMessage" rows="4" placeholder="Tell us how we can help" required></textarea>
+          </div>
+
+          <button type="submit" class="hp-btn hp-btn-primary hp-btn-block" id="cfSubmit">
+            <i class="fa-regular fa-paper-plane"></i> Send Message
+          </button>
+
+          <p class="hp-form-status" id="cfStatus"></p>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== Footer ===== -->
+<footer class="hp-footer">
+  <div class="hp-footer-inner">
+    <div class="hp-footer-brand">
+      <div class="hp-brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+      <div>
+        <h3><span class="accent">Modern</span> International School</h3>
+        <p>Nursery to Class 10 — four wings, one journey.</p>
+      </div>
+    </div>
+
+    <div class="hp-footer-links">
+      <h4>Quick Links</h4>
+      <a href="#about">About</a>
+      <a href="#admission">Admission</a>
+      <a href="#academics">Academics</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#contact">Contact</a>
+      <a href="student-login.html">Student / Parent Login</a>
+      <a href="admin.html">Staff Login</a>
+    </div>
+
+    <div class="hp-footer-contact">
+      <h4>Contact</h4>
+      <p id="footerPhone"><i class="fa-solid fa-phone"></i><span>To be announced</span></p>
+      <p id="footerEmail"><i class="fa-regular fa-envelope"></i><span>To be announced</span></p>
+      <p id="footerAddress"><i class="fa-solid fa-location-dot"></i><span>Address coming soon</span></p>
+    </div>
+  </div>
+
+  <div class="hp-footer-bottom">
+    © 2026 Modern International School. All rights reserved.
+  </div>
+</footer>
+
+<script type="module" src="home.js"></script>
+</body>
+  </html>
+  
