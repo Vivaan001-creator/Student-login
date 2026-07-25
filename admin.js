@@ -1802,3 +1802,326 @@ if (btn) {
     });
 
 }
+
+
+// ==========================
+// Class Wing Icons (visual only)
+// ==========================
+
+const wingIcons = {
+  "Primary Wing": "fa-graduation-cap",
+  "Middle Wing": "fa-calculator",
+  "Secondary Wing": "fa-flask",
+  "Senior Wing": "fa-star"
+};
+
+let editingClassId = null;
+let allClassRows = []; // cached for search filtering
+
+// ==========================
+// Load Classes Table + Stats
+// ==========================
+
+const classesTableBody = document.getElementById("classesTable");
+
+if (classesTableBody) {
+  loadClassesTable();
+}
+
+async function loadClassesTable() {
+
+  classesTableBody.innerHTML = `<tr><td colspan="5">Loading classes...</td></tr>`;
+
+  const classSnap = await getDocs(collection(db, "classes"));
+  const studentSnap = await getDocs(collection(db, "students"));
+
+  // Count students per class key (student.class matches the class doc id)
+  const studentCounts = {};
+  studentSnap.forEach((s) => {
+    const cls = s.data().class;
+    studentCounts[cls] = (studentCounts[cls] || 0) + 1;
+  });
+
+  allClassRows = [];
+  let totalSections = 0;
+  let totalStudents = 0;
+  let activeCount = 0;
+
+  classSnap.forEach((docSnap) => {
+    const c = docSnap.data();
+    const classId = docSnap.id;
+    const sections = c.sections || [];
+    const studentCount = studentCounts[classId] || 0;
+
+    totalSections += sections.length;
+    totalStudents += studentCount;
+    if (c.status === "Active") activeCount++;
+
+    allClassRows.push({ id: classId, ...c, studentCount });
+  });
+
+  renderClassRows(allClassRows);
+
+  const totalClassesBox = document.getElementById("totalClasses");
+  const totalSectionsBox = document.getElementById("totalSections");
+  const totalStudentsBox = document.getElementById("totalClassStudents");
+  const activeClassesBox = document.getElementById("activeClasses");
+
+  if (totalClassesBox) totalClassesBox.textContent = classSnap.size;
+  if (totalSectionsBox) totalSectionsBox.textContent = totalSections;
+  if (totalStudentsBox) totalStudentsBox.textContent = totalStudents;
+  if (activeClassesBox) activeClassesBox.textContent = activeCount;
+}
+
+window.loadClassesTable = loadClassesTable;
+
+function renderClassRows(rows) {
+
+  if (!classesTableBody) return;
+
+  if (rows.length === 0) {
+    classesTableBody.innerHTML = `<tr><td colspan="5">No classes found. Click "Add New Class" to create one.</td></tr>`;
+    return;
+  }
+
+  classesTableBody.innerHTML = "";
+
+  rows.forEach((c, index) => {
+
+    const icon = wingIcons[c.wing] || "fa-book";
+    const sections = c.sections || [];
+
+    const sectionBadges = sections.length
+      ? sections.map(s => `<span class="section-badge">${s}</span>`).join(" ")
+      : `<span class="section-badge">-</span>`;
+
+    const row = document.createElement("tr");
+    row.style.animationDelay = (index * 0.05) + "s";
+
+    row.innerHTML = `
+      <td data-label="Class">
+        <div class="class-name-cell">
+          <div class="class-icon-badge"><i class="fa-solid ${icon}"></i></div>
+          <div class="class-name-text">
+            <strong>${c.className || c.id}</strong>
+            <small>${c.wing || ""}</small>
+          </div>
+        </div>
+      </td>
+
+      <td data-label="Section(s)">${sectionBadges}</td>
+
+      <td data-label="Class Teacher" class="teacher-cell">
+        <strong>${c.teacherName || "-"}</strong>
+        <small>${c.teacherEmail || ""}</small>
+      </td>
+
+      <td data-label="Total Students">${c.studentCount}</td>
+
+      <td data-label="Action">
+        <div class="action-btns">
+          <button class="btn-view" onclick="viewClass('${c.id}')">
+            <i class="fa-regular fa-eye"></i> View
+          </button>
+          <button class="btn-edit" onclick="openClassModal('${c.id}')">
+            <i class="fa-solid fa-pen"></i> Edit
+          </button>
+          <button class="btn-delete" onclick="deleteClass('${c.id}')">
+            <i class="fa-solid fa-trash"></i> Delete
+          </button>
+        </div>
+      </td>
+    `;
+
+    classesTableBody.appendChild(row);
+
+  });
+
+}
+
+// ==========================
+// Search / Filter
+// ==========================
+
+function searchClass() {
+
+  const input = document.getElementById("searchClass").value.toLowerCase();
+
+  const filtered = allClassRows.filter(c =>
+    (c.className || c.id).toLowerCase().includes(input) ||
+    (c.teacherName || "").toLowerCase().includes(input)
+  );
+
+  renderClassRows(filtered);
+
+}
+
+window.searchClass = searchClass;
+
+// ==========================
+// Add / Edit Modal
+// ==========================
+
+async function openClassModal(classId) {
+
+  editingClassId = classId || null;
+
+  const backdrop = document.getElementById("classModalBackdrop");
+  const title = document.getElementById("classModalTitle");
+  const keyInput = document.getElementById("classKey");
+
+  document.getElementById("classForm").reset();
+
+  if (editingClassId) {
+
+    title.textContent = "Edit Class";
+    keyInput.disabled = true;
+
+    const snap = await getDoc(doc(db, "classes", editingClassId));
+
+    if (snap.exists()) {
+      const c = snap.data();
+      keyInput.value = editingClassId;
+      document.getElementById("className").value = c.className || "";
+      document.getElementById("classWing").value = c.wing || "Primary Wing";
+      document.getElementById("classSections").value = (c.sections || []).join(", ");
+      document.getElementById("classTeacherName").value = c.teacherName || "";
+      document.getElementById("classTeacherEmail").value = c.teacherEmail || "";
+      document.getElementById("classStatus").value = c.status || "Active";
+    }
+
+  } else {
+
+    title.textContent = "Add New Class";
+    keyInput.disabled = false;
+
+  }
+
+  backdrop.classList.add("open");
+
+}
+
+window.openClassModal = openClassModal;
+
+function closeClassModal() {
+  document.getElementById("classModalBackdrop").classList.remove("open");
+  editingClassId = null;
+}
+
+window.closeClassModal = closeClassModal;
+
+// Close modal on backdrop click (not when clicking inside the box)
+const classModalBackdropEl = document.getElementById("classModalBackdrop");
+if (classModalBackdropEl) {
+  classModalBackdropEl.addEventListener("click", function (e) {
+    if (e.target === classModalBackdropEl) closeClassModal();
+  });
+}
+
+// ==========================
+// Save (Add or Update) Class
+// ==========================
+
+async function saveClass() {
+
+  const classKey = document.getElementById("classKey").value.trim();
+  const className = document.getElementById("className").value.trim();
+  const wing = document.getElementById("classWing").value;
+  const sectionsRaw = document.getElementById("classSections").value.trim();
+  const teacherName = document.getElementById("classTeacherName").value.trim();
+  const teacherEmail = document.getElementById("classTeacherEmail").value.trim();
+  const status = document.getElementById("classStatus").value;
+
+  if (!classKey || !className) {
+    alert("Please fill Class Key and Display Name.");
+    return;
+  }
+
+  const sections = sectionsRaw
+    ? sectionsRaw.split(",").map(s => s.trim()).filter(Boolean)
+    : [];
+
+  const classData = {
+    className,
+    wing,
+    sections,
+    teacherName,
+    teacherEmail,
+    status
+  };
+
+  try {
+
+    await setDoc(doc(db, "classes", classKey), classData, { merge: true });
+
+    closeClassModal();
+    await loadClassesTable();
+
+    alert(editingClassId ? "Class updated successfully." : "Class added successfully.");
+
+  } catch (error) {
+
+    console.error(error);
+    alert(error.message);
+
+  }
+
+}
+
+window.saveClass = saveClass;
+
+// ==========================
+// View Class
+// ==========================
+
+async function viewClass(classId) {
+
+  const snap = await getDoc(doc(db, "classes", classId));
+
+  if (!snap.exists()) {
+    alert("Class not found.");
+    return;
+  }
+
+  const c = snap.data();
+
+  alert(
+    `${c.className}\n` +
+    `Wing: ${c.wing || "-"}\n` +
+    `Sections: ${(c.sections || []).join(", ") || "-"}\n` +
+    `Class Teacher: ${c.teacherName || "-"} (${c.teacherEmail || "-"})\n` +
+    `Status: ${c.status || "-"}`
+  );
+
+}
+
+window.viewClass = viewClass;
+
+// ==========================
+// Delete Class
+// ==========================
+
+async function deleteClass(classId) {
+
+  const confirmDelete = confirm("Delete this class permanently?");
+
+  if (!confirmDelete) return;
+
+  try {
+
+    await deleteDoc(doc(db, "classes", classId));
+
+    alert("Class deleted successfully.");
+
+    loadClassesTable();
+
+  } catch (error) {
+
+    console.error(error);
+    alert(error.message);
+
+  }
+
+}
+
+window.deleteClass = deleteClass;
