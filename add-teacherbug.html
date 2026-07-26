@@ -165,23 +165,7 @@
               <label>Full Name <span class="req">*</span></label>
               <div class="input-wrap">
                 <i class="fa-regular fa-user field-icon"></i>
-                <input type="text" id="teacherName">
-
-
-
-
-
-
-...
-</select>
-
-<input type="text" id="teacherQualification">
-
-<input type="number" id="teacherExperience">
-
-<select id="teacherStatus">
-...
-</select>
+                <input type="text" id="teacherName" placeholder="Enter full name">
               </div>
             </div>
 
@@ -189,7 +173,7 @@
               <label>Email Address <span class="req">*</span></label>
               <div class="input-wrap">
                 <i class="fa-regular fa-envelope field-icon"></i>
-                <input type="email" id="teacherEmail">
+                <input type="email" id="teacherEmail" placeholder="Enter email address">
               </div>
             </div>
 
@@ -197,14 +181,14 @@
               <label>Mobile Number <span class="req">*</span></label>
               <div class="input-wrap">
                 <i class="fa-solid fa-phone field-icon"></i>
-                <input type="tel" id="teacherPhone">
+                <input type="tel" id="teacherPhone" placeholder="Enter mobile number">
               </div>
             </div>
 
             <div class="form-field">
               <label>Subject <span class="req">*</span></label>
               <div class="input-wrap select-wrap">
-                <select>
+                <select id="teacherSubject">
                   <option value="" selected disabled>Select subject</option>
                   <option>Mathematics</option>
                   <option>Science</option>
@@ -220,7 +204,7 @@
               <label>Qualification <span class="req">*</span></label>
               <div class="input-wrap">
                 <i class="fa-solid fa-graduation-cap field-icon"></i>
-                <input type="text" placeholder="Enter qualification">
+                <input type="text" id="teacherQualification" placeholder="Enter qualification">
               </div>
             </div>
 
@@ -228,14 +212,14 @@
               <label>Experience (Years)</label>
               <div class="input-wrap">
                 <i class="fa-regular fa-briefcase field-icon"></i>
-                <input type="number" placeholder="Enter experience">
+             <input type="number" id="teacherExperience" placeholder="Enter experience">
               </div>
             </div>
 
             <div class="form-field">
               <label>Date of Joining <span class="req">*</span></label>
               <div class="input-wrap">
-                <input type="text" placeholder="dd-mm-yyyy">
+               <input type="date" id="teacherJoiningDate">
                 <i class="fa-regular fa-calendar field-icon-right"></i>
               </div>
             </div>
@@ -243,7 +227,7 @@
             <div class="form-field">
               <label>Status <span class="req">*</span></label>
               <div class="input-wrap select-wrap">
-                <select>
+                <select id="teacherStatus">
                   <option value="" selected disabled>Select status</option>
                   <option>Active</option>
                   <option>Inactive</option>
@@ -263,7 +247,7 @@
               <label>Address</label>
               <div class="input-wrap">
                 <i class="fa-solid fa-location-dot field-icon"></i>
-                <input type="text" placeholder="Enter full address">
+                <input type="text" id="teacherAddress" placeholder="Enter full address">
               </div>
             </div>
 
@@ -271,7 +255,7 @@
               <label>Password (For Login) <span class="req">*</span></label>
               <div class="input-wrap">
                 <i class="fa-solid fa-lock field-icon"></i>
-                <input type="password" placeholder="Enter password">
+                <input type="password" id="teacherPassword" placeholder="Enter password">
                 <button type="button" class="toggle-password" aria-label="Show password">
                   <i class="fa-regular fa-eye field-icon-right"></i>
                 </button>
