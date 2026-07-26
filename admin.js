@@ -987,8 +987,8 @@ async function addTeacher(){
     const teacherName =
         document.getElementById("teacherName")?.value.trim();
 
-    const teacherSubject =
-        document.getElementById("teacherSubject")?.value.trim();
+  const teacherSubject =
+document.getElementById("teacherSubject").value;
 
     const teacherEmail =
         document.getElementById("teacherEmail").value.trim();
