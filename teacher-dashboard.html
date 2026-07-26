@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher Dashboard - Modern International School</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+      <div class="brand-text">
+        <h1><span class="accent">Modern</span></h1>
+        <p>International School</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="teacher-dashboard.html" class="nav-link active">
+        <i class="fa-solid fa-house"></i>
+        <span class="link-text">Dashboard</span>
+      </a>
+      <a href="#my-class" class="nav-link">
+        <i class="fa-solid fa-chalkboard"></i>
+        <span class="link-text">My Class</span>
+      </a>
+      <a href="#" class="nav-link" onclick="teacherChangePassword(); return false;">
+        <i class="fa-solid fa-key"></i>
+        <span class="link-text">Change Password</span>
+      </a>
+    </nav>
+
+    <a href="teacher-login.html" onclick="teacherLogout(); return false;" class="logout-link">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      <span class="link-text">Logout</span>
+    </a>
+  </aside>
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <header class="dashboard-hero">
+      <div class="topbar-left">
+        <h1>Welcome, <span id="topbarTeacherName">Teacher</span></h1>
+        <p id="teacherSubjectLine">Subject Teacher</p>
+      </div>
+
+      <div class="topbar-right">
+        <div class="admin-profile">
+          <div class="avatar"><i class="fa-solid fa-chalkboard-user"></i></div>
+          <span>Teacher</span>
+        </div>
+      </div>
+
+      <svg class="topbar-illustration" viewBox="0 0 1000 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <g fill="rgba(255,255,255,0.18)">
+          <ellipse cx="150" cy="95" rx="30" ry="12"/>
+          <ellipse cx="178" cy="88" rx="20" ry="10"/>
+          <ellipse cx="820" cy="80" rx="34" ry="13"/>
+          <ellipse cx="500" cy="55" rx="26" ry="10"/>
+        </g>
+        <path d="M0,300 Q180,235 380,262 T760,248 Q880,240 1000,255 L1000,300 Z" fill="rgba(255,255,255,0.08)"/>
+        <path d="M0,300 Q220,260 460,278 T900,270 L1000,278 L1000,300 Z" fill="rgba(255,255,255,0.12)"/>
+        <polygon points="368,170 546,170 457,75" fill="rgba(255,255,255,0.24)"/>
+        <circle cx="457" cy="122" r="10" fill="rgba(255,255,255,0.34)"/>
+        <rect x="368" y="170" width="178" height="110" fill="rgba(255,255,255,0.22)"/>
+        <g fill="rgba(124,111,240,0.42)">
+          <path d="M387,220 L387,200 Q400,178 413,200 L413,220 Z"/>
+          <path d="M444,220 L444,200 Q457,178 470,200 L470,220 Z"/>
+          <path d="M501,220 L501,200 Q514,178 527,200 L527,220 Z"/>
+        </g>
+        <path d="M442,280 L442,225 Q457,205 472,225 L472,280 Z" fill="rgba(90,80,180,0.48)"/>
+        <rect x="425" y="278" width="64" height="6" fill="rgba(255,255,255,0.26)"/>
+      </svg>
+    </header>
+
+    <main class="content">
+
+      <!-- Profile summary -->
+      <section class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-id-card"></i>
+          <h2>My Profile</h2>
+        </div>
+
+        <div class="mini-stats-grid">
+          <div class="mini-stat-card">
+            <div class="mini-stat-icon purple"><i class="fa-solid fa-book"></i></div>
+            <div class="mini-stat-info">
+              <div class="mini-stat-number" id="teacherSubjectText">-</div>
+              <div class="mini-stat-label">Subject</div>
+            </div>
+          </div>
+          <div class="mini-stat-card">
+            <div class="mini-stat-icon blue"><i class="fa-solid fa-graduation-cap"></i></div>
+            <div class="mini-stat-info">
+              <div class="mini-stat-number" id="teacherQualificationText">-</div>
+              <div class="mini-stat-label">Qualification</div>
+            </div>
+          </div>
+          <div class="mini-stat-card">
+            <div class="mini-stat-icon green"><i class="fa-solid fa-briefcase"></i></div>
+            <div class="mini-stat-info">
+              <div class="mini-stat-number" id="teacherExperienceText">-</div>
+              <div class="mini-stat-label">Experience</div>
+            </div>
+          </div>
+          <div class="mini-stat-card">
+            <div class="mini-stat-icon orange"><i class="fa-solid fa-phone"></i></div>
+            <div class="mini-stat-info">
+              <div class="mini-stat-number" id="teacherPhoneText">-</div>
+              <div class="mini-stat-label">Phone</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- My Class -->
+      <section class="card" id="my-class">
+        <div class="card-title">
+          <i class="fa-solid fa-chalkboard"></i>
+          <h2>My Class</h2>
+        </div>
+
+        <div id="teacherClassBox">
+          <p class="no-class-msg">Loading...</p>
+        </div>
+      </section>
+
+      <!-- Coming soon modules -->
+      <section class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-layer-group"></i>
+          <h2>More on the way</h2>
+        </div>
+
+        <div class="actions-grid">
+          <a href="#" class="action-item coming-soon-card">
+            <span class="soon-tag">Soon</span>
+            <div class="action-icon blue"><i class="fa-regular fa-square-check"></i></div>
+            <div class="action-text">
+              <h3 class="blue-text">Take Attendance</h3>
+              <p>Mark daily attendance for your class</p>
+            </div>
+          </a>
+
+          <a href="#" class="action-item coming-soon-card">
+            <span class="soon-tag">Soon</span>
+            <div class="action-icon purple"><i class="fa-solid fa-pen-to-square"></i></div>
+            <div class="action-text">
+              <h3>Add Marks</h3>
+              <p>Enter monthly subject-wise marks</p>
+            </div>
+          </a>
+
+          <a href="#" class="action-item coming-soon-card">
+            <span class="soon-tag">Soon</span>
+            <div class="action-icon teal"><i class="fa-solid fa-file-lines"></i></div>
+            <div class="action-text">
+              <h3 class="teal-text">Upload Homework</h3>
+              <p>Share homework with your class</p>
+            </div>
+          </a>
+
+          <a href="#" class="action-item coming-soon-card">
+            <span class="soon-tag">Soon</span>
+            <div class="action-icon pink"><i class="fa-regular fa-bell"></i></div>
+            <div class="action-text">
+              <h3 class="pink-text">Notices</h3>
+              <p>School notices &amp; circulars</p>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <footer class="footer">
+        © 2026 Modern International School. All rights reserved.
+      </footer>
+
+    </main>
+  </div>
+</div>
+
+<script type="module" src="teacher.js"></script>
+</body>
+</html>
