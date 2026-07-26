@@ -5658,6 +5658,7 @@ button { font-family: inherit; cursor: pointer; }
   margin-bottom: 16px;
 }
 .role-card-icon.purple { background: #efe9ff; color: #7c5cf0; }
+.role-card-icon.blue   { background: #e3f1ff; color: #3b93f0; }
 .role-card-icon.navy   { background: #e8e7f5; color: #4a41d6; }
 .role-card-icon.muted  { background: #f0f0f5; color: #b4b8c9; }
 
@@ -5711,5 +5712,48 @@ button { font-family: inherit; cursor: pointer; }
 
 @media (min-width: 640px) {
   .role-select-grid { grid-template-columns: repeat(2, 1fr); }
-  .role-card:nth-child(3) { grid-column: span 2; }
+}
+
+/* =========================================================
+   Teacher Dashboard — My Class card (teacher-dashboard.html)
+========================================================= */
+.no-class-msg {
+  font-size: 13.5px;
+  color: var(--text-muted, #8a8fa3);
+  margin: 6px 0;
+}
+
+.my-class-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--purple-100, #f4f3ff);
+  border-radius: var(--radius-md, 12px);
+  padding: 16px 18px;
+  margin-bottom: 12px;
+}
+.my-class-card:last-child { margin-bottom: 0; }
+
+.my-class-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #ffffff;
+  color: var(--purple, #5b52ea);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.my-class-card strong {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text-dark, #1f2237);
+}
+.my-class-card span {
+  font-size: 12px;
+  color: var(--text-muted, #8a8fa3);
 }
