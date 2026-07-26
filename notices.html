@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern International School - Notice Board</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+      <div class="brand-text">
+        <h1><span class="accent">Modern</span></h1>
+        <p>International School</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-link">
+        <i class="fa-solid fa-house"></i>
+        <span class="link-text">Dashboard</span>
+      </a>
+      <a href="classes.html" class="nav-link">
+        <i class="fa-solid fa-chalkboard"></i>
+        <span class="link-text">All Classes</span>
+      </a>
+
+      <button class="nav-parent" id="studentsToggle">
+        <i class="fa-solid fa-user-group"></i>
+        <span class="link-text">Students</span>
+        <i class="fa-solid fa-chevron-down chevron"></i>
+      </button>
+      <div class="submenu collapsed" id="studentsSubmenu">
+        <a href="students.html" class="sub-link">
+          <i class="fa-regular fa-user"></i> All Students
+        </a>
+        <a href="add-student.html" class="sub-link">
+          <i class="fa-solid fa-circle-plus"></i> Add Student
+        </a>
+      </div>
+
+      <button class="nav-parent" id="teachersToggle">
+        <i class="fa-solid fa-chalkboard-user"></i>
+        <span class="link-text">Teachers</span>
+        <i class="fa-solid fa-chevron-down chevron"></i>
+      </button>
+      <div class="submenu collapsed" id="teachersSubmenu">
+        <a href="teachers.html" class="sub-link">
+          <i class="fa-regular fa-user"></i> All Teachers
+        </a>
+        <a href="add-teacher.html" class="sub-link">
+          <i class="fa-solid fa-circle-plus"></i> Add Teacher
+        </a>
+      </div>
+
+      <a href="#" class="nav-link">
+        <i class="fa-regular fa-square-check"></i>
+        <span class="link-text">Attendance</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-solid fa-file-lines"></i>
+        <span class="link-text">Assignments</span>
+      </a>
+      <a href="marks-management.html" class="nav-link">
+        <i class="fa-solid fa-file-pen"></i>
+        <span class="link-text">Exams</span>
+      </a>
+      <a href="publish-result.html" class="nav-link">
+        <i class="fa-solid fa-chart-column"></i>
+        <span class="link-text">Results</span>
+      </a>
+      <a href="fee-management.html" class="nav-link">
+        <i class="fa-solid fa-file-invoice-dollar"></i>
+        <span class="link-text">Fee Management</span>
+      </a>
+      <a href="notices.html" class="nav-link active">
+        <i class="fa-regular fa-bell"></i>
+        <span class="link-text">Notice Board</span>
+      </a>
+      <a href="gallery-management.html" class="nav-link">
+        <i class="fa-solid fa-images"></i>
+        <span class="link-text">Gallery</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-regular fa-envelope"></i>
+        <span class="link-text">Messages</span>
+      </a>
+      <a href="school-profile.html" class="nav-link">
+        <i class="fa-solid fa-building-columns"></i>
+        <span class="link-text">School Profile</span>
+      </a>
+      <a href="change-password.html" class="nav-link">
+        <i class="fa-solid fa-gear"></i>
+        <span class="link-text">Settings</span>
+      </a>
+    </nav>
+
+    <a href="#" onclick="adminLogout()" class="logout-link">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      <span class="link-text">Logout</span>
+    </a>
+  </aside>
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <h2>Notice Board</h2>
+      </div>
+      <div class="topbar-right">
+        <div class="admin-profile">
+          <div class="avatar"><i class="fa-solid fa-user"></i></div>
+          <span>Admin</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="content classes-page">
+
+      <div class="page-topbar">
+        <div class="page-topbar-left">
+          <h1>Notice Board</h1>
+          <p>Notices show up on the homepage and on Student/Teacher dashboards.</p>
+        </div>
+        <button class="btn-add-class" onclick="openNoticeModal()">
+          <i class="fa-solid fa-plus"></i> Add Notice
+        </button>
+      </div>
+
+      <div class="classes-card">
+
+        <div class="classes-card-toolbar">
+          <div class="search-box-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchNotice" placeholder="Search notices..." oninput="searchNotice()">
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="classes-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="noticesTable">
+              <tr><td colspan="4">Loading notices...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <footer class="footer">
+        © 2026 Modern International School. All rights reserved.
+      </footer>
+
+    </main>
+  </div>
+</div>
+
+<!-- Add / Edit Notice Modal -->
+<div class="modal-backdrop" id="noticeModalBackdrop">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 id="noticeModalTitle">Add Notice</h2>
+      <button class="modal-close" onclick="closeNoticeModal()" aria-label="Close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <form id="noticeForm" onsubmit="event.preventDefault(); saveNotice();">
+
+      <label class="field-label" for="noticeTitle">Title</label>
+      <input type="text" id="noticeTitle" placeholder="e.g. Admissions Open for 2026-27">
+
+      <label class="field-label" for="noticeDate">Date</label>
+      <input type="date" id="noticeDate">
+
+      <label class="field-label" for="noticeDescription">Description</label>
+      <textarea id="noticeDescription" rows="4" placeholder="Notice details..."></textarea>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" onclick="closeNoticeModal()">Cancel</button>
+        <button type="submit" class="btn-primary-solid">Save Notice</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script type="module" src="admin.js"></script>
+</body>
+</html>
