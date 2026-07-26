@@ -1,308 +1,309 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Teacher Profile</title>
-
-<link rel="stylesheet"
-href="admin.css">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher Profile | Modern International School</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
 </head>
-
 <body>
 
-<div class="profile-container">
-
-<!-- ================= HEADER ================= -->
-
-<header class="profile-header">
-
-<div class="school-logo">
-
-<img src="school-logo.png" alt="School Logo">
-
-<div>
-
-<h3>Modern International School</h3>
-
-<p>Teacher Management System</p>
-
-</div>
-
-</div>
-
-<h1>TEACHER PROFILE</h1>
-
-<div class="search-box">
-
-<input
-type="text"
-placeholder="Search...">
-
-<i class="fa-solid fa-magnifying-glass"></i>
-
-</div>
-
-</header>
-
-<!-- ================= BASIC INFO ================= -->
-
-<div class="profile-top">
-
-<div class="profile-info-card">
-
-<h2 id="profileName">
-
-Teacher Name
-
-</h2>
-
-<p>
-
-<b>Employee ID :</b>
-
-<span id="profileEmployeeId"></span>
-
-</p>
-
-<p>
-
-<b>Designation :</b>
-
-<span id="profileDesignation"></span>
-
-</p>
-
-<p>
-
-<b>Subject :</b>
-
-<span id="profileSubject"></span>
-
-</p>
-
-<p>
-
-<b>Department :</b>
-
-<span id="profileDepartment"></span>
-
-</p>
-
-<p>
-
-<b>Joining Date :</b>
-
-<span id="profileJoiningDate"></span>
-
-</p>
-
-<p>
-
-<b>Status :</b>
-
-<span id="profileStatus"></span>
-
-</p>
-
-</div>
-
-<div class="summary-card">
-
-<h3>
-
-<i class="fa-solid fa-user"></i>
-
-Profile Summary
-
-</h3>
-
-<p id="profileSummary">
-
-No Summary
-
-</p>
-
-</div>
-
-</div>
-
-<!-- ================= SECOND ROW ================= -->
-
-<div class="profile-grid">
-
-<div class="card">
-
-<h3>
-
-<i class="fa-solid fa-graduation-cap"></i>
-
-Academic Qualification
-
-</h3>
-
-<p id="profileQualification"></p>
-
-</div>
-
-<div class="card">
-
-<h3>
-
-<i class="fa-solid fa-list-check"></i>
-
-Responsibilities
-
-</h3>
-
-<ul>
-
-<li id="responsibility1"></li>
-
-<li id="responsibility2"></li>
-
-<li id="responsibility3"></li>
-
-<li id="responsibility4"></li>
-
-</ul>
-
-</div>
-
-<div class="card">
-
-<h3>
-
-<i class="fa-solid fa-book"></i>
-
-Subject Assigned
-
-</h3>
-
-<p id="profileAssigned"></p>
-
-</div>
-
-<div class="card">
-
-<h3>
-
-<i class="fa-solid fa-briefcase"></i>
-
-Experience
-
-</h3>
-
-<p>
-
-<span id="profileExperience"></span>
-
-Years
-
-</p>
-
-</div>
-
-<div class="card">
-
-<h3>
-
-<i class="fa-solid fa-star"></i>
-
-Expertise
-
-</h3>
-
-<ul>
-
-<li id="expertise1"></li>
-
-<li id="expertise2"></li>
-
-<li id="expertise3"></li>
-
-<li id="expertise4"></li>
-
-</ul>
-
-</div>
-
-<div class="card">
-
-<h3>
-
-<i class="fa-solid fa-address-card"></i>
-
-Contact Information
-
-</h3>
-
-<p>
-
-<i class="fa-solid fa-envelope"></i>
-
-<span id="profileEmail"></span>
-
-</p>
-
-<p>
-
-<i class="fa-solid fa-phone"></i>
-
-<span id="profilePhone"></span>
-
-</p>
-
-<p>
-
-<i class="fa-solid fa-location-dot"></i>
-
-<span id="profileAddress"></span>
-
-</p>
-
-</div>
-
-</div>
-
-<!-- ================= FOOTER ================= -->
-
-<div class="profile-footer">
-
-<button
-onclick="window.location.href='teachers.html'">
-
-<i class="fa-solid fa-arrow-left"></i>
-
-Back
-
-</button>
-
-<button onclick="editTeacherProfile()">
-✏️Edit Profile
-  </button>
-  
-</div>
-
-</div>
-
-  
-
-<script
-type="module"
-src="admin.js">
-
-</script>
-
+  <div class="app-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+      <div class="brand-text">
+        <h1><span class="accent">Modern</span></h1>
+        <p>International School</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-link">
+        <i class="fa-solid fa-house"></i>
+        <span class="link-text">Dashboard</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-solid fa-chalkboard"></i>
+        <span class="link-text">My Classes</span>
+      </a>
+
+      <button class="nav-parent" id="studentsToggle">
+        <i class="fa-solid fa-user-group"></i>
+        <span class="link-text">Students</span>
+        <i class="fa-solid fa-chevron-down chevron"></i>
+      </button>
+      <div class="submenu collapsed" id="studentsSubmenu">
+        <a href="students.html" class="sub-link">
+          <i class="fa-regular fa-user"></i> All Students
+        </a>
+        <a href="add-student.html" class="sub-link">
+          <i class="fa-solid fa-circle-plus"></i> Add Student
+        </a>
+      </div>
+
+      <button class="nav-parent" id="teachersToggle">
+        <i class="fa-solid fa-chalkboard-user"></i>
+        <span class="link-text">Teachers</span>
+        <i class="fa-solid fa-chevron-down chevron"></i>
+      </button>
+      <div class="submenu collapsed" id="teachersSubmenu">
+        <a href="teachers.html" class="sub-link active">
+          <i class="fa-regular fa-user"></i> All Teachers
+        </a>
+        <a href="add-teacher.html" class="sub-link">
+          <i class="fa-solid fa-circle-plus"></i> Add Teacher
+        </a>
+      </div>
+
+      <a href="#" class="nav-link">
+        <i class="fa-regular fa-square-check"></i>
+        <span class="link-text">Attendance</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-solid fa-file-lines"></i>
+        <span class="link-text">Assignments</span>
+      </a>
+      <a href="marks-management.html" class="nav-link">
+        <i class="fa-solid fa-file-pen"></i>
+        <span class="link-text">Exams</span>
+      </a>
+      <a href="publish-result.html" class="nav-link">
+        <i class="fa-solid fa-chart-column"></i>
+        <span class="link-text">Results</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-regular fa-envelope"></i>
+        <span class="link-text">Messages</span>
+      </a>
+      <a href="school-profile.html" class="nav-link">
+        <i class="fa-solid fa-building-columns"></i>
+        <span class="link-text">School Profile</span>
+      </a>
+      <a href="change-password.html" class="nav-link">
+        <i class="fa-solid fa-gear"></i>
+        <span class="link-text">Settings</span>
+      </a>
+    </nav>
+
+    <a href="#" onclick="adminLogout()" class="logout-link">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      <span class="link-text">Logout</span>
+    </a>
+  </aside>
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- ================= MAIN ================= -->
+    <div class="main-area">
+
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="topbar-title">Teacher Profile</h1>
+        </div>
+
+        <div class="topbar-right">
+          <button class="icon-btn bell-btn" aria-label="Notifications">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge">3</span>
+          </button>
+
+          <div class="admin-chip">
+            <div class="admin-avatar"><i class="fa-solid fa-user"></i></div>
+            <span class="admin-name">Admin</span>
+            <i class="fa-solid fa-chevron-down admin-caret"></i>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="content">
+
+        <!-- Profile Summary -->
+        <section class="profile-summary-card">
+          <div class="profile-avatar-lg"><i class="fa-solid fa-user"></i></div>
+
+          <div class="profile-summary-main">
+            <h2 id="profileName">&nbsp;</h2>
+
+            <div class="profile-badges">
+              <span class="subject-badge"><i class="fa-solid fa-book"></i> <span id="profileAssigned">&nbsp;</span></span>
+              <span id="profileStatus" class="status-active">&nbsp;</span>
+            </div>
+
+            <div class="profile-summary-facts">
+              <div class="fact-item">
+                <span class="fact-label">Employee ID</span>
+                <span class="fact-value" id="profileEmployeeId">-</span>
+              </div>
+              <div class="fact-item">
+                <span class="fact-label">Phone</span>
+                <span class="fact-value" id="profilePhone">-</span>
+              </div>
+              <div class="fact-item">
+                <span class="fact-label">Email</span>
+                <span class="fact-value" id="profileEmail">-</span>
+              </div>
+              <div class="fact-item">
+                <span class="fact-label">Experience</span>
+                <span class="fact-value" id="profileExperience">-</span>
+              </div>
+              <div class="fact-item">
+                <span class="fact-label">Qualification</span>
+                <span class="fact-value" id="profileQualification">-</span>
+              </div>
+              <div class="fact-item">
+                <span class="fact-label">Joining Date</span>
+                <span class="fact-value" id="profileJoiningDate">-</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-actions">
+            <button type="button" class="btn btn-primary" onclick="editTeacherProfile()">
+              <i class="fa-solid fa-pen"></i>
+              Edit Profile
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='teachers.html'">
+              <i class="fa-solid fa-arrow-left"></i>
+              Back to Teachers
+            </button>
+          </div>
+        </section>
+
+        <!-- Professional Details -->
+        <section class="form-card">
+          <h3 class="section-title">Professional Details</h3>
+
+          <div class="view-grid two-col">
+            <div class="view-field">
+              <label>Designation</label>
+              <div class="view-value" id="profileDesignation">-</div>
+            </div>
+            <div class="view-field">
+              <label>Department</label>
+              <div class="view-value" id="profileDepartment">-</div>
+            </div>
+            <div class="view-field full-width">
+              <label>Professional Summary</label>
+              <div class="view-value multiline" id="profileSummary">-</div>
+            </div>
+          </div>
+
+          <hr class="divider">
+
+          <h3 class="section-title">Qualifications</h3>
+
+          <div class="view-grid">
+            <div class="view-field">
+              <label>Graduation</label>
+              <div class="view-value" id="profileGraduation">-</div>
+            </div>
+            <div class="view-field">
+              <label>Post Graduation</label>
+              <div class="view-value" id="profilePostGraduation">-</div>
+            </div>
+            <div class="view-field">
+              <label>B.Ed</label>
+              <div class="view-value" id="profileBed">-</div>
+            </div>
+            <div class="view-field">
+              <label>CTET / TET</label>
+              <div class="view-value" id="profileCTET">-</div>
+            </div>
+            <div class="view-field">
+              <label>Other Qualification</label>
+              <div class="view-value" id="profileOtherQualification">-</div>
+            </div>
+          </div>
+
+          <hr class="divider">
+
+          <h3 class="section-title">School History</h3>
+
+          <div class="view-grid two-col">
+            <div class="view-field">
+              <label>Current School</label>
+              <div class="view-value" id="profileCurrentSchool">-</div>
+            </div>
+            <div class="view-field">
+              <label>Previous School</label>
+              <div class="view-value" id="profilePreviousSchool">-</div>
+            </div>
+          </div>
+
+          <hr class="divider">
+
+          <h3 class="section-title">Achievements</h3>
+
+          <div class="view-grid">
+            <div class="view-field full-width">
+              <label>Achievements / Awards</label>
+              <div class="view-value multiline" id="profileAchievement">-</div>
+            </div>
+          </div>
+
+          <hr class="divider">
+
+          <h3 class="section-title">Responsibilities</h3>
+
+          <div class="view-list">
+            <div class="view-list-row"><span class="list-bullet">1</span><span id="responsibility1">-</span></div>
+            <div class="view-list-row"><span class="list-bullet">2</span><span id="responsibility2">-</span></div>
+            <div class="view-list-row"><span class="list-bullet">3</span><span id="responsibility3">-</span></div>
+            <div class="view-list-row"><span class="list-bullet">4</span><span id="responsibility4">-</span></div>
+          </div>
+
+          <hr class="divider">
+
+          <h3 class="section-title">Areas of Expertise</h3>
+
+          <div class="view-list">
+            <div class="view-list-row"><span class="list-bullet"><i class="fa-solid fa-star"></i></span><span id="expertise1">-</span></div>
+            <div class="view-list-row"><span class="list-bullet"><i class="fa-solid fa-star"></i></span><span id="expertise2">-</span></div>
+            <div class="view-list-row"><span class="list-bullet"><i class="fa-solid fa-star"></i></span><span id="expertise3">-</span></div>
+            <div class="view-list-row"><span class="list-bullet"><i class="fa-solid fa-star"></i></span><span id="expertise4">-</span></div>
+          </div>
+
+          <hr class="divider">
+
+          <h3 class="section-title">Contact & Other</h3>
+
+          <div class="view-grid">
+            <div class="view-field">
+              <label>Office / Cabin</label>
+              <div class="view-value" id="profileOffice">-</div>
+            </div>
+            <div class="view-field">
+              <label>Attendance</label>
+              <div class="view-value" id="profileAttendance">-</div>
+            </div>
+            <div class="view-field full-width">
+              <label>Address</label>
+              <div class="view-value" id="profileAddress">-</div>
+            </div>
+          </div>
+
+          <!-- Hidden — admin.js also looks up a "profileSubject"
+               element on this page; kept off-screen since the
+               subject is already shown in the badge above -->
+          <span id="profileSubject" style="display:none;"></span>
+
+        </section>
+
+      </main>
+    </div>
+  </div>
+<script type="module" src="admin.js"></script>
 </body>
-
 </html>
