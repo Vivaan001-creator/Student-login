@@ -689,11 +689,19 @@ async function addStudent() {
   const roll = document.getElementById("roll").value.trim();
   const name = document.getElementById("studentName").value.trim();
   const father = document.getElementById("fatherName").value.trim();
+  const mother = document.getElementById("motherName")?.value.trim() || "";
   const studentClass = document.getElementById("studentClass").value;
+  const section = document.getElementById("section")?.value || "";
+  const dob = document.getElementById("dob").value.trim();
+  const gender = document.getElementById("gender")?.value || "";
+  const contactNumber = document.getElementById("contactNumber")?.value.trim() || "";
+  const address = document.getElementById("address")?.value.trim() || "";
+  const admissionDate = document.getElementById("admissionDate")?.value.trim() || "";
+  const previousSchool = document.getElementById("previousSchool")?.value.trim() || "";
   const attendance = document.getElementById("attendance").value.trim();
 
-  if (!roll || !name || !father || !studentClass || !attendance) {
-    alert("Please fill all fields.");
+  if (!roll || !name || !father || !studentClass || !section || !dob || !gender || !attendance) {
+    alert("Please fill all required (*) fields.");
     return;
   }
 
@@ -708,7 +716,15 @@ async function addStudent() {
   await setDoc(studentRef, {
     name: name,
     father: father,
+    mother: mother,
     class: studentClass,
+    section: section,
+    dob: dob,
+    gender: gender,
+    contactNumber: contactNumber,
+    address: address,
+    admissionDate: admissionDate,
+    previousSchool: previousSchool,
     attendance: attendance,
     publishStatus: "unpublished"
   });
