@@ -1,289 +1,450 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Edit Teacher Profile</title>
-
-<link rel="stylesheet"
-href="admin.css">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Teacher | Modern International School</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
 </head>
-
 <body>
 
-<div class="edit-profile-container">
-
-<h1>
-
-<i class="fa-solid fa-user-pen"></i>
-
-Edit Teacher Profile
-
-</h1>
-
-<!-- Basic Information -->
-
-<div class="card">
-
-<h2>Basic Information</h2>
-
-<input
-type="text"
-id="profileName"
-placeholder="Teacher Name">
-
-<input
-type="text"
-id="profileEmployeeId"
-placeholder="Employee ID">
-
-<input
-type="text"
-id="profileDesignation"
-placeholder="Designation">
-
-<input
-type="text"
-id="profileDepartment"
-placeholder="Department">
-
-<input
-type="text"
-id="profileSubject"
-placeholder="Subject">
-
-<input
-type="date"
-id="profileJoiningDate">
-
-<select id="profileStatus">
-
-<option value="Active">
-Active
-</option>
-
-<option value="Inactive">
-Inactive
-</option>
-
-</select>
-
-</div>
-
-<!-- Profile Summary -->
-
-<div class="card">
-
-<h2>Profile Summary</h2>
-
-<textarea
-id="profileSummary"
-rows="5"
-placeholder="Write Teacher Profile Summary...">
-</textarea>
-
-</div>
-
-<!-- Qualification -->
-
-<div class="card">
-
-<h2>Academic Qualification</h2>
-
-<input
-type="text"
-id="profileGraduation"
-placeholder="Graduation">
-
-<input
-type="text"
-id="profilePostGraduation"
-placeholder="Post Graduation">
-
-<input
-type="text"
-id="profileBed"
-placeholder="B.Ed">
-
-<input
-type="text"
-id="profileCTET"
-placeholder="CTET / TET">
-
-<input
-type="text"
-id="profileOtherQualification"
-placeholder="Other Qualification">
-
-</div>
-
-<!-- Experience -->
-
-<div class="card">
-
-<h2>Experience</h2>
-
-<input
-type="number"
-id="profileExperience"
-placeholder="Total Experience (Years)">
-
-<input
-type="text"
-id="profileCurrentSchool"
-placeholder="Current School">
-
-<input
-type="text"
-id="profilePreviousSchool"
-placeholder="Previous School">
-
-<input
-type="text"
-id="profileAchievement"
-placeholder="Achievements">
-
-</div>
-
-<!-- Responsibilities -->
-
-<div class="card">
-
-<h2>Responsibilities</h2>
-
-<input
-type="text"
-id="responsibility1"
-placeholder="Responsibility 1">
-
-<input
-type="text"
-id="responsibility2"
-placeholder="Responsibility 2">
-
-<input
-type="text"
-id="responsibility3"
-placeholder="Responsibility 3">
-
-<input
-type="text"
-id="responsibility4"
-placeholder="Responsibility 4">
-
-</div>
-
-<!-- Expertise -->
-
-<div class="card">
-
-<h2>Expertise</h2>
-
-<input
-type="text"
-id="expertise1"
-placeholder="Expertise 1">
-
-<input
-type="text"
-id="expertise2"
-placeholder="Expertise 2">
-
-<input
-type="text"
-id="expertise3"
-placeholder="Expertise 3">
-
-<input
-type="text"
-id="expertise4"
-placeholder="Expertise 4">
-
-</div>
-
-<!-- Contact -->
-
-<div class="card">
-
-<h2>Contact Information</h2>
-
-<input
-type="tel"
-id="profilePhone"
-placeholder="Phone Number">
-
-<input
-type="email"
-id="profileEmail"
-placeholder="Email">
-
-<input
-type="text"
-id="profileOffice"
-placeholder="Office Room">
-
-<textarea
-id="profileAddress"
-rows="3"
-placeholder="Address">
-</textarea>
-
-</div>
-
-<!-- Attendance -->
-
-<div class="card">
-
-<h2>Attendance</h2>
-
-<input
-type="number"
-id="profileAttendance"
-placeholder="Attendance Percentage">
-
-</div>
-
-<!-- Buttons -->
-
-<div class="button-group">
-
-<button
-onclick="saveTeacherProfileDetails()">
-
-<i class="fa-solid fa-floppy-disk"></i>
-
-Save Profile
-
-</button>
-
-<button
-onclick="window.location.href='teacher-profile.html'">
-
-<i class="fa-solid fa-arrow-left"></i>
-
-Back
-
-</button>
-
-</div>
-
-</div>
-
-<script
-type="module"
-src="admin.js">
-
-</script>
-
+  <div class="app-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+      <div class="brand-text">
+        <h1><span class="accent">Modern</span></h1>
+        <p>International School</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-link">
+        <i class="fa-solid fa-house"></i>
+        <span class="link-text">Dashboard</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-solid fa-chalkboard"></i>
+        <span class="link-text">My Classes</span>
+      </a>
+
+      <button class="nav-parent" id="studentsToggle">
+        <i class="fa-solid fa-user-group"></i>
+        <span class="link-text">Students</span>
+        <i class="fa-solid fa-chevron-down chevron"></i>
+      </button>
+      <div class="submenu collapsed" id="studentsSubmenu">
+        <a href="students.html" class="sub-link">
+          <i class="fa-regular fa-user"></i> All Students
+        </a>
+        <a href="add-student.html" class="sub-link">
+          <i class="fa-solid fa-circle-plus"></i> Add Student
+        </a>
+      </div>
+
+      <button class="nav-parent" id="teachersToggle">
+        <i class="fa-solid fa-chalkboard-user"></i>
+        <span class="link-text">Teachers</span>
+        <i class="fa-solid fa-chevron-down chevron"></i>
+      </button>
+      <div class="submenu collapsed" id="teachersSubmenu">
+        <a href="teachers.html" class="sub-link active">
+          <i class="fa-regular fa-user"></i> All Teachers
+        </a>
+        <a href="add-teacher.html" class="sub-link">
+          <i class="fa-solid fa-circle-plus"></i> Add Teacher
+        </a>
+      </div>
+
+      <a href="#" class="nav-link">
+        <i class="fa-regular fa-square-check"></i>
+        <span class="link-text">Attendance</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-solid fa-file-lines"></i>
+        <span class="link-text">Assignments</span>
+      </a>
+      <a href="marks-management.html" class="nav-link">
+        <i class="fa-solid fa-file-pen"></i>
+        <span class="link-text">Exams</span>
+      </a>
+      <a href="publish-result.html" class="nav-link">
+        <i class="fa-solid fa-chart-column"></i>
+        <span class="link-text">Results</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-regular fa-envelope"></i>
+        <span class="link-text">Messages</span>
+      </a>
+      <a href="school-profile.html" class="nav-link">
+        <i class="fa-solid fa-building-columns"></i>
+        <span class="link-text">School Profile</span>
+      </a>
+      <a href="change-password.html" class="nav-link">
+        <i class="fa-solid fa-gear"></i>
+        <span class="link-text">Settings</span>
+      </a>
+    </nav>
+
+    <a href="#" onclick="adminLogout()" class="logout-link">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      <span class="link-text">Logout</span>
+    </a>
+  </aside>
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- ================= MAIN ================= -->
+    <div class="main-area">
+
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="topbar-title">Edit Teacher</h1>
+        </div>
+
+        <div class="topbar-right">
+          <button class="icon-btn bell-btn" aria-label="Notifications">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge">3</span>
+          </button>
+
+          <div class="admin-chip">
+            <div class="admin-avatar"><i class="fa-solid fa-user"></i></div>
+            <span class="admin-name">Admin</span>
+            <i class="fa-solid fa-chevron-down admin-caret"></i>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="content">
+
+        <section class="hero-card">
+          <div class="hero-left">
+            <div class="hero-icon"><i class="fa-solid fa-user-pen"></i></div>
+            <div class="hero-text">
+              <h2>Edit Teacher</h2>
+              <p>Update this teacher's details and profile information below.</p>
+            </div>
+          </div>
+          <div class="hero-illustration">
+            <div class="illu-card">
+              <div class="illu-avatar"><i class="fa-solid fa-user"></i></div>
+              <div class="illu-line line-1"></div>
+              <div class="illu-line line-2"></div>
+              <div class="illu-line line-3"></div>
+            </div>
+            <div class="illu-fab"><i class="fa-solid fa-pen"></i></div>
+          </div>
+        </section>
+
+        <section class="form-card">
+
+          <h3 class="section-title">Basic Information</h3>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Full Name <span class="req">*</span></label>
+              <div class="input-wrap">
+                <i class="fa-regular fa-user field-icon"></i>
+                <input type="text" id="profileName" placeholder="Enter full name">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Subject <span class="req">*</span></label>
+              <div class="input-wrap select-wrap">
+                <select id="profileSubject">
+                  <option value="" disabled>Select subject</option>
+                  <option>Mathematics</option>
+                  <option>Science</option>
+                  <option>English</option>
+                  <option>History</option>
+                  <option>Computer Science</option>
+                </select>
+                <i class="fa-solid fa-chevron-down field-icon-right"></i>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Mobile Number</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-phone field-icon"></i>
+                <input type="tel" id="profilePhone" placeholder="Enter mobile number">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Email Address</label>
+              <div class="input-wrap">
+                <i class="fa-regular fa-envelope field-icon"></i>
+                <input type="email" id="profileEmail" placeholder="Enter email address">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Experience (Years)</label>
+              <div class="input-wrap">
+                <i class="fa-regular fa-briefcase field-icon"></i>
+                <input type="number" id="profileExperience" placeholder="Enter experience">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Status</label>
+              <div class="input-wrap select-wrap">
+                <select id="profileStatus">
+                  <option>Active</option>
+                  <option>Inactive</option>
+                  <option>On Leave</option>
+                </select>
+                <i class="fa-solid fa-chevron-down field-icon-right"></i>
+              </div>
+            </div>
+          </div>
+
+          <hr class="divider">
+
+          <h3 class="section-title">Professional Details</h3>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Designation</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-user-tie field-icon"></i>
+                <input type="text" id="profileDesignation" placeholder="e.g. Senior Teacher">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Department</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-building field-icon"></i>
+                <input type="text" id="profileDepartment" placeholder="Enter department">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Employee ID</label>
+              <div class="input-wrap">
+                <i class="fa-regular fa-id-badge field-icon"></i>
+                <input type="text" id="profileEmployeeId" placeholder="Enter employee ID">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Date of Joining</label>
+              <div class="input-wrap icon-right-only">
+                <input type="date" id="profileJoiningDate">
+                <i class="fa-regular fa-calendar field-icon-right"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-field" style="margin-top: 20px;">
+            <label>Professional Summary</label>
+            <textarea class="plain-textarea" id="profileSummary" placeholder="A short summary about this teacher"></textarea>
+          </div>
+
+          <hr class="divider">
+
+          <h3 class="section-title">Qualifications</h3>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Graduation</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-graduation-cap field-icon"></i>
+                <input type="text" id="profileGraduation" placeholder="e.g. B.Sc Mathematics">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Post Graduation</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-user-graduate field-icon"></i>
+                <input type="text" id="profilePostGraduation" placeholder="e.g. M.Sc Mathematics">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>B.Ed</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-book field-icon"></i>
+                <input type="text" id="profileBed" placeholder="Enter B.Ed details">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>CTET / TET</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-certificate field-icon"></i>
+                <input type="text" id="profileCTET" placeholder="Enter CTET / TET details">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Other Qualification</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-plus field-icon"></i>
+                <input type="text" id="profileOtherQualification" placeholder="Any other qualification">
+              </div>
+            </div>
+          </div>
+
+          <hr class="divider">
+
+          <h3 class="section-title">School History</h3>
+
+          <div class="form-grid two-col">
+            <div class="form-field">
+              <label>Current School</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-school field-icon"></i>
+                <input type="text" id="profileCurrentSchool" placeholder="Enter current school">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Previous School</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-clock-rotate-left field-icon"></i>
+                <input type="text" id="profilePreviousSchool" placeholder="Enter previous school">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-field" style="margin-top: 20px;">
+            <label>Achievements / Awards</label>
+            <textarea class="plain-textarea" id="profileAchievement" placeholder="List any notable achievements or awards"></textarea>
+          </div>
+
+          <hr class="divider">
+
+          <h3 class="section-title">Responsibilities</h3>
+
+          <div class="form-grid two-col">
+            <div class="form-field">
+              <label>Responsibility 1</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-list-check field-icon"></i>
+                <input type="text" id="responsibility1" placeholder="e.g. Class Coordinator">
+              </div>
+            </div>
+            <div class="form-field">
+              <label>Responsibility 2</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-list-check field-icon"></i>
+                <input type="text" id="responsibility2" placeholder="Enter responsibility">
+              </div>
+            </div>
+            <div class="form-field">
+              <label>Responsibility 3</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-list-check field-icon"></i>
+                <input type="text" id="responsibility3" placeholder="Enter responsibility">
+              </div>
+            </div>
+            <div class="form-field">
+              <label>Responsibility 4</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-list-check field-icon"></i>
+                <input type="text" id="responsibility4" placeholder="Enter responsibility">
+              </div>
+            </div>
+          </div>
+
+          <hr class="divider">
+
+          <h3 class="section-title">Areas of Expertise</h3>
+
+          <div class="form-grid two-col">
+            <div class="form-field">
+              <label>Expertise 1</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-star field-icon"></i>
+                <input type="text" id="expertise1" placeholder="e.g. Curriculum Design">
+              </div>
+            </div>
+            <div class="form-field">
+              <label>Expertise 2</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-star field-icon"></i>
+                <input type="text" id="expertise2" placeholder="Enter area of expertise">
+              </div>
+            </div>
+            <div class="form-field">
+              <label>Expertise 3</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-star field-icon"></i>
+                <input type="text" id="expertise3" placeholder="Enter area of expertise">
+              </div>
+            </div>
+            <div class="form-field">
+              <label>Expertise 4</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-star field-icon"></i>
+                <input type="text" id="expertise4" placeholder="Enter area of expertise">
+              </div>
+            </div>
+          </div>
+
+          <hr class="divider">
+
+          <h3 class="section-title">Contact & Other</h3>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Office / Cabin</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-door-open field-icon"></i>
+                <input type="text" id="profileOffice" placeholder="e.g. Staff Room 2">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Address</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-location-dot field-icon"></i>
+                <input type="text" id="profileAddress" placeholder="Enter full address">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Attendance</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-calendar-check field-icon"></i>
+                <input type="text" id="profileAttendance" placeholder="e.g. 96%">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-primary" onclick="saveTeacherProfileDetails()">
+              <i class="fa-regular fa-floppy-disk"></i>
+              Save Changes
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='teachers.html'">
+              <i class="fa-solid fa-xmark"></i>
+              Cancel
+            </button>
+          </div>
+
+        </section>
+
+      </main>
+    </div>
+  </div>
+<script type="module" src="admin.js"></script>
 </body>
-
-  </html>
+</html>
