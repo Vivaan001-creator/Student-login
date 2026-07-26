@@ -25,6 +25,55 @@ import {
     sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
+import {
+    createUserWithEmailAndPassword,
+    getAuth
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+    initializeApp,
+    getApps,
+    getApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+// ==========================
+// Create a Teacher's Login Account
+// (uses a secondary Firebase app instance so creating the
+// account does not sign the admin out of their own session)
+// ==========================
+
+function getSecondaryAuthInstance() {
+
+    const primaryApp = getApp();
+
+    const secondaryApp =
+        getApps().find(a => a.name === "Secondary") ||
+        initializeApp(primaryApp.options, "Secondary");
+
+    return getAuth(secondaryApp);
+
+}
+
+async function createTeacherLoginAccount(email) {
+
+    const secondaryAuth = getSecondaryAuthInstance();
+
+    const tempPassword =
+        "Mis@" + Math.random().toString(36).slice(-8);
+
+    const credential = await createUserWithEmailAndPassword(
+        secondaryAuth,
+        email,
+        tempPassword
+    );
+
+    await sendPasswordResetEmail(secondaryAuth, email);
+    await signOut(secondaryAuth);
+
+    return credential.user.uid;
+
+}
+
 // ==========================
 // Default Admin Password
 // ==========================
@@ -48,7 +97,6 @@ async function adminLogin() {
         await signInWithEmailAndPassword(auth, email, password);
 
         sessionStorage.setItem("adminLoggedIn","true");
-        sessionStorage.setItem("role","admin");
 
 
 window.location.href="dashboard.html";
@@ -75,151 +123,26 @@ if (loginForm) {
 
 
 // ==========================
-// Teacher Login (separate from Admin — checks the
-// "teachers" Firestore collection instead of Firebase Auth)
-// ==========================
-
-async function teacherLogin() {
-
-    const identifier =
-        document.getElementById("username").value.trim();
-
-    const password =
-        document.getElementById("password").value.trim();
-
-    if (!identifier || !password) {
-        alert("Please enter your Teacher ID / Email and Password.");
-        return;
-    }
-
-    try {
-
-        let matchedTeacher = null;
-        let matchedId = null;
-
-        // 1) try as a direct Teacher ID lookup
-        const directSnap = await getDoc(doc(db, "teachers", identifier));
-
-        if (directSnap.exists()) {
-
-            matchedTeacher = directSnap.data();
-            matchedId = directSnap.id;
-
-        } else {
-
-            // 2) fall back to matching by email
-            const allTeachers = await getDocs(collection(db, "teachers"));
-
-            allTeachers.forEach((docSnap) => {
-
-                const t = docSnap.data();
-
-                if (
-                    t.email &&
-                    t.email.toLowerCase() === identifier.toLowerCase()
-                ) {
-                    matchedTeacher = t;
-                    matchedId = docSnap.id;
-                }
-
-            });
-
-        }
-
-        if (!matchedTeacher) {
-            alert("No teacher account found with that Teacher ID or Email.");
-            return;
-        }
-
-        if (matchedTeacher.status && matchedTeacher.status !== "Active") {
-            alert("Your account is not active. Please contact the school admin.");
-            return;
-        }
-
-        if (matchedTeacher.password !== password) {
-            alert("Incorrect password.");
-            return;
-        }
-
-        sessionStorage.setItem("role", "teacher");
-        sessionStorage.setItem("teacherLoggedIn", "true");
-        sessionStorage.setItem("teacherId", matchedId);
-        sessionStorage.setItem("teacherName", matchedTeacher.name || "");
-
-        window.location.href = "teacher-dashboard.html";
-
-    } catch (error) {
-
-        console.error(error);
-        alert(error.message);
-
-    }
-
-}
-
-window.teacherLogin = teacherLogin;
-
-const teacherLoginForm = document.getElementById("teacherLoginForm");
-
-if (teacherLoginForm) {
-    teacherLoginForm.addEventListener("submit", async function (e) {
-        e.preventDefault();
-        await teacherLogin();
-    });
-}
-
-
-// ==========================
-// Role-Based Access Control
+// Dashboard Security
 // ==========================
 
 const page = location.pathname;
 
-// Pages only an Admin may open
-const adminOnlyPages = [
-    "dashboard.html",
-    "classes.html",
-    "students.html",
-    "add-student.html",
-    "edit-student.html",
-    "teachers.html",
-    "add-teacher.html",
-    "edit-teacher.html",
-    "teacher-profile.html",
-    "school-profile.html",
-    "change-password.html",
-    "marks-management.html",
-    "publish-result.html"
-];
+if (
 
-// Pages only a logged-in Teacher may open
-// (teacher-dashboard.html will be built in the next phase —
-//  this list is ready for it and any teacher-only page after it)
-const teacherOnlyPages = [
-    "teacher-dashboard.html"
-];
+    page.includes("dashboard.html") ||
+    page.includes("students.html") ||
+    page.includes("edit-student.html") ||
+    page.includes("change-password.html") ||
+    page.includes("teachers.html") ||
+    page.includes("add-teacher.html") ||
+    page.includes("edit-teacher.html") ||
+    page.includes("teacher-profile.html") ||
+    page.includes("school-profile.html")
+) {
 
-const isAdminPage = adminOnlyPages.some(p => page.includes(p));
-const isTeacherPage = teacherOnlyPages.some(p => page.includes(p));
-
-if (isAdminPage) {
-
-    if (
-        sessionStorage.getItem("role") !== "admin" ||
-        sessionStorage.getItem("adminLoggedIn") !== "true"
-    ) {
+    if (sessionStorage.getItem("adminLoggedIn") !== "true") {
         window.location.replace("admin.html");
-    }
-
-}
-
-if (isTeacherPage) {
-
-    if (
-        sessionStorage.getItem("role") !== "teacher" ||
-        sessionStorage.getItem("teacherLoggedIn") !== "true"
-    ) {
-        window.location.replace("teacher-login.html");
     }
 
 }
@@ -250,22 +173,6 @@ async function adminLogout() {
 }
 
 window.adminLogout = adminLogout;
-
-
-// ==========================
-// Teacher Logout
-// ==========================
-
-function teacherLogout() {
-
-    sessionStorage.clear();
-    localStorage.removeItem("editRoll");
-
-    window.location.replace("teacher-login.html");
-
-}
-
-window.teacherLogout = teacherLogout;
 
 
 // ==========================
@@ -1083,23 +990,36 @@ async function addTeacher(){
     const teacherSubject =
         document.getElementById("teacherSubject")?.value.trim();
 
-    const teacherPassword =
-        document.getElementById("teacherPassword")?.value.trim();
+    const teacherEmail =
+        document.getElementById("teacherEmail").value.trim();
 
     if(
         !teacherId ||
         !teacherName ||
         !teacherSubject ||
-        !teacherPassword
+        !teacherEmail
     ){
 
-        alert("Please fill all fields, including the login password.");
+        alert("Please fill all fields, including email (needed for Teacher Login).");
 
         return;
 
     }
 
     try{
+
+        // Create this teacher's login account. If the email is
+        // already registered (e.g. re-saving an existing teacher),
+        // this is skipped and the profile is still saved normally.
+        let authUid = null;
+
+        try {
+            authUid = await createTeacherLoginAccount(teacherEmail);
+        } catch (authError) {
+            if (authError.code !== "auth/email-already-in-use") {
+                console.error("Could not create teacher login account:", authError);
+            }
+        }
 
         await setDoc(
 
@@ -1111,13 +1031,10 @@ async function addTeacher(){
 
     subject:teacherSubject,
 
-    password:teacherPassword,
-
     phone:
 document.getElementById("teacherPhone").value.trim(),
 
-    email:
-document.getElementById("teacherEmail").value.trim(),
+    email: teacherEmail,
 
     qualification:
 document.getElementById("teacherQualification").value.trim(),
@@ -1128,13 +1045,23 @@ document.getElementById("teacherExperience").value
 ),
 
     status:
-document.getElementById("teacherStatus").value
+document.getElementById("teacherStatus").value,
 
-            }
+    role: "teacher",
+
+    ...(authUid ? { authUid } : {})
+
+            },
+
+            { merge: true }
 
         );
 
-        alert("Teacher Added Successfully.");
+        alert(
+            authUid
+                ? "Teacher Added Successfully. A password-setup email has been sent to " + teacherEmail + "."
+                : "Teacher Added Successfully."
+        );
 
         window.location.href="teachers.html";
 
