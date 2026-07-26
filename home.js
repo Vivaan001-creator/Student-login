@@ -268,6 +268,46 @@ async function loadNotices() {
 loadNotices();
 
 // ==========================
+// Gallery (falls back to the static illustrated tiles already in the HTML)
+// ==========================
+const galleryTileMeta = {
+  "Sports Day": { icon: "fa-trophy", color: "orange" },
+  "Annual Function": { icon: "fa-masks-theater", color: "pink" },
+  "Science Exhibition": { icon: "fa-flask", color: "blue" },
+  "Independence Day": { icon: "fa-flag", color: "green" },
+  "Art & Craft": { icon: "fa-palette", color: "purple" },
+  "Field Trip": { icon: "fa-bus", color: "teal" }
+};
+
+async function loadGallery() {
+  const grid = document.getElementById("hpGalleryGrid");
+  if (!grid) return;
+
+  try {
+    const galleryQuery = query(collection(db, "gallery"), orderBy("uploadedAt", "desc"), limit(6));
+    const snap = await getDocs(galleryQuery);
+
+    if (snap.empty) return; // keep the static illustrated tiles already in the HTML
+
+    grid.innerHTML = snap.docs.map((docSnap) => {
+      const g = docSnap.data();
+      const meta = galleryTileMeta[g.category] || { icon: "fa-image", color: "purple" };
+      return `
+        <div class="hp-gallery-tile hp-gallery-photo-tile">
+          <img src="${g.imageUrl}" alt="${escapeHtml(g.title || g.category || "Gallery photo")}" loading="lazy">
+          <span><i class="fa-solid ${meta.icon}"></i> ${escapeHtml(g.category || "")}</span>
+        </div>
+      `;
+    }).join("");
+
+  } catch (error) {
+    console.error("Could not load gallery:", error);
+  }
+}
+
+loadGallery();
+
+// ==========================
 // Contact form
 // ==========================
 const contactForm = document.getElementById("contactForm");
