@@ -188,7 +188,7 @@
               <label>Mother Name <span class="required">*</span></label>
               <div class="input-wrap">
                 <i class="fa-regular fa-user input-icon"></i>
-                <input type="text" placeholder="Enter mother's name">
+                <input type="text" id="motherName" placeholder="Enter mother's name">
               </div>
             </div>
 
@@ -210,7 +210,7 @@
             <div class="field">
               <label>Section <span class="required">*</span></label>
               <div class="input-wrap select-wrap">
-                <select>
+                <select id="section">
                   <option value="" disabled selected>Select section</option>
                   <option>A</option>
                   <option>B</option>
@@ -233,7 +233,7 @@
             <div class="field">
               <label>Gender <span class="required">*</span></label>
               <div class="input-wrap select-wrap">
-                <select>
+                <select id="gender">
                   <option value="" disabled selected>Select gender</option>
                   <option>Male</option>
                   <option>Female</option>
@@ -247,7 +247,7 @@
               <label>Contact Number</label>
               <div class="input-wrap">
                 <i class="fa-solid fa-phone input-icon"></i>
-                <input type="tel" placeholder="Enter contact number">
+                <input type="tel" id="contactNumber" placeholder="Enter contact number">
               </div>
             </div>
 
@@ -255,14 +255,14 @@
               <label>Address</label>
               <div class="input-wrap">
                 <i class="fa-solid fa-location-dot input-icon"></i>
-                <input type="text" placeholder="Enter address">
+                <input type="text" id="address" placeholder="Enter address">
               </div>
             </div>
 
             <div class="field">
               <label>Admission Date</label>
               <div class="input-wrap">
-                <input type="text" placeholder="dd-mm-yyyy" onfocus="(this.type='date')" onblur="(this.type='text')">
+                <input type="text" id="admissionDate" placeholder="dd-mm-yyyy" onfocus="(this.type='date')" onblur="(this.type='text')">
                 <i class="fa-regular fa-calendar input-icon-right"></i>
               </div>
             </div>
@@ -271,7 +271,7 @@
               <label>Previous School <span class="optional">(Optional)</span></label>
               <div class="input-wrap">
                 <i class="fa-solid fa-school input-icon"></i>
-                <input type="text" placeholder="Enter previous school name">
+                <input type="text" id="previousSchool" placeholder="Enter previous school name">
               </div>
             </div>
 
