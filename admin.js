@@ -12,13 +12,19 @@ import {
   deleteDoc,
   collection,
   getDocs,
-  getCountFromServer
+  getCountFromServer,
+  addDoc,
+  query,
+  orderBy,
+  where,
+  Timestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 import {
   ref,
   uploadBytes,
-  getDownloadURL
+  getDownloadURL,
+  deleteObject
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
 
 import {
@@ -130,12 +136,20 @@ if (
     page.includes("dashboard.html") ||
     page.includes("students.html") ||
     page.includes("edit-student.html") ||
+    page.includes("add-student.html") ||
     page.includes("change-password.html") ||
     page.includes("teachers.html") ||
     page.includes("add-teacher.html") ||
     page.includes("edit-teacher.html") ||
     page.includes("teacher-profile.html") ||
-    page.includes("school-profile.html")
+    page.includes("school-profile.html") ||
+    page.includes("classes.html") ||
+    page.includes("marks-management.html") ||
+    page.includes("publish-result.html") ||
+    page.includes("notices.html") ||
+    page.includes("gallery-management.html") ||
+    page.includes("fee-management.html") ||
+    page.includes("attendance-overview.html")
 ) {
 
     if (sessionStorage.getItem("adminLoggedIn") !== "true") {
@@ -689,19 +703,11 @@ async function addStudent() {
   const roll = document.getElementById("roll").value.trim();
   const name = document.getElementById("studentName").value.trim();
   const father = document.getElementById("fatherName").value.trim();
-  const mother = document.getElementById("motherName")?.value.trim() || "";
   const studentClass = document.getElementById("studentClass").value;
-  const section = document.getElementById("section")?.value || "";
-  const dob = document.getElementById("dob").value.trim();
-  const gender = document.getElementById("gender")?.value || "";
-  const contactNumber = document.getElementById("contactNumber")?.value.trim() || "";
-  const address = document.getElementById("address")?.value.trim() || "";
-  const admissionDate = document.getElementById("admissionDate")?.value.trim() || "";
-  const previousSchool = document.getElementById("previousSchool")?.value.trim() || "";
   const attendance = document.getElementById("attendance").value.trim();
 
-  if (!roll || !name || !father || !studentClass || !section || !dob || !gender || !attendance) {
-    alert("Please fill all required (*) fields.");
+  if (!roll || !name || !father || !studentClass || !attendance) {
+    alert("Please fill all fields.");
     return;
   }
 
@@ -716,15 +722,7 @@ async function addStudent() {
   await setDoc(studentRef, {
     name: name,
     father: father,
-    mother: mother,
     class: studentClass,
-    section: section,
-    dob: dob,
-    gender: gender,
-    contactNumber: contactNumber,
-    address: address,
-    admissionDate: admissionDate,
-    previousSchool: previousSchool,
     attendance: attendance,
     publishStatus: "unpublished"
   });
@@ -2223,3 +2221,667 @@ async function deleteClass(classId) {
 }
 
 window.deleteClass = deleteClass;
+
+// ==========================
+// Shared helper
+// ==========================
+function escapeHtmlAdmin(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+// =========================================================
+// NOTICE MANAGEMENT (notices.html)
+// =========================================================
+
+let editingNoticeId = null;
+let allNoticeRows = [];
+
+const noticesTableBody = document.getElementById("noticesTable");
+
+if (noticesTableBody) {
+  loadNoticesTable();
+}
+
+async function loadNoticesTable() {
+
+  noticesTableBody.innerHTML = `<tr><td colspan="4">Loading notices...</td></tr>`;
+
+  try {
+
+    const noticesQuery = query(collection(db, "notices"), orderBy("date", "desc"));
+    const snap = await getDocs(noticesQuery);
+
+    allNoticeRows = [];
+    snap.forEach((docSnap) => {
+      allNoticeRows.push({ id: docSnap.id, ...docSnap.data() });
+    });
+
+    renderNoticeRows(allNoticeRows);
+
+  } catch (error) {
+    console.error(error);
+    noticesTableBody.innerHTML = `<tr><td colspan="4">Could not load notices.</td></tr>`;
+  }
+
+}
+window.loadNoticesTable = loadNoticesTable;
+
+function renderNoticeRows(rows) {
+
+  if (!noticesTableBody) return;
+
+  if (rows.length === 0) {
+    noticesTableBody.innerHTML = `<tr><td colspan="4">No notices yet. Click "Add Notice" to create one.</td></tr>`;
+    return;
+  }
+
+  noticesTableBody.innerHTML = "";
+
+  rows.forEach((n, index) => {
+
+    const dateText = n.date && n.date.toDate
+      ? n.date.toDate().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })
+      : "-";
+
+    const shortDesc = (n.description || "").slice(0, 60) + ((n.description || "").length > 60 ? "…" : "");
+
+    const row = document.createElement("tr");
+    row.style.animationDelay = (index * 0.05) + "s";
+
+    row.innerHTML = `
+      <td data-label="Title">
+        <div class="class-name-cell">
+          <div class="class-icon-badge"><i class="fa-regular fa-bell"></i></div>
+          <div class="class-name-text">
+            <strong>${escapeHtmlAdmin(n.title || "-")}</strong>
+          </div>
+        </div>
+      </td>
+      <td data-label="Date">${dateText}</td>
+      <td data-label="Description">${escapeHtmlAdmin(shortDesc)}</td>
+      <td data-label="Action">
+        <div class="action-btns">
+          <button class="btn-edit" onclick="openNoticeModal('${n.id}')">
+            <i class="fa-solid fa-pen"></i> Edit
+          </button>
+          <button class="btn-delete" onclick="deleteNotice('${n.id}')">
+            <i class="fa-solid fa-trash"></i> Delete
+          </button>
+        </div>
+      </td>
+    `;
+
+    noticesTableBody.appendChild(row);
+
+  });
+
+}
+
+function searchNotice() {
+  const input = document.getElementById("searchNotice").value.toLowerCase();
+  const filtered = allNoticeRows.filter(n =>
+    (n.title || "").toLowerCase().includes(input) ||
+    (n.description || "").toLowerCase().includes(input)
+  );
+  renderNoticeRows(filtered);
+}
+window.searchNotice = searchNotice;
+
+function openNoticeModal(noticeId) {
+
+  editingNoticeId = noticeId || null;
+
+  const backdrop = document.getElementById("noticeModalBackdrop");
+  const title = document.getElementById("noticeModalTitle");
+
+  document.getElementById("noticeForm").reset();
+
+  if (editingNoticeId) {
+
+    title.textContent = "Edit Notice";
+
+    const existing = allNoticeRows.find(n => n.id === editingNoticeId);
+    if (existing) {
+      document.getElementById("noticeTitle").value = existing.title || "";
+      document.getElementById("noticeDescription").value = existing.description || "";
+      if (existing.date && existing.date.toDate) {
+        document.getElementById("noticeDate").value = existing.date.toDate().toISOString().slice(0, 10);
+      }
+    }
+
+  } else {
+    title.textContent = "Add Notice";
+    document.getElementById("noticeDate").value = new Date().toISOString().slice(0, 10);
+  }
+
+  backdrop.classList.add("open");
+
+}
+window.openNoticeModal = openNoticeModal;
+
+function closeNoticeModal() {
+  document.getElementById("noticeModalBackdrop").classList.remove("open");
+  editingNoticeId = null;
+}
+window.closeNoticeModal = closeNoticeModal;
+
+const noticeModalBackdropEl = document.getElementById("noticeModalBackdrop");
+if (noticeModalBackdropEl) {
+  noticeModalBackdropEl.addEventListener("click", function (e) {
+    if (e.target === noticeModalBackdropEl) closeNoticeModal();
+  });
+}
+
+async function saveNotice() {
+
+  const title = document.getElementById("noticeTitle").value.trim();
+  const description = document.getElementById("noticeDescription").value.trim();
+  const dateValue = document.getElementById("noticeDate").value;
+
+  if (!title || !dateValue) {
+    alert("Please fill Title and Date.");
+    return;
+  }
+
+  const noticeData = {
+    title,
+    description,
+    date: Timestamp.fromDate(new Date(dateValue))
+  };
+
+  try {
+
+    if (editingNoticeId) {
+      await setDoc(doc(db, "notices", editingNoticeId), noticeData, { merge: true });
+    } else {
+      await addDoc(collection(db, "notices"), noticeData);
+    }
+
+    closeNoticeModal();
+    await loadNoticesTable();
+
+    alert(editingNoticeId ? "Notice updated successfully." : "Notice added successfully.");
+
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  }
+
+}
+window.saveNotice = saveNotice;
+
+async function deleteNotice(noticeId) {
+
+  const confirmDelete = confirm("Delete this notice permanently?");
+  if (!confirmDelete) return;
+
+  try {
+    await deleteDoc(doc(db, "notices", noticeId));
+    alert("Notice deleted successfully.");
+    loadNoticesTable();
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  }
+
+}
+window.deleteNotice = deleteNotice;
+
+// =========================================================
+// GALLERY MANAGEMENT (gallery-management.html)
+// =========================================================
+
+let allGalleryRows = [];
+
+const galleryGridBox = document.getElementById("galleryGrid");
+
+if (galleryGridBox) {
+  loadGalleryGrid();
+}
+
+async function loadGalleryGrid() {
+
+  galleryGridBox.innerHTML = `<p class="no-class-msg">Loading gallery...</p>`;
+
+  try {
+
+    const galleryQuery = query(collection(db, "gallery"), orderBy("uploadedAt", "desc"));
+    const snap = await getDocs(galleryQuery);
+
+    allGalleryRows = [];
+    snap.forEach((docSnap) => {
+      allGalleryRows.push({ id: docSnap.id, ...docSnap.data() });
+    });
+
+    renderGalleryGrid(allGalleryRows);
+
+  } catch (error) {
+    console.error(error);
+    galleryGridBox.innerHTML = `<p class="no-class-msg">Could not load gallery.</p>`;
+  }
+
+}
+window.loadGalleryGrid = loadGalleryGrid;
+
+function renderGalleryGrid(rows) {
+
+  if (!galleryGridBox) return;
+
+  if (rows.length === 0) {
+    galleryGridBox.innerHTML = `<p class="no-class-msg">Abhi koi photo upload nahi hui. "Add Photo" par click karke shuru karein.</p>`;
+    return;
+  }
+
+  galleryGridBox.innerHTML = rows.map((g) => `
+    <div class="gallery-thumb">
+      <img src="${g.imageUrl}" alt="${escapeHtmlAdmin(g.title || g.category || "Gallery photo")}" loading="lazy">
+      <div class="gallery-thumb-overlay">
+        <span class="gallery-thumb-category">${escapeHtmlAdmin(g.category || "")}</span>
+        <button class="gallery-thumb-delete" onclick="deleteGalleryPhoto('${g.id}')" aria-label="Delete photo">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+      ${g.title ? `<div class="gallery-thumb-caption">${escapeHtmlAdmin(g.title)}</div>` : ""}
+    </div>
+  `).join("");
+
+}
+
+function openGalleryModal() {
+  document.getElementById("galleryForm").reset();
+  document.getElementById("galleryModalBackdrop").classList.add("open");
+}
+window.openGalleryModal = openGalleryModal;
+
+function closeGalleryModal() {
+  document.getElementById("galleryModalBackdrop").classList.remove("open");
+}
+window.closeGalleryModal = closeGalleryModal;
+
+const galleryModalBackdropEl = document.getElementById("galleryModalBackdrop");
+if (galleryModalBackdropEl) {
+  galleryModalBackdropEl.addEventListener("click", function (e) {
+    if (e.target === galleryModalBackdropEl) closeGalleryModal();
+  });
+}
+
+async function saveGalleryPhoto() {
+
+  const category = document.getElementById("galleryCategory").value;
+  const title = document.getElementById("galleryTitle").value.trim();
+  const fileInput = document.getElementById("galleryFile");
+  const file = fileInput.files[0];
+
+  if (!category || !file) {
+    alert("Please choose a category and an image.");
+    return;
+  }
+
+  const saveBtn = document.getElementById("gallerySaveBtn");
+  const originalBtnHtml = saveBtn ? saveBtn.innerHTML : "";
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.innerHTML = "Uploading..."; }
+
+  try {
+
+    const storagePath = `gallery/${Date.now()}_${file.name}`;
+    const fileRef = ref(storage, storagePath);
+
+    await uploadBytes(fileRef, file);
+    const imageUrl = await getDownloadURL(fileRef);
+
+    await addDoc(collection(db, "gallery"), {
+      category,
+      title,
+      imageUrl,
+      storagePath,
+      uploadedAt: Timestamp.now()
+    });
+
+    closeGalleryModal();
+    await loadGalleryGrid();
+
+    alert("Photo added to gallery successfully.");
+
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  } finally {
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.innerHTML = originalBtnHtml; }
+  }
+
+}
+window.saveGalleryPhoto = saveGalleryPhoto;
+
+async function deleteGalleryPhoto(galleryId) {
+
+  const confirmDelete = confirm("Delete this photo permanently?");
+  if (!confirmDelete) return;
+
+  try {
+
+    const existing = allGalleryRows.find(g => g.id === galleryId);
+
+    await deleteDoc(doc(db, "gallery", galleryId));
+
+    if (existing && existing.storagePath) {
+      try {
+        await deleteObject(ref(storage, existing.storagePath));
+      } catch (storageError) {
+        console.warn("Could not delete file from storage:", storageError);
+      }
+    }
+
+    alert("Photo deleted successfully.");
+    loadGalleryGrid();
+
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  }
+
+}
+window.deleteGalleryPhoto = deleteGalleryPhoto;
+
+// =========================================================
+// FEE MANAGEMENT (fee-management.html)
+// =========================================================
+
+let allFeeClassRows = [];
+
+const feeClassesTableBody = document.getElementById("feeClassesTable");
+
+if (feeClassesTableBody) {
+  loadFeeClassesTable();
+}
+
+async function loadFeeClassesTable() {
+
+  feeClassesTableBody.innerHTML = `<tr><td colspan="4">Loading classes...</td></tr>`;
+
+  try {
+
+    const snap = await getDocs(collection(db, "classes"));
+
+    allFeeClassRows = [];
+    snap.forEach((docSnap) => {
+      allFeeClassRows.push({ id: docSnap.id, ...docSnap.data() });
+    });
+
+    renderFeeClassRows(allFeeClassRows);
+
+  } catch (error) {
+    console.error(error);
+    feeClassesTableBody.innerHTML = `<tr><td colspan="4">Could not load classes.</td></tr>`;
+  }
+
+}
+window.loadFeeClassesTable = loadFeeClassesTable;
+
+function renderFeeClassRows(rows) {
+
+  if (!feeClassesTableBody) return;
+
+  if (rows.length === 0) {
+    feeClassesTableBody.innerHTML = `<tr><td colspan="4">Pehle "All Classes" page se classes add karein.</td></tr>`;
+    return;
+  }
+
+  feeClassesTableBody.innerHTML = "";
+
+  rows.forEach((c, index) => {
+
+    const row = document.createElement("tr");
+    row.style.animationDelay = (index * 0.05) + "s";
+
+    row.innerHTML = `
+      <td data-label="Class">
+        <div class="class-name-cell">
+          <div class="class-icon-badge"><i class="fa-solid fa-graduation-cap"></i></div>
+          <div class="class-name-text">
+            <strong>${escapeHtmlAdmin(c.className || c.id)}</strong>
+            <small>${escapeHtmlAdmin(c.wing || "")}</small>
+          </div>
+        </div>
+      </td>
+      <td data-label="Fee Amount">${c.feeAmount ? "₹" + c.feeAmount : "-"}</td>
+      <td data-label="Frequency">${escapeHtmlAdmin(c.feeFrequency || "-")}</td>
+      <td data-label="Action">
+        <div class="action-btns">
+          <button class="btn-edit" onclick="openFeeStructureModal('${c.id}')">
+            <i class="fa-solid fa-pen"></i> Set Fee
+          </button>
+        </div>
+      </td>
+    `;
+
+    feeClassesTableBody.appendChild(row);
+
+  });
+
+}
+
+function openFeeStructureModal(classId) {
+
+  const cls = allFeeClassRows.find(c => c.id === classId);
+  if (!cls) return;
+
+  document.getElementById("feeStructureClassId").value = classId;
+  document.getElementById("feeStructureClassName").textContent = cls.className || classId;
+  document.getElementById("feeStructureAmount").value = cls.feeAmount || "";
+  document.getElementById("feeStructureFrequency").value = cls.feeFrequency || "Monthly";
+
+  document.getElementById("feeStructureModalBackdrop").classList.add("open");
+
+}
+window.openFeeStructureModal = openFeeStructureModal;
+
+function closeFeeStructureModal() {
+  document.getElementById("feeStructureModalBackdrop").classList.remove("open");
+}
+window.closeFeeStructureModal = closeFeeStructureModal;
+
+const feeStructureModalBackdropEl = document.getElementById("feeStructureModalBackdrop");
+if (feeStructureModalBackdropEl) {
+  feeStructureModalBackdropEl.addEventListener("click", function (e) {
+    if (e.target === feeStructureModalBackdropEl) closeFeeStructureModal();
+  });
+}
+
+async function saveFeeStructure() {
+
+  const classId = document.getElementById("feeStructureClassId").value;
+  const amount = Number(document.getElementById("feeStructureAmount").value);
+  const frequency = document.getElementById("feeStructureFrequency").value;
+
+  if (!classId || !amount) {
+    alert("Please enter a valid fee amount.");
+    return;
+  }
+
+  try {
+
+    await setDoc(doc(db, "classes", classId), {
+      feeAmount: amount,
+      feeFrequency: frequency
+    }, { merge: true });
+
+    closeFeeStructureModal();
+    await loadFeeClassesTable();
+
+    alert("Fee structure updated successfully.");
+
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  }
+
+}
+window.saveFeeStructure = saveFeeStructure;
+
+// ==========================
+// Student Fee Ledger
+// ==========================
+
+let currentFeeStudentRoll = null;
+
+async function searchFeeStudent() {
+
+  const roll = document.getElementById("feeStudentRoll").value.trim();
+  const resultBox = document.getElementById("feeStudentResult");
+
+  if (!roll) {
+    alert("Please enter a Roll Number.");
+    return;
+  }
+
+  resultBox.style.display = "block";
+  resultBox.innerHTML = `<p class="no-class-msg">Searching...</p>`;
+
+  try {
+
+    const studentSnap = await getDoc(doc(db, "students", roll));
+
+    if (!studentSnap.exists()) {
+      resultBox.innerHTML = `<p class="no-class-msg">Roll Number "${escapeHtmlAdmin(roll)}" ka koi student nahi mila.</p>`;
+      currentFeeStudentRoll = null;
+      return;
+    }
+
+    const student = studentSnap.data();
+    currentFeeStudentRoll = roll;
+
+    const classSnap = await getDoc(doc(db, "classes", student.class));
+    const feeAmount = classSnap.exists() ? Number(classSnap.data().feeAmount) || 0 : 0;
+    const feeFrequency = classSnap.exists() ? (classSnap.data().feeFrequency || "-") : "-";
+
+    const paymentsSnap = await getDocs(
+      query(collection(db, "students", roll, "payments"), orderBy("date", "desc"))
+    );
+
+    let totalPaid = 0;
+    let paymentRowsHtml = "";
+
+    if (paymentsSnap.empty) {
+      paymentRowsHtml = `<tr><td colspan="4">Abhi koi payment record nahi hai.</td></tr>`;
+    } else {
+      paymentsSnap.forEach((p) => {
+        const pay = p.data();
+        totalPaid += Number(pay.amount) || 0;
+        const dateText = pay.date && pay.date.toDate
+          ? pay.date.toDate().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })
+          : "-";
+        paymentRowsHtml += `
+          <tr>
+            <td data-label="Date">${dateText}</td>
+            <td data-label="Amount">₹${pay.amount}</td>
+            <td data-label="Mode">${escapeHtmlAdmin(pay.mode || "-")}</td>
+            <td data-label="Note">${escapeHtmlAdmin(pay.note || "-")}</td>
+          </tr>
+        `;
+      });
+    }
+
+    const balance = feeAmount - totalPaid;
+    const statusBadge = !feeAmount
+      ? `<span class="status-inactive">Fee not set</span>`
+      : balance <= 0
+        ? `<span class="status-active">Paid</span>`
+        : `<span class="status-inactive">Due ₹${balance}</span>`;
+
+    resultBox.innerHTML = `
+      <div class="fee-student-summary">
+        <div class="fee-student-who">
+          <strong>${escapeHtmlAdmin(student.name || roll)}</strong>
+          <span>${escapeHtmlAdmin(student.class || "-")} · Roll ${escapeHtmlAdmin(roll)}</span>
+        </div>
+        <div class="fee-student-amounts">
+          <span>Fee: ₹${feeAmount || 0} / ${escapeHtmlAdmin(feeFrequency)}</span>
+          <span>Paid: ₹${totalPaid}</span>
+          ${statusBadge}
+        </div>
+        <button class="btn-add-class" onclick="openPaymentModal()">
+          <i class="fa-solid fa-plus"></i> Record Payment
+        </button>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="classes-table">
+          <thead>
+            <tr><th>Date</th><th>Amount</th><th>Mode</th><th>Note</th></tr>
+          </thead>
+          <tbody>${paymentRowsHtml}</tbody>
+        </table>
+      </div>
+    `;
+
+  } catch (error) {
+    console.error(error);
+    resultBox.innerHTML = `<p class="no-class-msg">Error: ${escapeHtmlAdmin(error.message)}</p>`;
+  }
+
+}
+window.searchFeeStudent = searchFeeStudent;
+
+function openPaymentModal() {
+
+  if (!currentFeeStudentRoll) return;
+
+  document.getElementById("paymentForm").reset();
+  document.getElementById("paymentDate").value = new Date().toISOString().slice(0, 10);
+  document.getElementById("paymentModalBackdrop").classList.add("open");
+
+}
+window.openPaymentModal = openPaymentModal;
+
+function closePaymentModal() {
+  document.getElementById("paymentModalBackdrop").classList.remove("open");
+}
+window.closePaymentModal = closePaymentModal;
+
+const paymentModalBackdropEl = document.getElementById("paymentModalBackdrop");
+if (paymentModalBackdropEl) {
+  paymentModalBackdropEl.addEventListener("click", function (e) {
+    if (e.target === paymentModalBackdropEl) closePaymentModal();
+  });
+}
+
+async function savePayment() {
+
+  if (!currentFeeStudentRoll) return;
+
+  const amount = Number(document.getElementById("paymentAmount").value);
+  const dateValue = document.getElementById("paymentDate").value;
+  const mode = document.getElementById("paymentMode").value;
+  const note = document.getElementById("paymentNote").value.trim();
+
+  if (!amount || !dateValue) {
+    alert("Please enter Amount and Date.");
+    return;
+  }
+
+  try {
+
+    await addDoc(collection(db, "students", currentFeeStudentRoll, "payments"), {
+      amount,
+      date: Timestamp.fromDate(new Date(dateValue)),
+      mode,
+      note,
+      recordedAt: Timestamp.now()
+    });
+
+    closePaymentModal();
+    await searchFeeStudent();
+
+    alert("Payment recorded successfully.");
+
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  }
+
+}
+window.savePayment = savePayment;
