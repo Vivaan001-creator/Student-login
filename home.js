@@ -62,25 +62,6 @@ navBackdrop?.addEventListener("click", closeMobileMenu);
 menu?.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeMobileMenu));
 
 // ==========================
-// Login dropdown
-// ==========================
-const loginWrap = document.getElementById("hpLoginWrap");
-const loginToggle = document.getElementById("hpLoginToggle");
-
-loginToggle?.addEventListener("click", (e) => {
-  e.stopPropagation();
-  const isOpen = loginWrap.classList.toggle("open");
-  loginToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-});
-
-document.addEventListener("click", (e) => {
-  if (loginWrap && !loginWrap.contains(e.target)) {
-    loginWrap.classList.remove("open");
-    loginToggle?.setAttribute("aria-expanded", "false");
-  }
-});
-
-// ==========================
 // Scroll reveal
 // ==========================
 const revealEls = document.querySelectorAll(".hp-reveal");
