@@ -54,25 +54,22 @@ function getSecondaryAuthInstance() {
 
 }
 
-async function createTeacherLoginAccount(email) {
+async function createTeacherLoginAccount(email, password) {
 
     const secondaryAuth = getSecondaryAuthInstance();
-
-    const tempPassword =
-        "Mis@" + Math.random().toString(36).slice(-8);
 
     const credential = await createUserWithEmailAndPassword(
         secondaryAuth,
         email,
-        tempPassword
+        password
     );
 
-    await sendPasswordResetEmail(secondaryAuth, email);
     await signOut(secondaryAuth);
 
     return credential.user.uid;
 
 }
+
 
 // ==========================
 // Default Admin Password
@@ -987,38 +984,50 @@ async function addTeacher(){
     const teacherName =
         document.getElementById("teacherName")?.value.trim();
 
-  const teacherSubject =
-document.getElementById("teacherSubject").value;
+    const teacherSubject =
+        document.getElementById("teacherSubject").value;
 
     const teacherEmail =
         document.getElementById("teacherEmail").value.trim();
+
+    const teacherPassword =
+        document.getElementById("teacherPassword").value;
 
     if(
         !teacherId ||
         !teacherName ||
         !teacherSubject ||
-        !teacherEmail
+        !teacherEmail ||
+        !teacherPassword
     ){
 
-        alert("Please fill all fields, including email (needed for Teacher Login).");
+        alert("Please fill all fields, including email and password (needed for Teacher Login).");
 
         return;
 
     }
 
+    if (teacherPassword.length < 6) {
+        alert("Password kam se kam 6 characters ka hona chahiye.");
+        return;
+    }
+
     try{
 
-        // Create this teacher's login account. If the email is
-        // already registered (e.g. re-saving an existing teacher),
-        // this is skipped and the profile is still saved normally.
+        // Create this teacher's login account using the exact
+        // password the admin typed in the form.
         let authUid = null;
 
         try {
-            authUid = await createTeacherLoginAccount(teacherEmail);
+            authUid = await createTeacherLoginAccount(teacherEmail, teacherPassword);
         } catch (authError) {
-            if (authError.code !== "auth/email-already-in-use") {
-                console.error("Could not create teacher login account:", authError);
+            if (authError.code === "auth/email-already-in-use") {
+                alert("Yeh email pehle se kisi account mein registered hai.");
+                return;
             }
+            console.error("Could not create teacher login account:", authError);
+            alert(authError.message);
+            return;
         }
 
         await setDoc(
@@ -1057,11 +1066,7 @@ document.getElementById("teacherStatus").value,
 
         );
 
-        alert(
-            authUid
-                ? "Teacher Added Successfully. A password-setup email has been sent to " + teacherEmail + "."
-                : "Teacher Added Successfully."
-        );
+        alert("Teacher Added Successfully. Yeh teacher ab isi email/password se login kar sakta hai.");
 
         window.location.href="teachers.html";
 
@@ -1078,6 +1083,8 @@ document.getElementById("teacherStatus").value,
 }
 
 window.addTeacher=addTeacher;
+
+
 
 // ==========================
 // Load Teacher Table
