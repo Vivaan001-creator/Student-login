@@ -5590,44 +5590,126 @@ button { font-family: inherit; cursor: pointer; }
   .classes-table tbody td::before { content: attr(data-label); font-weight: 700; color: #9a99b3; font-size: 12px; }
 }
 
-/* ==========================================================
-   Student Portal additions (result badges + "coming soon" tiles)
-   Reuses existing tokens from :root above — no new palette.
-========================================================== */
-
-.status-pass, .status-fail {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
-}
-.status-pass { background: rgba(47, 187, 106, 0.12); color: #1e9a54; }
-.status-fail { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
-
-.result-empty-msg {
-  padding: 18px;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 14px;
+/* =========================================================
+   Login Selection Page (login.html)
+========================================================= */
+.role-select-page {
+  padding-top: 40px;
 }
 
-.coming-soon-card {
+.role-back-link {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--purple-dark, #5b52ea);
+  margin-bottom: 20px;
+}
+
+.role-select-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #6a5ff0, #4a41d6);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 10px 24px rgba(91, 82, 234, 0.28);
+  margin: 0 auto 18px;
+}
+
+.role-select-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  margin-top: 40px;
+}
+
+.role-card {
   position: relative;
-  opacity: 0.72;
-  cursor: default;
-  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 32px 26px;
+  box-shadow: 0 16px 40px rgba(80, 70, 190, 0.1);
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.coming-soon-card .soon-tag {
+.role-card:not(.disabled):hover {
+  transform: translateY(-5px);
+  box-shadow: 0 22px 50px rgba(80, 70, 190, 0.18);
+}
+
+.role-card-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+.role-card-icon.purple { background: #efe9ff; color: #7c5cf0; }
+.role-card-icon.navy   { background: #e8e7f5; color: #4a41d6; }
+.role-card-icon.muted  { background: #f0f0f5; color: #b4b8c9; }
+
+.role-card h3 { margin: 0 0 6px; font-size: 17px; font-weight: 700; color: #14142b; }
+.role-card p  { margin: 0; font-size: 13px; color: #8b8aa0; }
+
+.role-card-go {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: var(--purple-light);
-  color: var(--purple-dark);
-  font-size: 10px;
+  top: 24px;
+  right: 24px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f4f3ff;
+  color: #5b52ea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.role-card:hover .role-card-go { background: #5b52ea; color: #fff; transform: translateX(2px); }
+
+.role-card.disabled { opacity: 0.65; cursor: default; }
+.role-card-badge {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-size: 10.5px;
   font-weight: 700;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.4px;
   text-transform: uppercase;
-  padding: 3px 8px;
+  color: #8a8fa3;
+  background: #f0f0f5;
+  padding: 5px 10px;
   border-radius: 999px;
+}
+
+.role-select-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 420px;
+  margin: 28px auto 0;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #8b8aa0;
+  text-align: left;
+}
+.role-select-note i { margin-top: 2px; color: #b9b3ec; }
+
+@media (min-width: 640px) {
+  .role-select-grid { grid-template-columns: repeat(2, 1fr); }
+  .role-card:nth-child(3) { grid-column: span 2; }
 }
