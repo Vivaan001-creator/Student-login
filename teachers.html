@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>All Teachers | Modern International School</title>
+<title>All Teachers - Modern International School</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-
-  <div class="app-shell">
+<div class="app">
 
   <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
@@ -32,9 +31,9 @@
         <i class="fa-solid fa-house"></i>
         <span class="link-text">Dashboard</span>
       </a>
-      <a href="#" class="nav-link">
+      <a href="classes.html" class="nav-link">
         <i class="fa-solid fa-chalkboard"></i>
-        <span class="link-text">My Classes</span>
+        <span class="link-text">All Classes</span>
       </a>
 
       <button class="nav-parent" id="studentsToggle">
@@ -81,6 +80,18 @@
         <i class="fa-solid fa-chart-column"></i>
         <span class="link-text">Results</span>
       </a>
+      <a href="fee-management.html" class="nav-link">
+        <i class="fa-solid fa-file-invoice-dollar"></i>
+        <span class="link-text">Fee Management</span>
+      </a>
+      <a href="notices.html" class="nav-link">
+        <i class="fa-regular fa-bell"></i>
+        <span class="link-text">Notice Board</span>
+      </a>
+      <a href="gallery-management.html" class="nav-link">
+        <i class="fa-solid fa-images"></i>
+        <span class="link-text">Gallery</span>
+      </a>
       <a href="#" class="nav-link">
         <i class="fa-regular fa-envelope"></i>
         <span class="link-text">Messages</span>
@@ -103,78 +114,104 @@
 
   <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
-    <!-- ================= MAIN ================= -->
-    <div class="main-area">
+  <!-- Main -->
+  <div class="main teachers-page">
 
-      <!-- Topbar -->
-      <header class="topbar">
-        <div class="topbar-left">
-          <h1 class="topbar-title">Teachers</h1>
+    <header class="page-topbar">
+      <div class="page-topbar-left">
+        <h1>All Teachers</h1>
+        <p>View, search and manage every teacher in the school.</p>
+      </div>
+      <button class="btn-add-class" onclick="window.location.href='add-teacher.html'">
+        <i class="fa-solid fa-user-plus"></i> Add New Teacher
+      </button>
+    </header>
+
+    <section class="classes-card">
+
+      <div class="classes-card-toolbar">
+        <div class="search-box-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            id="searchTeacher"
+            placeholder="Search by name, ID, subject or status..."
+            onkeyup="searchTeacher()">
         </div>
-
-        <div class="topbar-right">
-          <button class="icon-btn bell-btn" aria-label="Notifications">
-            <i class="fa-regular fa-bell"></i>
-            <span class="badge">3</span>
-          </button>
-
-          <div class="admin-chip">
-            <div class="admin-avatar"><i class="fa-solid fa-user"></i></div>
-            <span class="admin-name">Admin</span>
-            <i class="fa-solid fa-chevron-down admin-caret"></i>
-          </div>
-        </div>
-      </header>
-
-      <!-- List page -->
-      <div class="classes-page">
-
-        <div class="page-topbar">
-          <div class="page-topbar-left">
-            <h1>All Teachers</h1>
-            <p>View, search and manage every teacher on your staff.</p>
-          </div>
-          <button class="btn-add-class" onclick="window.location.href='add-teacher.html'">
-            <i class="fa-solid fa-plus"></i>
-            Add Teacher
-          </button>
-        </div>
-
-        <div class="classes-card">
-          <div class="classes-card-toolbar">
-            <div class="search-box-wrap">
-              <i class="fa-solid fa-magnifying-glass"></i>
-              <input type="text" id="searchTeacher" placeholder="Search by ID, name or subject" onkeyup="searchTeacher()">
-            </div>
-          </div>
-
-          <div class="table-wrapper">
-            <table class="classes-table">
-              <thead>
-                <tr>
-                  <th>Teacher ID</th>
-                  <th>Name</th>
-                  <th>Subject</th>
-                  <th>Status</th>
-                  <th>Phone</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="teacherTable">
-                <!-- rows injected by admin.js -> loadTeacherTable() -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
       </div>
 
-      <footer class="footer">
-        © 2026 Modern International School. All rights reserved.
-      </footer>
+      <div class="table-wrapper">
+        <table class="classes-table">
+          <thead>
+            <tr>
+              <th>Teacher ID</th>
+              <th>Name</th>
+              <th>Subject</th>
+              <th>Status</th>
+              <th>Phone</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="teacherTable">
+            <tr><td colspan="6">Loading teachers...</td></tr>
+          </tbody>
+        </table>
+      </div>
 
-    </div>
+      <div class="mini-stats-grid">
+        <div class="mini-stat-card">
+          <div class="mini-stat-icon purple"><i class="fa-solid fa-chalkboard-user"></i></div>
+          <div class="mini-stat-info">
+            <div class="mini-stat-number" id="totalTeachers">0</div>
+            <div class="mini-stat-label">Total Teachers</div>
+          </div>
+        </div>
+        <div class="mini-stat-card">
+          <div class="mini-stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
+          <div class="mini-stat-info">
+            <div class="mini-stat-number" id="totalActiveTeachers">0</div>
+            <div class="mini-stat-label">Active</div>
+          </div>
+        </div>
+        <div class="mini-stat-card">
+          <div class="mini-stat-icon orange"><i class="fa-solid fa-mug-hot"></i></div>
+          <div class="mini-stat-info">
+            <div class="mini-stat-number" id="totalOnLeaveTeachers">0</div>
+            <div class="mini-stat-label">On Leave</div>
+          </div>
+        </div>
+        <div class="mini-stat-card">
+          <div class="mini-stat-icon blue"><i class="fa-solid fa-book"></i></div>
+          <div class="mini-stat-info">
+            <div class="mini-stat-number" id="totalSubjects">0</div>
+            <div class="mini-stat-label">Subjects Covered</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="quick-tips-box">
+      <div class="quick-tips-text">
+        <h3><i class="fa-solid fa-location-dot"></i> Quick Tips</h3>
+        <ul>
+          <li>Search box se naam, Teacher ID, subject ya status — kisi se bhi turant dhoondein.</li>
+          <li>View par click karke poori teacher profile dekhein.</li>
+          <li>Edit se qualification, phone, status waghera update karein.</li>
+          <li>Naya teacher add karne par unka login account bhi automatically ban jaata hai.</li>
+        </ul>
+      </div>
+      <div class="quick-tips-illustration">
+        <i class="fa-solid fa-chalkboard-user"></i>
+      </div>
+    </section>
+
+    <footer class="footer">
+      © 2026 Modern International School. All rights reserved.
+    </footer>
+
   </div>
+</div>
 
 <script type="module" src="admin.js"></script>
 </body>
