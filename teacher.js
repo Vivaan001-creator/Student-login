@@ -57,10 +57,23 @@ function classKeyOf(value) {
   return String(value || "").trim().toLowerCase().replace(/^class\s*/, "");
 }
 
-async function getStudentsInClass(classId) {
+async function getStudentsInClasses(classIds) {
+  const idsArray = Array.isArray(classIds) ? classIds : [classIds];
   const allSnap = await getDocs(collection(db, "students"));
-  const targetKey = classKeyOf(classId);
-  return allSnap.docs.filter((d) => classKeyOf(d.data().class) === targetKey);
+  const targetKeys = new Set(idsArray.map(classKeyOf));
+  return allSnap.docs.filter((d) => targetKeys.has(classKeyOf(d.data().class)));
+}
+
+// kept so nothing that still calls the single-class version breaks
+async function getStudentsInClass(classId) {
+  return getStudentsInClasses([classId]);
+}
+
+async function getHomeworkForClasses(classIds) {
+  const idsArray = Array.isArray(classIds) ? classIds : [classIds];
+  const allSnap = await getDocs(collection(db, "homework"));
+  const idSet = new Set(idsArray);
+  return allSnap.docs.filter((d) => idSet.has(d.data().classId));
 }
 
 // ==========================
@@ -223,15 +236,17 @@ async function loadTeacherDashboard() {
     // Live counts for the dashboard's quick-stat cards, if present
     const ctx = await getMyContext();
 
-    if (ctx && ctx.myClass) {
+    if (ctx && ctx.myClasses && ctx.myClasses.length > 0) {
 
-      // BUG FIX: was where("class","==", ctx.myClass.id) which missed
-      // admin-added students stored as "Class 3" instead of "3".
-      const studentDocs = await getStudentsInClass(ctx.myClass.id);
+      const classIds = ctx.myClasses.map((c) => c.id);
+
+      // BUG FIX: was scoped to a single class; now covers every
+      // class this teacher is assigned to.
+      const studentDocs = await getStudentsInClasses(classIds);
       setText("dashStudentCount", studentDocs.length);
 
-      const hwSnap = await getDocs(query(collection(db, "homework"), where("classId", "==", ctx.myClass.id)));
-      setText("dashHomeworkCount", hwSnap.size);
+      const hwDocs = await getHomeworkForClasses(classIds);
+      setText("dashHomeworkCount", hwDocs.length);
 
     } else {
       setText("dashStudentCount", "0");
@@ -317,17 +332,23 @@ async function getMyContext() {
   if (!snap.exists()) return null;
 
   const teacher = snap.data();
-  let myClass = null;
+  let myClasses = [];
 
   if (teacher.email) {
+    // BUG FIX: this used to take only classSnap.docs[0], so a teacher
+    // assigned to several classes only ever saw the first one — every
+    // other class's students were silently dropped everywhere that
+    // read ctx.myClass. Now we keep ALL matching classes.
     const classSnap = await getDocs(query(collection(db, "classes"), where("teacherEmail", "==", teacher.email)));
-    if (!classSnap.empty) {
-      const classDoc = classSnap.docs[0];
-      myClass = { id: classDoc.id, ...classDoc.data() };
-    }
+    myClasses = classSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
   }
 
-  myContextCache = { teacherId: teacherDocId, teacher, myClass };
+  myContextCache = {
+    teacherId: teacherDocId,
+    teacher,
+    myClasses,
+    myClass: myClasses[0] || null // kept for any old code expecting a single class
+  };
   return myContextCache;
 
 }
@@ -345,21 +366,24 @@ async function loadMyStudents() {
   const tableBody = document.getElementById("myStudentsTable");
   if (!tableBody) return;
 
-  tableBody.innerHTML = `<tr><td colspan="4">Loading...</td></tr>`;
+  tableBody.innerHTML = `<tr><td colspan="5">Loading...</td></tr>`;
 
   const ctx = await getMyContext();
 
-  if (!ctx || !ctx.myClass) {
-    tableBody.innerHTML = `<tr><td colspan="4">Aapko abhi tak koi class assign nahi hui. Admin se sampark karein.</td></tr>`;
+  if (!ctx || !ctx.myClasses || ctx.myClasses.length === 0) {
+    tableBody.innerHTML = `<tr><td colspan="5">Aapko abhi tak koi class assign nahi hui. Admin se sampark karein.</td></tr>`;
     showEmptyClassNote("noClassMsgStudents");
     return;
   }
 
-  // BUG FIX: fetch + normalize instead of an exact-match where()
-  const studentDocs = await getStudentsInClass(ctx.myClass.id);
+  const classIds = ctx.myClasses.map((c) => c.id);
+
+  // BUG FIX: was scoped to a single class; now covers every class
+  // this teacher is assigned to.
+  const studentDocs = await getStudentsInClasses(classIds);
 
   if (studentDocs.length === 0) {
-    tableBody.innerHTML = `<tr><td colspan="4">Is class mein abhi koi student nahi hai.</td></tr>`;
+    tableBody.innerHTML = `<tr><td colspan="5">Aapki classes mein abhi koi student nahi hai.</td></tr>`;
     return;
   }
 
@@ -373,6 +397,7 @@ async function loadMyStudents() {
     row.innerHTML = `
       <td data-label="Roll No.">${escapeHtml(docSnap.id)}</td>
       <td data-label="Name">${escapeHtml(s.name || "-")}</td>
+      <td data-label="Class">${escapeHtml(s.class || "-")}</td>
       <td data-label="Father's Name">${escapeHtml(s.father || "-")}</td>
       <td data-label="Action">
         <div class="action-btns">
@@ -426,19 +451,22 @@ async function loadMarksPage() {
 
   const ctx = await getMyContext();
 
-  if (!ctx || !ctx.myClass) {
-    tableBody.innerHTML = `<tr><td colspan="3">Aapko abhi tak koi class assign nahi hui.</td></tr>`;
+  if (!ctx || !ctx.myClasses || ctx.myClasses.length === 0) {
+    tableBody.innerHTML = `<tr><td colspan="4">Aapko abhi tak koi class assign nahi hui.</td></tr>`;
     showEmptyClassNote("noClassMsgMarks");
     return;
   }
 
-  // BUG FIX: fetch + normalize instead of an exact-match where()
-  const studentDocs = await getStudentsInClass(ctx.myClass.id);
+  const classIds = ctx.myClasses.map((c) => c.id);
+
+  // BUG FIX: was scoped to a single class; now covers every class
+  // this teacher is assigned to.
+  const studentDocs = await getStudentsInClasses(classIds);
 
   tableBody.innerHTML = "";
 
   if (studentDocs.length === 0) {
-    tableBody.innerHTML = `<tr><td colspan="3">Is class mein koi student nahi hai.</td></tr>`;
+    tableBody.innerHTML = `<tr><td colspan="4">Aapki classes mein koi student nahi hai.</td></tr>`;
     return;
   }
 
@@ -450,9 +478,10 @@ async function loadMarksPage() {
     row.innerHTML = `
       <td data-label="Roll No.">${escapeHtml(docSnap.id)}</td>
       <td data-label="Name">${escapeHtml(s.name || "-")}</td>
+      <td data-label="Class">${escapeHtml(s.class || "-")}</td>
       <td data-label="Action">
         <div class="action-btns">
-          <button class="btn-edit" onclick="openMarksModal('${docSnap.id}', '${escapeHtml(s.name || "")}', '${escapeHtml(s.class || ctx.myClass.id)}')">
+          <button class="btn-edit" onclick="openMarksModal('${docSnap.id}', '${escapeHtml(s.name || "")}', '${escapeHtml(s.class || "")}')">
             <i class="fa-solid fa-pen-to-square"></i> Enter Marks
           </button>
         </div>
@@ -470,7 +499,7 @@ async function loadMarksPage() {
     const studentSnap = await getDoc(doc(db, "students", preselectRoll));
     if (studentSnap.exists()) {
       const s = studentSnap.data();
-      openMarksModal(preselectRoll, s.name || "", s.class || ctx.myClass.id);
+      openMarksModal(preselectRoll, s.name || "", s.class || "");
     }
   }
 
@@ -628,21 +657,23 @@ async function loadAttendancePage() {
 async function renderAttendanceList(date) {
 
   const tableBody = document.getElementById("attendanceTable");
-  tableBody.innerHTML = `<tr><td colspan="3">Loading...</td></tr>`;
+  tableBody.innerHTML = `<tr><td colspan="4">Loading...</td></tr>`;
 
   const ctx = await getMyContext();
 
-  if (!ctx || !ctx.myClass) {
-    tableBody.innerHTML = `<tr><td colspan="3">Aapko abhi tak koi class assign nahi hui.</td></tr>`;
+  if (!ctx || !ctx.myClasses || ctx.myClasses.length === 0) {
+    tableBody.innerHTML = `<tr><td colspan="4">Aapko abhi tak koi class assign nahi hui.</td></tr>`;
     showEmptyClassNote("noClassMsgAttendance");
     return;
   }
 
+  const classIds = ctx.myClasses.map((c) => c.id);
+
   // BUG FIX: fetch + normalize instead of an exact-match where()
-  const studentDocs = await getStudentsInClass(ctx.myClass.id);
+  const studentDocs = await getStudentsInClasses(classIds);
 
   if (studentDocs.length === 0) {
-    tableBody.innerHTML = `<tr><td colspan="3">Is class mein koi student nahi hai.</td></tr>`;
+    tableBody.innerHTML = `<tr><td colspan="4">Aapki classes mein koi student nahi hai.</td></tr>`;
     return;
   }
 
@@ -666,6 +697,7 @@ async function renderAttendanceList(date) {
     row.innerHTML = `
       <td data-label="Roll No.">${escapeHtml(roll)}</td>
       <td data-label="Name">${escapeHtml(s.name || "-")}</td>
+      <td data-label="Class">${escapeHtml(s.class || "-")}</td>
       <td data-label="Status">
         <div class="attendance-toggle" data-roll="${escapeHtml(roll)}">
           <button type="button" class="att-pill att-present${existingStatus === "Present" ? " active" : ""}" data-status="Present">Present</button>
@@ -737,10 +769,12 @@ async function loadHomeworkPage() {
 
   const ctx = await getMyContext();
   const subjectList = document.getElementById("hwSubjectList");
+  const classSelect = document.getElementById("hwClass");
 
-  if (subjectList) {
+  function refreshSubjectsFor(classId) {
+    if (!subjectList) return;
     subjectList.innerHTML = "";
-    const subjects = ctx && ctx.myClass ? resolveSubjects(ctx.myClass.id) : DEFAULT_SUBJECTS;
+    const subjects = classId ? resolveSubjects(classId) : DEFAULT_SUBJECTS;
     subjects.forEach((subj) => {
       const opt = document.createElement("option");
       opt.value = subj;
@@ -748,7 +782,52 @@ async function loadHomeworkPage() {
     });
   }
 
-  if (!ctx || !ctx.myClass) {
+  if (classSelect) {
+
+    classSelect.innerHTML = "";
+
+    if (ctx && ctx.myClasses && ctx.myClasses.length > 0) {
+
+      ctx.myClasses.forEach((c) => {
+        const opt = document.createElement("option");
+        opt.value = c.id;
+        opt.textContent = c.className || c.id;
+        classSelect.appendChild(opt);
+      });
+
+      // subjects vary by class (e.g. Nursery has Rhymes/G.K, not
+      // Computer/E.V.S) so the subject suggestions refresh whenever
+      // the selected class changes.
+      classSelect.addEventListener("change", () => refreshSubjectsFor(classSelect.value));
+      refreshSubjectsFor(classSelect.value);
+
+    } else {
+      const opt = document.createElement("option");
+      opt.value = "";
+      opt.textContent = "Koi class assign nahi hai";
+      classSelect.appendChild(opt);
+      refreshSubjectsFor(null);
+    }
+
+  } else {
+    // page has no class picker — fall back to a merged subject list
+    let subjects = DEFAULT_SUBJECTS;
+    if (ctx && ctx.myClasses && ctx.myClasses.length > 0) {
+      const merged = new Set();
+      ctx.myClasses.forEach((c) => resolveSubjects(c.id).forEach((s) => merged.add(s)));
+      subjects = Array.from(merged);
+    }
+    if (subjectList) {
+      subjectList.innerHTML = "";
+      subjects.forEach((subj) => {
+        const opt = document.createElement("option");
+        opt.value = subj;
+        subjectList.appendChild(opt);
+      });
+    }
+  }
+
+  if (!ctx || !ctx.myClasses || ctx.myClasses.length === 0) {
     showEmptyClassNote("noClassMsgHw");
   }
 
@@ -765,28 +844,32 @@ async function loadHomeworkList() {
 
   const ctx = await getMyContext();
 
-  if (!ctx || !ctx.myClass) {
+  if (!ctx || !ctx.myClasses || ctx.myClasses.length === 0) {
     list.innerHTML = `<p class="result-empty-msg">Aapko abhi tak koi class assign nahi hui.</p>`;
     return;
   }
 
-  let snap;
+  const classIds = ctx.myClasses.map((c) => c.id);
 
-  try {
-    snap = await getDocs(query(collection(db, "homework"), where("classId", "==", ctx.myClass.id), orderBy("createdAt", "desc")));
-  } catch (error) {
-    console.error(error);
-    snap = await getDocs(query(collection(db, "homework"), where("classId", "==", ctx.myClass.id)));
-  }
+  // BUG FIX: was scoped to a single class; now covers every class
+  // this teacher is assigned to. Sorted newest-first client-side
+  // since we're no longer doing a single-class where()+orderBy().
+  const hwDocs = await getHomeworkForClasses(classIds);
 
-  if (snap.empty) {
+  hwDocs.sort((a, b) => {
+    const ta = a.data().createdAt?.toMillis?.() || 0;
+    const tb = b.data().createdAt?.toMillis?.() || 0;
+    return tb - ta;
+  });
+
+  if (hwDocs.length === 0) {
     list.innerHTML = `<p class="result-empty-msg">Abhi tak koi homework nahi diya gaya.</p>`;
     return;
   }
 
   list.innerHTML = "";
 
-  snap.forEach((docSnap) => {
+  hwDocs.forEach((docSnap) => {
 
     const hw = docSnap.data();
     const item = document.createElement("div");
@@ -798,7 +881,7 @@ async function loadHomeworkList() {
         <span class="due">${escapeHtml(hw.dueDate || "")}</span>
       </div>
       <div class="homework-body">
-        <h4>${escapeHtml(hw.title || "Homework")}</h4>
+        <h4>${escapeHtml(hw.title || "Homework")} <small style="font-weight:500;color:var(--text-muted,#8a8fa3);">— ${escapeHtml(hw.className || hw.classId || "")}</small></h4>
         <p>${escapeHtml(hw.description || "")}</p>
       </div>
       <div class="action-btns">
@@ -828,16 +911,33 @@ async function addHomework() {
 
   const ctx = await getMyContext();
 
-  if (!ctx || !ctx.myClass) {
+  if (!ctx || !ctx.myClasses || ctx.myClasses.length === 0) {
     alert("Aapko abhi tak koi class assign nahi hui.");
+    return;
+  }
+
+  // Which class is this homework for? Uses a #hwClass <select> if the
+  // page has one (id should match each class's Firestore doc id).
+  // Falls back to the teacher's only class when there's no ambiguity.
+  let targetClass = null;
+  const classPicker = document.getElementById("hwClass");
+
+  if (classPicker && classPicker.value) {
+    targetClass = ctx.myClasses.find((c) => c.id === classPicker.value) || null;
+  } else if (ctx.myClasses.length === 1) {
+    targetClass = ctx.myClasses[0];
+  }
+
+  if (!targetClass) {
+    alert("Aap multiple classes ke teacher hain — pehle yeh batayein ki yeh homework kis class ke liye hai.");
     return;
   }
 
   try {
 
     await addDoc(collection(db, "homework"), {
-      classId: ctx.myClass.id,
-      className: ctx.myClass.className || ctx.myClass.id,
+      classId: targetClass.id,
+      className: targetClass.className || targetClass.id,
       subject,
       title,
       description,
