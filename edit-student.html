@@ -1,103 +1,231 @@
 <!DOCTYPE html>
-
-<html lang="en">
-
+<html lang="hi">
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Edit Student</title>
-
-<link rel="stylesheet"
-href="admin.css">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern International School - Edit Student</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
 </head>
-
 <body>
 
-<div class="dashboard">
+<div class="app">
 
-<h1>Modern International School</h1>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
 
-<input
-type="text"
-id="studentName"
-placeholder="Student Name">
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+      <div class="brand-text">
+        <h1><span class="accent">Modern</span></h1>
+        <p>International School</p>
+      </div>
+    </div>
 
-<input
-type="text"
-id="fatherName"
-placeholder="Father Name">
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-link">
+        <i class="fa-solid fa-house"></i>
+        <span class="link-text">Dashboard</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-solid fa-chalkboard"></i>
+        <span class="link-text">My Classes</span>
+      </a>
 
-<input
-type="text"
-id="attendance"
-placeholder="Attendance">
+      <button class="nav-parent" id="studentsToggle">
+        <i class="fa-solid fa-user-group"></i>
+        <span class="link-text">Students</span>
+        <i class="fa-solid fa-chevron-down chevron"></i>
+      </button>
+      <div class="submenu collapsed" id="studentsSubmenu">
+        <a href="students.html" class="sub-link active">
+          <i class="fa-regular fa-user"></i> All Students
+        </a>
+        <a href="add-student.html" class="sub-link">
+          <i class="fa-solid fa-circle-plus"></i> Add Student
+        </a>
+      </div>
 
-  <h3>Subject Marks</h3>
+      <button class="nav-parent" id="teachersToggle">
+        <i class="fa-solid fa-chalkboard-user"></i>
+        <span class="link-text">Teachers</span>
+        <i class="fa-solid fa-chevron-down chevron"></i>
+      </button>
+      <div class="submenu collapsed" id="teachersSubmenu">
+        <a href="teachers.html" class="sub-link">
+          <i class="fa-regular fa-user"></i> All Teachers
+        </a>
+        <a href="add-teacher.html" class="sub-link">
+          <i class="fa-solid fa-circle-plus"></i> Add Teacher
+        </a>
+      </div>
 
-<div id="marksEditor">
+      <a href="#" class="nav-link">
+        <i class="fa-regular fa-square-check"></i>
+        <span class="link-text">Attendance</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-solid fa-file-lines"></i>
+        <span class="link-text">Assignments</span>
+      </a>
+      <a href="marks-management.html" class="nav-link">
+        <i class="fa-solid fa-file-pen"></i>
+        <span class="link-text">Exams</span>
+      </a>
+      <a href="publish-result.html" class="nav-link">
+        <i class="fa-solid fa-chart-column"></i>
+        <span class="link-text">Results</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fa-regular fa-envelope"></i>
+        <span class="link-text">Messages</span>
+      </a>
+      <a href="school-profile.html" class="nav-link">
+        <i class="fa-solid fa-building-columns"></i>
+        <span class="link-text">School Profile</span>
+      </a>
+      <a href="change-password.html" class="nav-link">
+        <i class="fa-solid fa-gear"></i>
+        <span class="link-text">Settings</span>
+      </a>
+    </nav>
 
-</div>
-  
-<h3>Live Result Preview</h3>
+    <a href="#" onclick="adminLogout()" class="logout-link">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      <span class="link-text">Logout</span>
+    </a>
+  </aside>
 
-<div class="preview-box">
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
-<p><b>Total:</b> <span id="previewTotal">0</span></p>
+  <!-- Main -->
+  <div class="main">
 
-<p><b>Percentage:</b> <span id="previewPercentage">0%</span></p>
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <h2>Edit Student</h2>
+      </div>
+      <div class="topbar-right">
+        <div class="notif-bell">
+          <i class="fa-regular fa-bell"></i>
+          <span class="notif-badge">3</span>
+        </div>
+        <div class="admin-profile">
+          <div class="avatar"><i class="fa-solid fa-user"></i></div>
+          <span>Admin</span>
+          <i class="fa-solid fa-chevron-down chevron-sm"></i>
+        </div>
+      </div>
+    </header>
 
-<p><b>Grade:</b> <span id="previewGrade">-</span></p>
+    <main class="content">
 
-<p><b>Status:</b> <span id="previewStatus">-</span></p>
+      <!-- Page heading -->
+      <section class="page-heading">
+        <div class="heading-left">
+          <div class="heading-icon"><i class="fa-solid fa-user-pen"></i></div>
+          <div>
+            <h1>Edit Student</h1>
+            <p>Roll No. <span id="displayRoll">-</span> &nbsp;·&nbsp; Class <span id="displayClass">-</span></p>
+          </div>
+        </div>
+      </section>
 
-<p><b>Rank:</b> <span id="previewRank">-</span></p>
+      <!-- Form card -->
+      <section class="form-card">
+        <h3 class="form-section-title">Student Information</h3>
 
-<p><b>Teacher Comment:</b> <span id="previewComment">-</span></p>
+        <div class="form-grid">
 
-</div>
-  
-<label>Select Result Month</label>
+          <div class="field">
+            <label>Student Name <span class="required">*</span></label>
+            <div class="input-wrap">
+              <i class="fa-regular fa-user input-icon"></i>
+              <input type="text" id="studentName" placeholder="Enter student name">
+            </div>
+          </div>
 
-<select
-id="month"
-onchange="changeMonth()">
+          <div class="field">
+            <label>Father Name <span class="required">*</span></label>
+            <div class="input-wrap">
+              <i class="fa-regular fa-user input-icon"></i>
+              <input type="text" id="fatherName" placeholder="Enter father's name">
+            </div>
+          </div>
 
-</select>
+          <div class="field">
+            <label>Attendance (%)</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-calendar-check input-icon"></i>
+              <input type="text" id="attendance" placeholder="Enter attendance %">
+            </div>
+          </div>
 
-<h3>Result Status</h3>
+          <div class="field">
+            <label>Result Publish Status</label>
+            <select id="publishStatus">
+              <option value="unpublished">Unpublished</option>
+              <option value="published">Published</option>
+            </select>
+          </div>
 
-<select id="publishStatus">
-    <option value="published">Published</option>
-    <option value="unpublished">Unpublished</option>
-</select>
+        </div>
 
-<br><br>
+        <hr class="divider" style="margin: 28px 0;">
 
-<button onclick="saveStudent()">
-    Save Changes
-</button>
+        <h3 class="form-section-title">Monthly Marks</h3>
 
-<br><br>
+        <div class="field" style="max-width: 320px; margin-bottom: 4px;">
+          <label>Select Month</label>
+          <select id="month"></select>
+        </div>
 
-<br><br>
+        <div id="marksEditor">
+          <!-- subject rows injected by admin.js -> loadSubjects() / loadMarksFromFirestore() -->
+        </div>
 
-<button
-onclick="window.location.href='students.html'">
+        <div class="form-actions">
+          <button type="button" class="btn-primary" onclick="saveStudent()">
+            <i class="fa-regular fa-floppy-disk"></i> Save Changes
+          </button>
+          <button type="button" class="btn-secondary" onclick="window.location.href='students.html'">
+            <i class="fa-solid fa-xmark"></i> Cancel
+          </button>
+        </div>
+      </section>
 
-⬅ Back
+      <footer class="footer">
+        © 2026 Modern International School. All rights reserved.
+      </footer>
 
-</button>
-
+    </main>
+  </div>
 </div>
 
 <script type="module" src="admin.js"></script>
+<script>
+  // Roll number is known immediately (set by students.html before
+  // navigating here); class comes from admin.js's loadStudent(),
+  // which is async, so poll briefly until it's populated.
+  document.getElementById('displayRoll').textContent = localStorage.getItem('editRoll') || '-';
 
+  let attempts = 0;
+  const classPoll = setInterval(() => {
+    const cls = localStorage.getItem('studentClass');
+    attempts++;
+    if (cls) {
+      document.getElementById('displayClass').textContent = cls;
+      clearInterval(classPoll);
+    } else if (attempts > 25) {
+      clearInterval(classPoll);
+    }
+  }, 200);
+</script>
 </body>
-
 </html>
-
