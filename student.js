@@ -1,7 +1,14 @@
 import { db } from "./Firebase.js";
 import {
   doc,
-  getDoc
+  getDoc,
+  getDocs,
+  collection,
+  query,
+  where,
+  orderBy,
+  limit,
+  documentId
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 // ==========================================================
@@ -24,6 +31,14 @@ function toISODate(value) {
   }
 
   return str;
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
 }
 
 // ==========================================================
@@ -120,7 +135,62 @@ function isLowerClass(classValue) {
 }
 
 // ==========================================================
-// Load Profile + Result (student-dashboard.html)
+// Shared month list (Result + Attendance both use this)
+// ==========================================================
+const MONTHS = [
+  "June 2026", "July 2026", "August 2026", "September 2026", "October 2026",
+  "November 2026", "December 2026", "January 2027", "February 2027", "March 2027",
+  "April 2027", "May 2027", "June 2027", "July 2027", "August 2027", "September 2027",
+  "October 2027", "November 2027", "December 2027", "January 2028"
+];
+
+const MONTH_NAMES = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
+// Defaults the month picker to the current real-world month
+// instead of always opening on the first entry in MONTHS.
+function currentMonthLabel() {
+  const now = new Date();
+  const label = `${MONTH_NAMES[now.getMonth()]} ${now.getFullYear()}`;
+  return MONTHS.includes(label) ? label : MONTHS[0];
+}
+
+function populateMonthDropdown(selectEl, months, defaultValue) {
+  selectEl.innerHTML = "";
+  months.forEach((m) => {
+    const opt = document.createElement("option");
+    opt.value = m;
+    opt.textContent = m;
+    selectEl.appendChild(opt);
+  });
+  selectEl.value = defaultValue || months[0];
+}
+
+// Converts a "June 2026" style label into a [start, end) yyyy-mm-dd
+// range, used to query the attendance subcollection (doc IDs are
+// plain yyyy-mm-dd dates, same as teacher.js writes them).
+function monthLabelToRange(label) {
+  const parts = (label || "").split(" ");
+  const monthName = parts[0];
+  const year = Number(parts[1]);
+  const monthIndex = MONTH_NAMES.indexOf(monthName);
+  if (monthIndex === -1 || !year) return null;
+
+  const pad = (n) => String(n).padStart(2, "0");
+  const start = `${year}-${pad(monthIndex + 1)}-01`;
+
+  const endMonthIndex = monthIndex === 11 ? 0 : monthIndex + 1;
+  const endYear = monthIndex === 11 ? year + 1 : year;
+  const end = `${endYear}-${pad(endMonthIndex + 1)}-01`;
+
+  return { start, end };
+}
+
+// ==========================================================
+// Load Profile + Result + Attendance + Notices + Fee Status
+// (student-dashboard.html)
 // ==========================================================
 const profileBox = document.getElementById("studentProfileBox");
 
@@ -147,36 +217,29 @@ async function loadStudentDashboard() {
 
   const monthSelect = document.getElementById("resultMonth");
   if (monthSelect) {
-    loadResultMonths(monthSelect);
+    populateMonthDropdown(monthSelect, MONTHS, currentMonthLabel());
     monthSelect.addEventListener("change", function () {
       loadStudentResult(roll, student, this.value);
     });
     await loadStudentResult(roll, student, monthSelect.value);
   }
+
+  const attMonthSelect = document.getElementById("attendanceMonth");
+  if (attMonthSelect) {
+    populateMonthDropdown(attMonthSelect, MONTHS, currentMonthLabel());
+    attMonthSelect.addEventListener("change", function () {
+      loadStudentAttendance(roll, this.value);
+    });
+    await loadStudentAttendance(roll, attMonthSelect.value);
+  }
+
+  await loadStudentFeeStatus(roll, student);
+  await loadStudentNotices();
 }
 
 function setText(id, value) {
   const el = document.getElementById(id);
   if (el) el.textContent = value;
-}
-
-function loadResultMonths(monthSelect) {
-  const months = [
-    "June 2026", "July 2026", "August 2026", "September 2026", "October 2026",
-    "November 2026", "December 2026", "January 2027", "February 2027", "March 2027",
-    "April 2027", "May 2027", "June 2027", "July 2027", "August 2027", "September 2027",
-    "October 2027", "November 2027", "December 2027", "January 2028"
-  ];
-
-  monthSelect.innerHTML = "";
-  months.forEach((m) => {
-    const opt = document.createElement("option");
-    opt.value = m;
-    opt.textContent = m;
-    monthSelect.appendChild(opt);
-  });
-
-  monthSelect.value = "June 2026";
 }
 
 async function loadStudentResult(roll, student, month) {
@@ -188,6 +251,7 @@ async function loadStudentResult(roll, student, month) {
 
   tableBody.innerHTML = "";
   if (summaryBox) summaryBox.innerHTML = "";
+  if (emptyMsg) emptyMsg.style.display = "none";
 
   if (student.publishStatus !== "published") {
     showEmpty(emptyMsg, "Aapka result abhi school dwara publish nahi kiya gaya hai.");
@@ -220,7 +284,7 @@ async function loadStudentResult(roll, student, month) {
 
     rows += `
       <tr>
-        <td data-label="Subject">${subject}</td>
+        <td data-label="Subject">${escapeHtml(subject)}</td>
         <td data-label="Marks">${score} / ${maxMarks}</td>
         <td data-label="Status">
           <span class="${passed ? "status-pass" : "status-fail"}">
@@ -265,6 +329,225 @@ async function loadStudentResult(roll, student, month) {
   }
 }
 
+// ==========================================================
+// Attendance (reads students/{roll}/attendance/{yyyy-mm-dd}
+// docs written by the teacher's Attendance page)
+// ==========================================================
+async function loadStudentAttendance(roll, month) {
+  const summaryBox = document.getElementById("attendanceSummaryBox");
+  const tableBody = document.getElementById("attendanceTableBody");
+  const emptyMsg = document.getElementById("attendanceEmptyMsg");
+
+  if (!tableBody) return;
+
+  tableBody.innerHTML = "";
+  if (summaryBox) summaryBox.innerHTML = "";
+  if (emptyMsg) emptyMsg.style.display = "none";
+
+  const range = monthLabelToRange(month);
+  if (!range) return;
+
+  try {
+    const attQuery = query(
+      collection(db, "students", roll, "attendance"),
+      where(documentId(), ">=", range.start),
+      where(documentId(), "<", range.end),
+      orderBy(documentId(), "desc")
+    );
+
+    const snap = await getDocs(attQuery);
+
+    if (snap.empty) {
+      showEmpty(emptyMsg, month + " ke liye abhi tak attendance record nahi hai.");
+      return;
+    }
+
+    let present = 0;
+    let absent = 0;
+    let rows = "";
+
+    snap.forEach((docSnap) => {
+      const status = docSnap.data().status || "Present";
+      if (status === "Present") present++; else absent++;
+
+      const dateText = new Date(docSnap.id + "T00:00:00").toLocaleDateString("en-IN", {
+        day: "2-digit", month: "short", year: "numeric"
+      });
+
+      rows += `
+        <tr>
+          <td data-label="Date">${dateText}</td>
+          <td data-label="Status">
+            <span class="${status === "Present" ? "status-active" : "status-inactive"}">${escapeHtml(status)}</span>
+          </td>
+        </tr>
+      `;
+    });
+
+    tableBody.innerHTML = rows;
+
+    const total = present + absent;
+    const percentage = total > 0 ? ((present / total) * 100).toFixed(1) : "0.0";
+
+    if (summaryBox) {
+      summaryBox.innerHTML = `
+        <div class="mini-stat-card">
+          <div class="mini-stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
+          <div class="mini-stat-info">
+            <div class="mini-stat-number">${present}</div>
+            <div class="mini-stat-label">Present</div>
+          </div>
+        </div>
+        <div class="mini-stat-card">
+          <div class="mini-stat-icon orange"><i class="fa-solid fa-circle-xmark"></i></div>
+          <div class="mini-stat-info">
+            <div class="mini-stat-number">${absent}</div>
+            <div class="mini-stat-label">Absent</div>
+          </div>
+        </div>
+        <div class="mini-stat-card">
+          <div class="mini-stat-icon blue"><i class="fa-solid fa-chart-line"></i></div>
+          <div class="mini-stat-info">
+            <div class="mini-stat-number">${percentage}%</div>
+            <div class="mini-stat-label">Attendance</div>
+          </div>
+        </div>
+      `;
+    }
+
+  } catch (error) {
+    console.error(error);
+    showEmpty(emptyMsg, "Attendance load nahi ho paayi: " + error.message);
+  }
+}
+
+// ==========================================================
+// Notice Board (reads the top-level "notices" collection,
+// same one notices.html on the admin side writes to)
+// ==========================================================
+async function loadStudentNotices() {
+  const list = document.getElementById("noticesList");
+  const emptyMsg = document.getElementById("noticesEmptyMsg");
+
+  if (!list) return;
+
+  list.innerHTML = "";
+  if (emptyMsg) emptyMsg.style.display = "none";
+
+  try {
+    const noticesQuery = query(collection(db, "notices"), orderBy("date", "desc"), limit(30));
+    const snap = await getDocs(noticesQuery);
+
+    if (snap.empty) {
+      showEmpty(emptyMsg, "Abhi tak koi notice nahi hai.");
+      return;
+    }
+
+    let html = "";
+
+    snap.forEach((docSnap) => {
+      const n = docSnap.data();
+      const dateText = n.date && n.date.toDate
+        ? n.date.toDate().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })
+        : "-";
+
+      html += `
+        <div class="notice-item">
+          <div class="notice-tag">
+            <i class="fa-regular fa-bell"></i>
+            <span class="date">${dateText}</span>
+          </div>
+          <div class="notice-body">
+            <h4>${escapeHtml(n.title || "-")}</h4>
+            <p>${escapeHtml(n.description || "")}</p>
+          </div>
+        </div>
+      `;
+    });
+
+    list.innerHTML = html;
+
+  } catch (error) {
+    console.error(error);
+    showEmpty(emptyMsg, "Notices load nahi ho paayi: " + error.message);
+  }
+}
+
+// ==========================================================
+// Fee Status (reads classes/{classId} for the fee structure
+// and students/{roll}/payments for this student's own payment
+// history — same data admin's Fee Management page writes)
+// ==========================================================
+async function loadStudentFeeStatus(roll, student) {
+  const summaryBox = document.getElementById("feeSummaryBox");
+  const tableBody = document.getElementById("feeTableBody");
+  const emptyMsg = document.getElementById("feeEmptyMsg");
+
+  if (!summaryBox) return;
+
+  summaryBox.innerHTML = "";
+  if (tableBody) tableBody.innerHTML = "";
+  if (emptyMsg) emptyMsg.style.display = "none";
+
+  try {
+    const classSnap = student.class ? await getDoc(doc(db, "classes", student.class)) : null;
+    const feeAmount = classSnap && classSnap.exists() ? Number(classSnap.data().feeAmount) || 0 : 0;
+    const feeFrequency = classSnap && classSnap.exists() ? (classSnap.data().feeFrequency || "-") : "-";
+
+    const paymentsSnap = await getDocs(
+      query(collection(db, "students", roll, "payments"), orderBy("date", "desc"))
+    );
+
+    let totalPaid = 0;
+    let rows = "";
+
+    paymentsSnap.forEach((p) => {
+      const pay = p.data();
+      totalPaid += Number(pay.amount) || 0;
+      const dateText = pay.date && pay.date.toDate
+        ? pay.date.toDate().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })
+        : "-";
+      rows += `
+        <tr>
+          <td data-label="Date">${dateText}</td>
+          <td data-label="Amount">₹${pay.amount}</td>
+          <td data-label="Mode">${escapeHtml(pay.mode || "-")}</td>
+          <td data-label="Note">${escapeHtml(pay.note || "-")}</td>
+        </tr>
+      `;
+    });
+
+    const balance = feeAmount - totalPaid;
+    const statusBadge = !feeAmount
+      ? `<span class="status-inactive">Fee not set</span>`
+      : balance <= 0
+        ? `<span class="status-active">Paid</span>`
+        : `<span class="status-inactive">Due ₹${balance}</span>`;
+
+    summaryBox.innerHTML = `
+      <div class="fee-student-summary">
+        <div class="fee-student-who">
+          <strong>${escapeHtml(student.name || "-")}</strong>
+          <span>${escapeHtml(student.class || "-")} · Roll ${escapeHtml(roll)}</span>
+        </div>
+        <div class="fee-student-amounts">
+          <span>Fee: ₹${feeAmount || 0} / ${escapeHtml(feeFrequency)}</span>
+          <span>Paid: ₹${totalPaid}</span>
+          ${statusBadge}
+        </div>
+      </div>
+    `;
+
+    if (tableBody) {
+      tableBody.innerHTML = rows || `<tr><td colspan="4">Abhi koi payment record nahi hai.</td></tr>`;
+    }
+
+  } catch (error) {
+    console.error(error);
+    if (emptyMsg) showEmpty(emptyMsg, "Fee status load nahi ho paayi: " + error.message);
+  }
+}
+
 function showEmpty(emptyMsg, text) {
   if (emptyMsg) {
     emptyMsg.style.display = "block";
@@ -298,4 +581,3 @@ document.addEventListener("DOMContentLoaded", function () {
     sidebarBackdrop.addEventListener("click", closeSidebar);
   }
 });
-    
