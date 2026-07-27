@@ -3,39 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modern International School - All Students</title>
+<title>All Students - Modern International School</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="admin.css">
-<style>
-  /* Keep the shared #searchStudent id (required by admin.js's
-     searchStudent()) but give it the nicer search-box-wrap look
-     used on this page. Tag+ID beats the plain #searchStudent
-     rule already defined in admin.css, so this is safe to load
-     after it without touching the shared stylesheet. */
-  input#searchStudent {
-    width: 100%;
-    margin: 0;
-    padding: 11px 14px 11px 38px;
-    border: 1.5px solid #e6e5f2;
-    border-radius: 12px;
-    font-family: inherit;
-    font-size: 14px;
-    color: #14142b;
-    background: #fbfaff;
-    outline: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-  }
-  input#searchStudent:focus {
-    border-color: #6558e6;
-    background: #ffffff;
-    box-shadow: 0 0 0 4px rgba(101, 88, 230, 0.12);
-  }
-</style>
 </head>
 <body>
-
 <div class="app">
 
   <!-- Sidebar -->
@@ -57,9 +31,9 @@
         <i class="fa-solid fa-house"></i>
         <span class="link-text">Dashboard</span>
       </a>
-      <a href="#" class="nav-link">
+      <a href="classes.html" class="nav-link">
         <i class="fa-solid fa-chalkboard"></i>
-        <span class="link-text">My Classes</span>
+        <span class="link-text">All Classes</span>
       </a>
 
       <button class="nav-parent" id="studentsToggle">
@@ -106,6 +80,18 @@
         <i class="fa-solid fa-chart-column"></i>
         <span class="link-text">Results</span>
       </a>
+      <a href="fee-management.html" class="nav-link">
+        <i class="fa-solid fa-file-invoice-dollar"></i>
+        <span class="link-text">Fee Management</span>
+      </a>
+      <a href="notices.html" class="nav-link">
+        <i class="fa-regular fa-bell"></i>
+        <span class="link-text">Notice Board</span>
+      </a>
+      <a href="gallery-management.html" class="nav-link">
+        <i class="fa-solid fa-images"></i>
+        <span class="link-text">Gallery</span>
+      </a>
       <a href="#" class="nav-link">
         <i class="fa-regular fa-envelope"></i>
         <span class="link-text">Messages</span>
@@ -129,66 +115,95 @@
   <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
   <!-- Main -->
-  <div class="main">
+  <div class="main students-page">
 
-    <!-- Topbar -->
-    <header class="topbar">
-      <div class="topbar-left">
-        <h2>All Students</h2>
+    <header class="page-topbar">
+      <div class="page-topbar-left">
+        <h1>All Students</h1>
+        <p>View, search and manage every student in the school.</p>
       </div>
-      <div class="topbar-right">
-        <div class="notif-bell">
-          <i class="fa-regular fa-bell"></i>
-          <span class="notif-badge">3</span>
-        </div>
-        <div class="admin-profile">
-          <div class="avatar"><i class="fa-solid fa-user"></i></div>
-          <span>Admin</span>
-          <i class="fa-solid fa-chevron-down chevron-sm"></i>
-        </div>
-      </div>
+      <button class="btn-add-class" onclick="window.location.href='add-student.html'">
+        <i class="fa-solid fa-user-plus"></i> Add New Student
+      </button>
     </header>
 
-    <!-- List page -->
-    <div class="classes-page">
+    <section class="classes-card">
 
-      <div class="page-topbar">
-        <div class="page-topbar-left">
-          <h1>All Students</h1>
-          <p>View, search and manage every enrolled student.</p>
+      <div class="classes-card-toolbar">
+        <div class="search-box-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            id="searchStudent"
+            placeholder="Search by name, roll no, father or class..."
+            onkeyup="searchStudent()">
         </div>
-        <button class="btn-add-class" onclick="window.location.href='add-student.html'">
-          <i class="fa-solid fa-plus"></i>
-          Add Student
-        </button>
       </div>
 
-      <div class="classes-card">
-        <div class="classes-card-toolbar">
-          <div class="search-box-wrap">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchStudent" placeholder="Search by roll number or name" onkeyup="searchStudent()">
+      <div class="table-wrapper">
+        <table class="classes-table">
+          <thead>
+            <tr>
+              <th>Roll No</th>
+              <th>Name</th>
+              <th>Father's Name</th>
+              <th>Class</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="studentTable">
+            <tr><td colspan="5">Loading students...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mini-stats-grid">
+        <div class="mini-stat-card">
+          <div class="mini-stat-icon purple"><i class="fa-solid fa-user-group"></i></div>
+          <div class="mini-stat-info">
+            <div class="mini-stat-number" id="totalStudents">0</div>
+            <div class="mini-stat-label">Total Students</div>
           </div>
         </div>
-
-        <div class="table-wrapper">
-          <table class="classes-table">
-            <thead>
-              <tr>
-                <th>Roll No.</th>
-                <th>Name</th>
-                <th>Class</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="studentTable">
-              <!-- rows injected by admin.js -> loadStudentTable() -->
-            </tbody>
-          </table>
+        <div class="mini-stat-card">
+          <div class="mini-stat-icon blue"><i class="fa-solid fa-person"></i></div>
+          <div class="mini-stat-info">
+            <div class="mini-stat-number" id="totalBoys">0</div>
+            <div class="mini-stat-label">Boys</div>
+          </div>
+        </div>
+        <div class="mini-stat-card">
+          <div class="mini-stat-icon green"><i class="fa-solid fa-person-dress"></i></div>
+          <div class="mini-stat-info">
+            <div class="mini-stat-number" id="totalGirls">0</div>
+            <div class="mini-stat-label">Girls</div>
+          </div>
+        </div>
+        <div class="mini-stat-card">
+          <div class="mini-stat-icon orange"><i class="fa-solid fa-chalkboard"></i></div>
+          <div class="mini-stat-info">
+            <div class="mini-stat-number" id="totalStudentClasses">0</div>
+            <div class="mini-stat-label">Classes Covered</div>
+          </div>
         </div>
       </div>
 
-    </div>
+    </section>
+
+    <section class="quick-tips-box">
+      <div class="quick-tips-text">
+        <h3><i class="fa-solid fa-location-dot"></i> Quick Tips</h3>
+        <ul>
+          <li>Search box se roll number, naam, father's name ya class — kisi se bhi turant dhoondein.</li>
+          <li>Edit par click karke student ki details aur marks update karein.</li>
+          <li>Delete se pehle zaroor sochein — yeh record permanently hata deta hai.</li>
+          <li>Naya student add karne ke liye "Add New Student" par click karein.</li>
+        </ul>
+      </div>
+      <div class="quick-tips-illustration">
+        <i class="fa-solid fa-graduation-cap"></i>
+      </div>
+    </section>
 
     <footer class="footer">
       © 2026 Modern International School. All rights reserved.
