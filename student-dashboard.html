@@ -35,6 +35,18 @@
         <i class="fa-solid fa-chart-column"></i>
         <span class="link-text">My Result</span>
       </a>
+      <a href="#attendance-section" class="nav-link">
+        <i class="fa-regular fa-square-check"></i>
+        <span class="link-text">Attendance</span>
+      </a>
+      <a href="#notices-section" class="nav-link">
+        <i class="fa-regular fa-bell"></i>
+        <span class="link-text">Notices</span>
+      </a>
+      <a href="#fee-section" class="nav-link">
+        <i class="fa-solid fa-file-invoice-dollar"></i>
+        <span class="link-text">Fee Status</span>
+      </a>
       <a href="student-login.html" class="nav-link" onclick="studentLogout(); return false;">
         <i class="fa-solid fa-arrow-right-from-bracket"></i>
         <span class="link-text">Logout</span>
@@ -156,41 +168,73 @@
         <div class="mini-stats-grid" id="resultSummaryBox" style="margin-top:18px;"></div>
       </section>
 
-      <!-- Coming soon modules -->
-      <section class="card">
+      <!-- Attendance -->
+      <section class="card" id="attendance-section">
         <div class="card-title">
-          <i class="fa-solid fa-layer-group"></i>
-          <h2>More on the way</h2>
+          <i class="fa-regular fa-square-check"></i>
+          <h2>My Attendance</h2>
         </div>
 
-        <div class="actions-grid">
-          <a href="#" class="action-item coming-soon-card">
-            <span class="soon-tag">Soon</span>
-            <div class="action-icon blue"><i class="fa-regular fa-square-check"></i></div>
-            <div class="action-text">
-              <h3 class="blue-text">Attendance</h3>
-              <p>Monthly attendance record</p>
-            </div>
-          </a>
-
-          <a href="#" class="action-item coming-soon-card">
-            <span class="soon-tag">Soon</span>
-            <div class="action-icon pink"><i class="fa-regular fa-bell"></i></div>
-            <div class="action-text">
-              <h3 class="pink-text">Notices</h3>
-              <p>School notices &amp; circulars</p>
-            </div>
-          </a>
-
-          <a href="#" class="action-item coming-soon-card">
-            <span class="soon-tag">Soon</span>
-            <div class="action-icon teal"><i class="fa-solid fa-file-invoice-dollar"></i></div>
-            <div class="action-text">
-              <h3 class="teal-text">Fee Status</h3>
-              <p>Fee payment history</p>
-            </div>
-          </a>
+        <div class="field" style="max-width:260px;margin-bottom:16px;">
+          <label>Select Month</label>
+          <div class="input-wrap select-wrap">
+            <select id="attendanceMonth"></select>
+            <i class="fa-solid fa-chevron-down select-icon"></i>
+          </div>
         </div>
+
+        <div class="mini-stats-grid" id="attendanceSummaryBox" style="margin-bottom:18px;"></div>
+
+        <div class="table-wrapper">
+          <table class="classes-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="attendanceTableBody"></tbody>
+          </table>
+        </div>
+
+        <p id="attendanceEmptyMsg" class="result-empty-msg" style="display:none;"></p>
+      </section>
+
+      <!-- Notice Board -->
+      <section class="card" id="notices-section">
+        <div class="card-title">
+          <i class="fa-regular fa-bell"></i>
+          <h2>Notice Board</h2>
+        </div>
+
+        <div id="noticesList"></div>
+        <p id="noticesEmptyMsg" class="result-empty-msg" style="display:none;"></p>
+      </section>
+
+      <!-- Fee Status -->
+      <section class="card" id="fee-section">
+        <div class="card-title">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+          <h2>Fee Status</h2>
+        </div>
+
+        <div id="feeSummaryBox"></div>
+
+        <div class="table-wrapper">
+          <table class="classes-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Mode</th>
+                <th>Note</th>
+              </tr>
+            </thead>
+            <tbody id="feeTableBody"></tbody>
+          </table>
+        </div>
+
+        <p id="feeEmptyMsg" class="result-empty-msg" style="display:none;"></p>
       </section>
 
       <footer class="footer">
@@ -203,5 +247,4 @@
 
 <script type="module" src="student.js"></script>
 </body>
-      </html>
-
+</html>
