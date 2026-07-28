@@ -4,23 +4,17 @@ import {
   getDoc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-if(sessionStorage.getItem("loggedIn") !== "true"){
+if (sessionStorage.getItem("studentLoggedIn") !== "true") {
 
-    alert(
-    "Session Expired. Please Login Again."
-    );
-
+    alert("Session Expired. Please Login Again.");
     window.location.href = "student-login.html";
+    throw new Error("Not Logged In");   // ← yeh line add karein
 
 }
-// Student Data
-
-
 
 // Get Login Data
-
-const roll = localStorage.getItem("studentRoll");
-const month = localStorage.getItem("selectedMonth");
+const roll = sessionStorage.getItem("studentRoll");      // localStorage nahi
+const month = sessionStorage.getItem("selectedMonth");   // localStorage nahi
 console.log("Selected Month =", month);
 
 const student = {};
