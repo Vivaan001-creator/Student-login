@@ -10,7 +10,7 @@ if(sessionStorage.getItem("loggedIn") !== "true"){
     "Session Expired. Please Login Again."
     );
 
-    window.location.href = "index.html";
+    window.location.href = "student-login.html";
 
 }
 // Student Data
@@ -33,7 +33,7 @@ if (!studentSnap.exists()) {
 
     alert("Student data not found");
 
-    window.location.href = "index.html";
+    window.location.href = "student-login.html";
 
     throw new Error("Student Not Found");
 
@@ -50,6 +50,9 @@ if (publishStatus === "unpublished") {
     <div style="text-align:center;padding:80px;font-family:Arial;">
         <h1>Result Not Published Yet</h1>
         <p>Please contact your Examiner.</p>
+        <button onclick="window.location.href='student-dashboard.html'" style="margin-top:20px;padding:10px 20px;border:none;border-radius:8px;background:#4e54c8;color:white;font-weight:bold;cursor:pointer;">
+            Back to Dashboard
+        </button>
     </div>
     `;
 
@@ -78,6 +81,9 @@ font-family:Arial;
 ">
 <h1>Result Not Uploaded Yet</h1>
 <p>Result for ${month} is not available.</p>
+<button onclick="window.location.href='student-dashboard.html'" style="margin-top:20px;padding:10px 20px;border:none;border-radius:8px;background:#4e54c8;color:white;font-weight:bold;cursor:pointer;">
+    Back to Dashboard
+</button>
 </div>
 `;
 
@@ -86,29 +92,27 @@ throw new Error("Result Not Uploaded");
 
 const data = resultSnap.data();
 console.log(data);
-const classSubjects = {
-    "Nursery": ["English", "Math", "Hindi", "Rhymes", "G.K"],
-   "L.K.G": ["English", "Math", "Hindi", "Rhymes", "G.K"],
-  "U.K.G": ["English", "Math", "Hindi", "Rhymes", "G.K"],
-  "1": ["English", "Math", "Hindi", "Computer", "E.V.S", "G.K"],
-    "2": ["English", "Math", "Hindi", "Computer", "E.V.S", "G.K"],
-    "3": ["English", "Math", "Hindi", "Computer", "E.V.S", "G.K"],
-    "4": ["English", "Math", "Hindi", "Computer", "E.V.S", "G.K"],
-    "5": ["English", "Math", "Hindi", "Computer", "E.V.S", "G.K"],
-    "6": ["English", "Math", "Hindi", "Science", "Social Studies"],
-  "7": ["English", "Math", "Hindi", "Science", "Social Studies"],
-  "8": ["English", "Math", "Hindi", "Science", "Social Studies"],
-  "9": ["English", "Math", "Hindi", "Science", "Social Studies"],
-  "10": ["English", "Math", "Hindi", "Science", "Social Studies"]
-};
 
-const subjects = classSubjects[student.class];
+// Subjects now come straight from the saved result document in
+// Firebase (exactly what the teacher entered marks for) instead of
+// a separate hardcoded class -> subjects list here, so this page
+// can never drift out of sync with what marks-management actually
+// saves.
+const subjects = Object.keys(data);
 
-const maxMarks =
-    ["Nursery","L.K.G","U.K.G","1", "2", "3","4","5","6","7","8","9","10"].includes(student.class) ? 50 : 60;
+// Same lower-class list used in teacher.js / admin.js for grading
+// (classes 6-10 use 60 max / 20 pass, not 50 / 17).
+const lowerClasses = ["Nursery", "L.K.G", "U.K.G", "1", "2", "3", "4", "5"];
 
-const passMarks =
-    ["Nursery","L.K.G","U.K.G","1", "2", "3","4","5","6","7","8","9","10"].includes(student.class) ? 17 : 20;
+function normalizeClassKey(value) {
+    if (!value) return "";
+    return String(value).replace(/^class\s*/i, "").trim();
+}
+
+const normalizedClass = normalizeClassKey(student.class);
+
+const maxMarks = lowerClasses.includes(normalizedClass) ? 50 : 60;
+const passMarks = lowerClasses.includes(normalizedClass) ? 17 : 20;
 
 const selectedResult = subjects.map(subject => [
     subject,
@@ -138,6 +142,10 @@ let totalMaxMarks = 0;
 
 const table = document.getElementById("marksTable");
 
+if (selectedResult.length === 0) {
+  table.innerHTML = `<tr><td colspan="5">No subject marks found for ${month}.</td></tr>`;
+}
+
 selectedResult.forEach(subject => {
 
   const subjectName = subject[0];
@@ -165,8 +173,9 @@ selectedResult.forEach(subject => {
 // Percentage
 
 const percentage =
-((totalMarks / totalMaxMarks) * 100)
-.toFixed(2);
+totalMaxMarks > 0
+? ((totalMarks / totalMaxMarks) * 100).toFixed(2)
+: "0.00";
 
 document.getElementById("totalMarks").textContent =
 totalMarks + " / " + totalMaxMarks;
@@ -278,6 +287,12 @@ window.location.replace(
 );
 
 }
+
+function goToDashboard(){
+
+window.location.href = "student-dashboard.html";
+
+}
 history.pushState(null,null,location.href);
 
 window.onpopstate = function(){
@@ -318,3 +333,4 @@ setInterval(updateClock,1000);
 window.printResult = printResult;
 window.downloadPDF = downloadPDF;
 window.logoutStudent = logoutStudent;
+window.goToDashboard = goToDashboard;
