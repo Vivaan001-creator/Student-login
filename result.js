@@ -4,7 +4,15 @@ import {
   getDoc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
+if(sessionStorage.getItem("loggedIn") !== "true"){
 
+    alert(
+    "Session Expired. Please Login Again."
+    );
+
+    window.location.href = "student-login.html";
+
+}
 // Student Data
 
 
