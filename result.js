@@ -27,6 +27,125 @@ if (!roll) {
 // Grading helpers — identical boundaries/wording to student.js
 // so the dashboard and this print page always agree.
 // ==========================================================
+
+const classSubjects = {
+
+"Nursery": [
+        "English",
+        "Math",
+        "Hindi",
+        "Rhymes",
+        "G.K",
+    ],
+
+  "L.K.G": [
+        "English",
+        "Math",
+        "Hindi",
+        "Rhymes",
+        "G.K",
+    ],
+
+  "U.K.G": [
+        "English",
+        "Math",
+        "Hindi",
+        "Rhymes",
+        "G.K",
+    ],
+  
+    "1": [
+        "English",
+        "Math",
+        "Hindi",
+        "Computer",
+        "E.V.S",
+        "G.K"
+    ],
+
+    "2": [
+        "English",
+        "Math",
+        "Hindi",
+        "Computer",
+        "E.V.S",
+        "G.K"
+    ],
+
+    "3": [
+        "English",
+        "Math",
+        "Hindi",
+        "Computer",
+        "E.V.S",
+        "G.K"
+    ],
+
+    "4": [
+        "English",
+        "Math",
+        "Hindi",
+        "Computer",
+        "E.V.S",
+        "G.K"
+    ],
+
+    "5": [
+        "English",
+        "Math",
+        "Hindi",
+        "Computer",
+        "E.V.S",
+        "G.K"
+    ],
+
+    "6": [
+        "English",
+        "Math",
+        "Hindi",
+        "Science",
+        "Social Studies"
+        
+    ],
+
+  "7": [
+        "English",
+        "Math",
+        "Hindi",
+        "Science",
+        "Social Studies"
+    ],
+
+  
+  "8": [
+        "English",
+        "Math",
+        "Hindi",
+        "Science",
+        "Social Studies"
+        
+    ],
+
+  "9": [
+        "English",
+        "Math",
+        "Hindi",
+        "Science",
+        "Social Studies"
+        
+    ],
+
+  "10": [
+        "English",
+        "Math",
+        "Hindi",
+        "Science",
+        "Social Studies"
+        
+    ]
+
+};
+
 const lowerClassKeys = ["nursery", "l.k.g", "u.k.g", "1", "2", "3", "4", "5"];
 
 function isLowerClass(classValue) {
