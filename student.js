@@ -5,10 +5,8 @@ import {
   getDocs,
   collection,
   query,
-  where,
   orderBy,
-  limit,
-  documentId
+  limit
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 // ==========================================================
@@ -135,6 +133,38 @@ function isLowerClass(classValue) {
 }
 
 // ==========================================================
+// Grade + Teacher's Comment (ported from the original
+// result.js design — same percentage boundaries and wording)
+// ==========================================================
+function gradeForPercentage(pct) {
+  if (pct >= 90) return "A1";
+  if (pct >= 80) return "A2";
+  if (pct >= 70) return "B1";
+  if (pct >= 60) return "B2";
+  if (pct >= 50) return "C1";
+  if (pct >= 40) return "C2";
+  if (pct >= 33) return "D";
+  return "E";
+}
+
+function commentForPercentage(pct) {
+  if (pct >= 90) return "Excellent performance! Keep up the good work. Stay focused and aim higher.";
+  if (pct >= 80) return "Outstanding performance! Keep up the excellent work.";
+  if (pct >= 70) return "Good progress! Displays a solid understanding of the lessons.";
+  if (pct >= 60) return "Good effort, but needs more practice in core concepts to improve.";
+  if (pct >= 50) return "An average performance. Needs to pay closer attention during lessons.";
+  if (pct >= 33) return "Must focus more in class and practice regularly at home to improve scores.";
+  return "Needs hard work and regular practice for better improvement.";
+}
+
+// Prints just the My Result card (see the @media print rules in
+// admin.css that hide everything else while this runs).
+function printResult() {
+  window.print();
+}
+window.printResult = printResult;
+
+// ==========================================================
 // Shared month list (Result + Attendance both use this)
 // ==========================================================
 const MONTHS = [
@@ -252,6 +282,8 @@ async function loadStudentResult(roll, student, month) {
   tableBody.innerHTML = "";
   if (summaryBox) summaryBox.innerHTML = "";
   if (emptyMsg) emptyMsg.style.display = "none";
+  const resultCommentBoxEl = document.getElementById("resultCommentBox");
+  if (resultCommentBoxEl) resultCommentBoxEl.textContent = "";
 
   if (student.publishStatus !== "published") {
     showEmpty(emptyMsg, "Aapka result abhi school dwara publish nahi kiya gaya hai.");
@@ -285,7 +317,9 @@ async function loadStudentResult(roll, student, month) {
     rows += `
       <tr>
         <td data-label="Subject">${escapeHtml(subject)}</td>
-        <td data-label="Marks">${score} / ${maxMarks}</td>
+        <td data-label="Max">${maxMarks}</td>
+        <td data-label="Pass">${passMarks}</td>
+        <td data-label="Marks">${score}</td>
         <td data-label="Status">
           <span class="${passed ? "status-pass" : "status-fail"}">
             ${passed ? "Pass" : "Fail"}
@@ -299,6 +333,7 @@ async function loadStudentResult(roll, student, month) {
 
   const percentage = total > 0 ? ((obtained / total) * 100).toFixed(1) : "0.0";
   const overallPass = total > 0 && (obtained / total) * 100 >= (passMarks / maxMarks) * 100;
+  const gradeValue = gradeForPercentage(Number(percentage));
 
   if (summaryBox) {
     summaryBox.innerHTML = `
@@ -325,7 +360,19 @@ async function loadStudentResult(roll, student, month) {
           <div class="mini-stat-label">Overall Result</div>
         </div>
       </div>
+      <div class="mini-stat-card">
+        <div class="mini-stat-icon purple"><i class="fa-solid fa-award"></i></div>
+        <div class="mini-stat-info">
+          <div class="mini-stat-number">${gradeValue}</div>
+          <div class="mini-stat-label">Grade</div>
+        </div>
+      </div>
     `;
+  }
+
+  const commentBox = document.getElementById("resultCommentBox");
+  if (commentBox) {
+    commentBox.textContent = commentForPercentage(Number(percentage));
   }
 }
 
@@ -348,16 +395,17 @@ async function loadStudentAttendance(roll, month) {
   if (!range) return;
 
   try {
-    const attQuery = query(
-      collection(db, "students", roll, "attendance"),
-      where(documentId(), ">=", range.start),
-      where(documentId(), "<", range.end),
-      orderBy(documentId(), "desc")
-    );
+    // Plain, unfiltered collection read — this needs no composite
+    // index at all. Filtering by month and sorting happens below,
+    // in JS, on the (small, per-student) result set. Attendance
+    // docs are keyed by yyyy-mm-dd, so string comparison works.
+    const snap = await getDocs(collection(db, "students", roll, "attendance"));
 
-    const snap = await getDocs(attQuery);
+    const docsInMonth = snap.docs
+      .filter((docSnap) => docSnap.id >= range.start && docSnap.id < range.end)
+      .sort((a, b) => (a.id < b.id ? 1 : -1)); // newest first
 
-    if (snap.empty) {
+    if (docsInMonth.length === 0) {
       showEmpty(emptyMsg, month + " ke liye abhi tak attendance record nahi hai.");
       return;
     }
@@ -366,7 +414,7 @@ async function loadStudentAttendance(roll, month) {
     let absent = 0;
     let rows = "";
 
-    snap.forEach((docSnap) => {
+    docsInMonth.forEach((docSnap) => {
       const status = docSnap.data().status || "Present";
       if (status === "Present") present++; else absent++;
 
