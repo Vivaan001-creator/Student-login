@@ -476,18 +476,22 @@ async function loadStudent() {
     const previousSchoolField = document.getElementById("previousSchool");
     if (previousSchoolField) previousSchoolField.value = student.previousSchool || "";
 
-    loadMonths();
-
+    // BUG FIX: edit-student.html no longer has a #month select or
+    // #marksEditor (marks entry now lives on teacher-marks.html), so
+    // this used to crash here with "Cannot read properties of null"
+    // every time this page loaded — which also silently broke
+    // saveStudent() below since the crash happened before any of
+    // the form fields could be edited/saved.
     const monthSelect = document.getElementById("month");
-    monthSelect.value = "June 2026";
-
-    loadSubjects(student);
-
-    await loadMarksFromFirestore(editRoll, monthSelect.value);
-
-    monthSelect.addEventListener("change", async function () {
-        await loadMarksFromFirestore(editRoll, this.value);
-    });
+    if (monthSelect) {
+        loadMonths();
+        monthSelect.value = "June 2026";
+        loadSubjects(student);
+        await loadMarksFromFirestore(editRoll, monthSelect.value);
+        monthSelect.addEventListener("change", async function () {
+            await loadMarksFromFirestore(editRoll, this.value);
+        });
+    }
 
 }
 
@@ -659,12 +663,21 @@ async function saveStudent() {
         address: document.getElementById("address")?.value || "",
         admissionDate: document.getElementById("admissionDate")?.value || "",
         previousSchool: document.getElementById("previousSchool")?.value || "",
-        attendance: document.getElementById("attendance").value,
-        month: document.getElementById("month").value
+        attendance: document.getElementById("attendance").value
 
         // Note: publishStatus is no longer set from here — each
         // teacher now publishes/unpublishes a student's result
         // themselves from the marks entry screen (teacher.js).
+        //
+        // BUG FIX: this used to also read document.getElementById("month").value
+        // right here, before the try block even started. edit-student.html no
+        // longer has a #month select (marks entry moved to teacher-marks.html),
+        // so that line threw "Cannot read properties of null" on every single
+        // click — before any alert, before any Firestore call. That's why Save
+        // Changes looked like it did nothing at all. The duplicate marks/results
+        // write further down (which relied on the same missing #month and
+        // #marksEditor elements) has been removed for the same reason — marks
+        // are saved from teacher-marks.html now, not from here.
 
     };
 
@@ -673,54 +686,20 @@ async function saveStudent() {
 
     try {
 
-    console.log("Roll =", roll);
-    console.log(studentData);
-    alert("Saving document: " + roll);
+        await setDoc(
+            doc(db, "students", roll),
+            studentData,
+            { merge: true }
+        );
 
-    await setDoc(
-        doc(db, "students", roll),
-        studentData,
-        { merge: true }
-    );
-      const month = document.getElementById("month").value;
+        alert("Student data saved successfully.");
 
-const inputs = document.querySelectorAll("#marksEditor input");
+    } catch (error) {
 
-const resultData = {};
+        alert(error.message);
+        console.error(error);
 
-const labels = document.querySelectorAll("#marksEditor label");
-
-labels.forEach((label, index) => {
-
-    const subject =
-        label.childNodes[0].textContent.trim();
-
-    resultData[subject] =
-        Number(inputs[index].value);
-
-});
-      console.log(resultData);
-
-await setDoc(
-
-    doc(db, "students", roll, "results", month),
-
-    resultData
-
-);
-
-    const checkDoc = await getDoc(doc(db, "students", roll));
-
-    alert(JSON.stringify(checkDoc.data()));
-
-    alert("Student data saved successfully.");
-
-} catch (error) {
-
-    alert(error.message);
-    console.error(error);
-
-}
+    }
 
 }
 
