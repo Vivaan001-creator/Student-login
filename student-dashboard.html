@@ -142,7 +142,9 @@
           <h2>My Result</h2>
         </div>
 
-        <div class="field" style="max-width:260px;margin-bottom:16px;">
+        <p style="color:#777;margin-bottom:16px;">Apna report card dekhne ke liye month chunein aur button dabayein.</p>
+
+        <div class="field" style="max-width:260px;margin-bottom:18px;">
           <label>Select Month</label>
           <div class="input-wrap select-wrap">
             <select id="resultMonth"></select>
@@ -150,30 +152,9 @@
           </div>
         </div>
 
-        <button type="button" class="btn-secondary no-print" onclick="printResult()" style="margin-bottom:16px;">
-          <i class="fa-solid fa-print"></i> Print Result
+        <button type="button" class="btn-primary" onclick="viewMyResult()">
+          <i class="fa-solid fa-eye"></i> View My Result
         </button>
-
-        <div class="table-wrapper">
-          <table class="classes-table">
-            <thead>
-              <tr>
-                <th>Subject</th>
-                <th>Max</th>
-                <th>Pass</th>
-                <th>Marks</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="resultTableBody"></tbody>
-          </table>
-        </div>
-
-        <p id="resultEmptyMsg" class="result-empty-msg" style="display:none;"></p>
-
-        <div class="mini-stats-grid" id="resultSummaryBox" style="margin-top:18px;"></div>
-
-        <p id="resultCommentBox" class="result-comment"></p>
       </section>
 
       <!-- Attendance -->
@@ -254,5 +235,24 @@
 </div>
 
 <script type="module" src="student.js"></script>
+<script>
+  // "View My Result" button on the dashboard's My Result card:
+  // stores the month picked in #resultMonth (populated by
+  // student.js) and hands off to result.html, which does the
+  // actual Firebase fetch + rendering.
+  function viewMyResult() {
+    const monthSelect = document.getElementById('resultMonth');
+    const month = monthSelect && monthSelect.value;
+
+    if (!month) {
+      alert('Pehle month select karein.');
+      return;
+    }
+
+    localStorage.setItem('selectedMonth', month);
+    window.location.href = 'result.html';
+  }
+  window.viewMyResult = viewMyResult;
+</script>
 </body>
 </html>
