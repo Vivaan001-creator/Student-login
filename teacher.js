@@ -536,10 +536,89 @@ async function openMarksModal(roll, name, studentClass) {
     await loadMarksFromFirestore(roll, monthSelect.value);
   };
 
+  renderPublishControl();
+  const studentSnap = await getDoc(doc(db, "students", roll));
+  const currentStatus = studentSnap.exists() ? (studentSnap.data().publishStatus || "unpublished") : "unpublished";
+  updatePublishUI(currentStatus);
+
   document.getElementById("marksModalBackdrop").classList.add("open");
 
 }
 window.openMarksModal = openMarksModal;
+
+// ==========================
+// Publish Result (per-teacher, from the Marks modal)
+// Each teacher can publish/unpublish a student's result for
+// their own class right from marks entry, next to Save Marks —
+// this used to live on the admin's Edit Student page.
+// ==========================
+let currentMarksPublishStatus = "unpublished";
+
+function renderPublishControl() {
+
+  let wrap = document.getElementById("publishResultWrap");
+  if (wrap) return wrap;
+
+  const saveBtn = document.querySelector('[onclick="saveTeacherMarks()"]');
+  if (!saveBtn) return null;
+
+  wrap = document.createElement("span");
+  wrap.id = "publishResultWrap";
+  wrap.style.display = "inline-flex";
+  wrap.style.alignItems = "center";
+  wrap.style.gap = "10px";
+  wrap.style.marginLeft = "10px";
+
+  wrap.innerHTML = `
+    <span id="publishStatusPill" class="status-inactive">Unpublished</span>
+    <button type="button" id="togglePublishBtn" class="btn-secondary" onclick="toggleResultPublish()">
+      <i class="fa-solid fa-upload"></i> Publish Result
+    </button>
+  `;
+
+  saveBtn.insertAdjacentElement("afterend", wrap);
+
+  return wrap;
+
+}
+
+function updatePublishUI(status) {
+
+  currentMarksPublishStatus = status;
+
+  const pill = document.getElementById("publishStatusPill");
+  const btn = document.getElementById("togglePublishBtn");
+  if (!pill || !btn) return;
+
+  if (status === "published") {
+    pill.textContent = "Published";
+    pill.className = "status-active";
+    btn.innerHTML = `<i class="fa-solid fa-eye-slash"></i> Unpublish Result`;
+  } else {
+    pill.textContent = "Unpublished";
+    pill.className = "status-inactive";
+    btn.innerHTML = `<i class="fa-solid fa-upload"></i> Publish Result`;
+  }
+
+}
+
+async function toggleResultPublish() {
+
+  if (!currentMarksRoll) return;
+
+  const newStatus = currentMarksPublishStatus === "published" ? "unpublished" : "published";
+
+  try {
+    await setDoc(doc(db, "students", currentMarksRoll), { publishStatus: newStatus }, { merge: true });
+    updatePublishUI(newStatus);
+    alert(newStatus === "published" ? "Result published — the student can now see it." : "Result unpublished.");
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  }
+
+}
+window.toggleResultPublish = toggleResultPublish;
 
 function renderMarksEditor(studentClass) {
 

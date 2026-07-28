@@ -442,9 +442,39 @@ async function loadStudent() {
 
     localStorage.setItem("studentClass", student.class);
 
+    const rollField = document.getElementById("roll");
+    if (rollField) rollField.value = editRoll;
+
     document.getElementById("studentName").value = student.name || "";
     document.getElementById("fatherName").value = student.father || "";
     document.getElementById("attendance").value = student.attendance || "";
+
+    const motherField = document.getElementById("motherName");
+    if (motherField) motherField.value = student.mother || "";
+
+    const classField = document.getElementById("studentClass");
+    if (classField) classField.value = student.class || "";
+
+    const sectionField = document.getElementById("section");
+    if (sectionField) sectionField.value = student.section || "";
+
+    const dobField = document.getElementById("dob");
+    if (dobField) dobField.value = student.dob || "";
+
+    const genderField = document.getElementById("gender");
+    if (genderField) genderField.value = student.gender || "";
+
+    const contactField = document.getElementById("contactNumber");
+    if (contactField) contactField.value = student.contactNumber || "";
+
+    const addressField = document.getElementById("address");
+    if (addressField) addressField.value = student.address || "";
+
+    const admissionField = document.getElementById("admissionDate");
+    if (admissionField) admissionField.value = student.admissionDate || "";
+
+    const previousSchoolField = document.getElementById("previousSchool");
+    if (previousSchoolField) previousSchoolField.value = student.previousSchool || "";
 
     loadMonths();
 
@@ -611,16 +641,35 @@ async function saveStudent() {
 
     const roll = localStorage.getItem("editRoll");
 
+    const classField = document.getElementById("studentClass");
+    const studentClass = classField && classField.value
+        ? classField.value
+        : localStorage.getItem("studentClass");
+
     const studentData = {
 
         name: document.getElementById("studentName").value,
         father: document.getElementById("fatherName").value,
-        class: localStorage.getItem("studentClass"),
+        mother: document.getElementById("motherName")?.value || "",
+        class: studentClass,
+        section: document.getElementById("section")?.value || "",
+        dob: document.getElementById("dob")?.value || "",
+        gender: document.getElementById("gender")?.value || "",
+        contactNumber: document.getElementById("contactNumber")?.value || "",
+        address: document.getElementById("address")?.value || "",
+        admissionDate: document.getElementById("admissionDate")?.value || "",
+        previousSchool: document.getElementById("previousSchool")?.value || "",
         attendance: document.getElementById("attendance").value,
-        month: document.getElementById("month").value,
-        publishStatus: document.getElementById("publishStatus").value
+        month: document.getElementById("month").value
+
+        // Note: publishStatus is no longer set from here — each
+        // teacher now publishes/unpublishes a student's result
+        // themselves from the marks entry screen (teacher.js).
 
     };
+
+    // Keep localStorage in sync in case the class was changed here.
+    localStorage.setItem("studentClass", studentClass);
 
     try {
 
