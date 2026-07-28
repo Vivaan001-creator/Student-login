@@ -1,198 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="hi">
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Assessment Result</title>
-
-<link rel="stylesheet"
-href="result.css">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern International School - Assessment Result</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="result.css">
 </head>
-
 <body>
 
-<div class="container">
-
-<div class="header">
-
-<div>
-
-<h1>ASSESSMENT RESULT</h1>
-
-<p>Quarterly Examination Result</p>
-
-</div>
-
-<div class="header-buttons">
-
-<button onclick="goToDashboard()" class="btn-back">
-Back to Dashboard
-</button>
-
-<button onclick="printResult()">
-Print
-</button>
-
-<button onclick="downloadPDF()">
-Download PDF
-</button>
-
-<button onclick="logoutStudent()">
-Logout
-</button>
-
-</div>
-
-</div>
-
-<div class="profile-card">
-
-<div class="student-photo">
-
-<img
-src="student-icon.png"
-alt="Student">
-
-</div>
-
-<div class="student-details">
-
-<p>
-<b>Student Name:</b>
-<span id="studentName"></span>
-</p>
-
-<p><b>Class:</b> <span id="studentClass"></span></p>
-
-  <p><b>Roll No:</b> <span id="studentRoll"></span></p>
-
-<b>Father's Name:</b>
-<span id="fatherName"></span>
-
-<p>
-<b>Section:</b>
-A
-</p>
-
-<p>
-<b>Month:</b>
-<span id="month"></span>
-</p>
-
-</div>
-
-</div>
-
-<div class="performance-card">
-
-<h2>
-Academic Performance
-</h2>
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>Subject</th>
-
-<th>Max</th>
-
-<th>Pass</th>
-
-<th>Marks</th>
-
-<th>Status</th>
-
-</tr>
-
-</thead>
-
-<tbody id="marksTable"></tbody>
-
-</table>
-
-</div>
-
-<div class="summary">
-
-<div class="box">
-
-<h3>Total</h3>
-
-<p id="totalMarks"></p>
-
-</div>
-
-<div class="box">
-
-<h3>Percentage</h3>
-
-<p id="percentage"></p>
-
-</div>
-
-<div class="box">
-
-<h3>Grade</h3>
-
-<p id="grade"></p>
-
-</div>
-
-<div class="box">
-
-<h3>Attendance</h3>
-
-<p id="attendance"></p>
-
-</div>
-
-</div>
-
-<div class="remarks">
-
-<h3>
-Teacher's Comment
-</h3>
-
-<p id="comment"></p>
-
-</div>
-
-<div class="signature">
-
-<img
-src="teacher-signature.png"
-alt="Signature">
-
-<p>
-Class Teacher Signature
-</p>
-
-</div>
+<div class="result-page" id="resultPage">
+
+  <header class="result-header">
+    <div class="result-header-text">
+      <h1>Assessment Result</h1>
+      <p>Quarterly Examination Result</p>
+    </div>
+    <div class="result-header-actions">
+      <button onclick="goToDashboard()"><i class="fa-solid fa-arrow-left"></i><span> Back to Dashboard</span></button>
+      <button onclick="printResult()"><i class="fa-solid fa-print"></i><span> Print</span></button>
+      <button onclick="downloadPDF()"><i class="fa-solid fa-download"></i><span> Download PDF</span></button>
+      <button onclick="logoutStudent()" class="danger"><i class="fa-solid fa-right-from-bracket"></i><span> Logout</span></button>
+    </div>
+  </header>
+
+  <main class="result-card">
+
+    <div class="profile-row">
+      <div class="profile-avatar"><i class="fa-solid fa-user-graduate"></i></div>
+      <div class="profile-info">
+        <p><strong>Student Name:</strong> <span id="studentName">-</span></p>
+        <p><strong>Class:</strong> <span id="studentClass">-</span></p>
+        <p><strong>Roll No:</strong> <span id="studentRoll">-</span></p>
+        <p><strong>Father's Name:</strong> <span id="fatherName">-</span></p>
+        <p><strong>Section:</strong> <span id="studentSection">-</span></p>
+        <p><strong>Month:</strong> <select id="monthSelect" class="month-select"></select></p>
+      </div>
+    </div>
+
+    <h2 class="section-title">Academic Performance</h2>
+    <div class="table-wrap">
+      <table class="marks-table">
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Max</th>
+            <th>Pass</th>
+            <th>Marks</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="marksTableBody">
+          <tr><td colspan="5" class="empty-row">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="summary-grid">
+      <div class="summary-card">
+        <span class="summary-label">Total</span>
+        <span class="summary-value" id="totalMarks">-</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Percentage</span>
+        <span class="summary-value" id="percentage">-</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Grade</span>
+        <span class="summary-value" id="grade">-</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Attendance</span>
+        <span class="summary-value" id="attendance">-</span>
+      </div>
+    </div>
+
+    <h2 class="section-title">Teacher's Comment</h2>
+    <p class="comment-box" id="comment">-</p>
+
+    <div class="signature-row">
+      <div class="signature-mark">Vivaan Kumar</div>
+      <p>Class Teacher Signature</p>
+    </div>
+
+  </main>
+
+  <p class="result-footer">Keep Learning, Keep Growing, Keep Succeeding!</p>
 
 </div>
 
 <script type="module" src="result.js"></script>
-
-<div class="footer">
-
-Keep Learning, Keep Growing,
-Keep Succeeding!
-
-<div id="resultClock" class="result-clock"></div>
-
-</div>
-
-
 </body>
-
 </html>
