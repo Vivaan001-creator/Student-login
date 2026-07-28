@@ -266,7 +266,7 @@ img { max-width: 100%; display: block; }
 .hp-bird-2 { animation: hpFlap 1s ease-in-out infinite 0.2s; transform-origin: center; }
 .hp-tree-1, .hp-tree-2 { animation: hpSway 3.6s ease-in-out infinite; transform-origin: bottom center; }
 .hp-tree-2 { animation-delay: 0.4s; }
-.hp-flag { transform-origin: left center; animation: hpWave 2.4s ease-in-out infinite; }
+.hp-flag { transform-origin: left center; }
 
 @keyframes hpDriftX { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(10px); } }
 @keyframes hpFlap { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.4); } }
