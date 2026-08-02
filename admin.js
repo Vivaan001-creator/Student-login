@@ -44,6 +44,8 @@ import {
     getApp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
+import { generateBillingPeriods, allocateDueStatus, findClassDoc } from "./fee-utils.js";
+
 // ==========================
 // Create a Teacher's Login Account
 // (uses a secondary Firebase app instance so creating the
@@ -2917,6 +2919,53 @@ window.deleteGalleryPhoto = deleteGalleryPhoto;
 // FEE MANAGEMENT (fee-management.html)
 // =========================================================
 
+// ----- Payment Settings (School UPI ID for the Parent Portal's
+// Pay Now button — stored once, shared by every student) -----
+
+const schoolUpiIdField = document.getElementById("schoolUpiId");
+
+if (schoolUpiIdField) {
+  loadPaymentSettings();
+}
+
+async function loadPaymentSettings() {
+  try {
+    const snap = await getDoc(doc(db, "settings", "payment"));
+    if (snap.exists()) {
+      const data = snap.data();
+      const upiField = document.getElementById("schoolUpiId");
+      const nameField = document.getElementById("schoolPayeeName");
+      if (upiField) upiField.value = data.upiId || "";
+      if (nameField) nameField.value = data.payeeName || "";
+    }
+  } catch (error) {
+    console.error("Could not load payment settings:", error);
+  }
+}
+
+async function savePaymentSettings() {
+  const upiId = document.getElementById("schoolUpiId").value.trim();
+  const payeeName = document.getElementById("schoolPayeeName").value.trim();
+
+  if (!upiId) {
+    alert("Please enter a UPI ID.");
+    return;
+  }
+
+  try {
+    await setDoc(doc(db, "settings", "payment"), {
+      upiId,
+      payeeName: payeeName || "Modern International School"
+    }, { merge: true });
+
+    alert("Payment settings saved successfully.");
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  }
+}
+window.savePaymentSettings = savePaymentSettings;
+
 let allFeeClassRows = [];
 
 const feeClassesTableBody = document.getElementById("feeClassesTable");
@@ -3081,9 +3130,9 @@ async function searchFeeStudent() {
     const student = studentSnap.data();
     currentFeeStudentRoll = roll;
 
-    const classSnap = await getDoc(doc(db, "classes", student.class));
-    const feeAmount = classSnap.exists() ? Number(classSnap.data().feeAmount) || 0 : 0;
-    const feeFrequency = classSnap.exists() ? (classSnap.data().feeFrequency || "-") : "-";
+    const classData = await findClassDoc(student.class);
+    const feeAmount = classData ? Number(classData.feeAmount) || 0 : 0;
+    const feeFrequency = classData ? (classData.feeFrequency || "Monthly") : "Monthly";
 
     const paymentsSnap = await getDocs(
       query(collection(db, "students", roll, "payments"), orderBy("date", "desc"))
@@ -3112,12 +3161,56 @@ async function searchFeeStudent() {
       });
     }
 
-    const balance = feeAmount - totalPaid;
-    const statusBadge = !feeAmount
-      ? `<span class="status-inactive">Fee not set</span>`
-      : balance <= 0
-        ? `<span class="status-active">Paid</span>`
-        : `<span class="status-inactive">Due ₹${balance}</span>`;
+    // Month-by-month due, anchored to admission date — same logic
+    // (and same fee-utils.js module) the Parent Portal uses, so
+    // admin and parent never disagree on what's outstanding.
+    const periods = generateBillingPeriods(student.admissionDate, feeFrequency, feeAmount);
+    const periodsWithStatus = allocateDueStatus(periods, totalPaid);
+    const outstanding = periodsWithStatus.filter((p) => p.status !== "paid");
+
+    let statusBadge;
+    if (!feeAmount) {
+      statusBadge = `<span class="status-inactive">Fee not set</span>`;
+    } else if (outstanding.length === 0) {
+      statusBadge = `<span class="status-active">All Paid</span>`;
+    } else {
+      const totalDue = outstanding.reduce((sum, p) => sum + p.amountDue, 0);
+      statusBadge = `<span class="status-inactive">Due ₹${totalDue}</span>`;
+    }
+
+    let dueListHtml = "";
+    if (feeAmount && periods.length === 0) {
+      dueListHtml = `<p class="no-class-msg">Admission Date set nahi hai, isliye month-wise due nahi dikhaya ja sakta. Edit Student se add karein.</p>`;
+    } else if (feeAmount && periodsWithStatus.length) {
+      dueListHtml = `
+        <h3 class="form-section-title" style="font-size:13.5px;margin-top:16px;">Month-wise Status</h3>
+        ${periodsWithStatus.map((p) => {
+          if (p.status === "paid") {
+            return `
+              <div class="fee-period-row paid">
+                <div>
+                  <div class="fee-period-label">${escapeHtmlAdmin(p.label)}</div>
+                  <div class="fee-period-amount">₹${p.amount}</div>
+                </div>
+                <span class="status-active"><i class="fa-solid fa-circle-check"></i> Paid</span>
+              </div>
+            `;
+          }
+          const badge = p.status === "partial"
+            ? `<span class="status-inactive">Partially Paid — Due ₹${p.amountDue}</span>`
+            : `<span class="status-inactive">Due ₹${p.amountDue}</span>`;
+          return `
+            <div class="fee-period-row ${p.status}">
+              <div>
+                <div class="fee-period-label">${escapeHtmlAdmin(p.label)}</div>
+                <div class="fee-period-amount">₹${p.amount}</div>
+              </div>
+              ${badge}
+            </div>
+          `;
+        }).join("")}
+      `;
+    }
 
     resultBox.innerHTML = `
       <div class="fee-student-summary">
@@ -3135,6 +3228,9 @@ async function searchFeeStudent() {
         </button>
       </div>
 
+      ${dueListHtml}
+
+      <h3 class="form-section-title" style="font-size:13.5px;margin-top:16px;">Payment History</h3>
       <div class="table-wrapper">
         <table class="classes-table">
           <thead>
