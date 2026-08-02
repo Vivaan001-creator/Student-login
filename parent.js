@@ -7,9 +7,9 @@ import {
   query,
   where,
   orderBy,
-  limit,
-  documentId
+  limit
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { generateBillingPeriods, allocateDueStatus, findClassDoc, classKeyOf } from "./fee-utils.js";
 
 // ==========================================================
 // Helpers
@@ -34,32 +34,10 @@ function showEmpty(emptyMsg, text) {
   }
 }
 
-// Normalizes "Class 3" / "class 3" / "3" all to the same key.
-// Admin's Add Student form saves student.class as the full
-// display text (e.g. "Class 3"), while a class document's own
-// id (used by homework.classId, fee structure, etc.) is usually
-// just "3" — this bridges the two everywhere this file needs to
-// match a student to their class.
-function classKeyOf(value) {
-  return String(value || "").trim().toLowerCase().replace(/^class\s*/, "");
-}
-
-// Looks up a class document either by its exact id (fast path,
-// works once data is keyed consistently) or, failing that, by
-// scanning and normalizing every class id — so Fee Status still
-// works correctly even when a student's class is stored as
-// "Class 3" but the class document's id is "3".
-async function findClassDoc(classValue) {
-  if (!classValue) return null;
-
-  const directSnap = await getDoc(doc(db, "classes", classValue));
-  if (directSnap.exists()) return directSnap.data();
-
-  const targetKey = classKeyOf(classValue);
-  const allSnap = await getDocs(collection(db, "classes"));
-  const match = allSnap.docs.find((d) => classKeyOf(d.id) === targetKey);
-  return match ? match.data() : null;
-}
+// classKeyOf() and findClassDoc() now live in fee-utils.js
+// (shared with pay-fee.js, which needs the exact same class ->
+// fee-structure lookup when independently re-verifying an
+// amount before writing a payment).
 
 // ==========================================================
 // Shared month list (same as student.js / result.js, so a
@@ -312,16 +290,19 @@ async function loadChildAttendance(roll, month) {
   if (!range) return;
 
   try {
-    const attQuery = query(
-      collection(db, "students", roll, "attendance"),
-      where(documentId(), ">=", range.start),
-      where(documentId(), "<", range.end),
-      orderBy(documentId(), "desc")
-    );
+    // BUG FIX: a where()+where()+orderBy() range query on documentId()
+    // was asking Firestore for a composite index that doesn't exist in
+    // this project ("Attendance load nahi ho paayi: The query requires
+    // an index..."). A single student's attendance subcollection is
+    // tiny (one doc per school day), so instead of requiring an index,
+    // fetch the whole subcollection once and filter/sort in JS.
+    const allSnap = await getDocs(collection(db, "students", roll, "attendance"));
 
-    const snap = await getDocs(attQuery);
+    const docsInRange = allSnap.docs
+      .filter((d) => d.id >= range.start && d.id < range.end)
+      .sort((a, b) => (a.id < b.id ? 1 : a.id > b.id ? -1 : 0));
 
-    if (snap.empty) {
+    if (docsInRange.length === 0) {
       showEmpty(emptyMsg, month + " ke liye abhi tak attendance record nahi hai.");
       return;
     }
@@ -330,7 +311,7 @@ async function loadChildAttendance(roll, month) {
     let absent = 0;
     let rows = "";
 
-    snap.forEach((docSnap) => {
+    docsInRange.forEach((docSnap) => {
       const status = docSnap.data().status || "Present";
       if (status === "Present") present++; else absent++;
 
@@ -503,19 +484,21 @@ async function loadNotices() {
 // ==========================================================
 async function loadChildFeeStatus(roll, child) {
   const summaryBox = document.getElementById("feeSummaryBox");
+  const dueBox = document.getElementById("feeDueBox");
   const tableBody = document.getElementById("feeTableBody");
   const emptyMsg = document.getElementById("feeEmptyMsg");
 
   if (!summaryBox) return;
 
   summaryBox.innerHTML = "";
+  if (dueBox) dueBox.innerHTML = "";
   if (tableBody) tableBody.innerHTML = "";
   if (emptyMsg) emptyMsg.style.display = "none";
 
   try {
     const classData = await findClassDoc(child.class);
     const feeAmount = classData ? Number(classData.feeAmount) || 0 : 0;
-    const feeFrequency = classData ? (classData.feeFrequency || "-") : "-";
+    const feeFrequency = classData ? (classData.feeFrequency || "Monthly") : "Monthly";
 
     const paymentsSnap = await getDocs(
       query(collection(db, "students", roll, "payments"), orderBy("date", "desc"))
@@ -540,12 +523,22 @@ async function loadChildFeeStatus(roll, child) {
       `;
     });
 
-    const balance = feeAmount - totalPaid;
-    const statusBadge = !feeAmount
-      ? `<span class="status-inactive">Fee not set</span>`
-      : balance <= 0
-        ? `<span class="status-active">Paid</span>`
-        : `<span class="status-inactive">Due ₹${balance}</span>`;
+    // Month-by-month due, anchored to admission date — falls back
+    // to the old single lump-sum view if admission date isn't set,
+    // since there's nothing to anchor a month-wise breakdown to.
+    const periods = generateBillingPeriods(child.admissionDate, feeFrequency, feeAmount);
+    const periodsWithStatus = allocateDueStatus(periods, totalPaid);
+    const outstanding = periodsWithStatus.filter((p) => p.status !== "paid");
+
+    let overallBadge;
+    if (!feeAmount) {
+      overallBadge = `<span class="status-inactive">Fee not set</span>`;
+    } else if (outstanding.length === 0) {
+      overallBadge = `<span class="status-active">All Paid</span>`;
+    } else {
+      const totalDue = outstanding.reduce((sum, p) => sum + p.amountDue, 0);
+      overallBadge = `<span class="status-inactive">Due ₹${totalDue}</span>`;
+    }
 
     summaryBox.innerHTML = `
       <div class="fee-student-summary">
@@ -556,10 +549,51 @@ async function loadChildFeeStatus(roll, child) {
         <div class="fee-student-amounts">
           <span>Fee: ₹${feeAmount || 0} / ${escapeHtml(feeFrequency)}</span>
           <span>Paid: ₹${totalPaid}</span>
-          ${statusBadge}
+          ${overallBadge}
         </div>
       </div>
     `;
+
+    if (dueBox) {
+      if (!feeAmount) {
+        dueBox.innerHTML = "";
+      } else if (periods.length === 0) {
+        // No admission date on file — can't anchor a month-wise
+        // breakdown, so just note that plainly instead of guessing.
+        dueBox.innerHTML = `<p class="result-empty-msg">Admission Date set nahi hai, isliye month-wise due nahi dikhaya ja sakta. School office se sampark karein.</p>`;
+      } else {
+        dueBox.innerHTML = periodsWithStatus.map((p) => {
+          if (p.status === "paid") {
+            return `
+              <div class="fee-period-row paid">
+                <div>
+                  <div class="fee-period-label">${escapeHtml(p.label)}</div>
+                  <div class="fee-period-amount">₹${p.amount}</div>
+                </div>
+                <span class="status-active"><i class="fa-solid fa-circle-check"></i> Paid</span>
+              </div>
+            `;
+          }
+          const badge = p.status === "partial"
+            ? `<span class="status-inactive">Partially Paid — Due ₹${p.amountDue}</span>`
+            : `<span class="status-inactive">Due ₹${p.amountDue}</span>`;
+          return `
+            <div class="fee-period-row ${p.status}">
+              <div>
+                <div class="fee-period-label">${escapeHtml(p.label)}</div>
+                <div class="fee-period-amount">₹${p.amount}</div>
+              </div>
+              <div class="fee-period-status">
+                ${badge}
+                <button type="button" class="btn-pay-now" onclick="goToPayFee('${roll}', '${p.key}')">
+                  <i class="fa-solid fa-indian-rupee-sign"></i> Pay Now
+                </button>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+    }
 
     if (tableBody) {
       tableBody.innerHTML = rows || `<tr><td colspan="4">Abhi koi payment record nahi hai.</td></tr>`;
@@ -570,6 +604,15 @@ async function loadChildFeeStatus(roll, child) {
     if (emptyMsg) showEmpty(emptyMsg, "Fee status load nahi ho paayi: " + error.message);
   }
 }
+
+// Hands off to the dedicated payment page. Only roll + which
+// period is passed — the amount is deliberately NOT sent here;
+// pay-fee.html re-derives it fresh from Firestore itself so it
+// can never be tampered with via the URL.
+function goToPayFee(roll, periodKey) {
+  window.location.href = `pay-fee.html?roll=${encodeURIComponent(roll)}&period=${encodeURIComponent(periodKey)}`;
+}
+window.goToPayFee = goToPayFee;
 
 // ==========================================================
 // Sidebar hamburger + backdrop (same behaviour as student.js /
