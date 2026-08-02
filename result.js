@@ -5,21 +5,31 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 // ==========================================================
-// Session guard — uses the SAME keys student.js actually sets
-// at login (sessionStorage: studentLoggedIn / studentRoll).
-// No new login page needed; this just trusts the same session.
+// Session guard — supports EITHER session type that can land on
+// this page: a student's own login (studentLoggedIn/studentRoll)
+// or a parent's login (parentLoggedIn/parentActiveRoll, set by
+// parent.js — parentActiveRoll is whichever child is currently
+// selected on the Parent Dashboard's child switcher).
+//
+// This page is intentionally shared rather than duplicated per
+// role — same Firestore reads, same print layout either way.
 // ==========================================================
-if (sessionStorage.getItem("studentLoggedIn") !== "true") {
+const isParentSession = sessionStorage.getItem("parentLoggedIn") === "true";
+const isStudentSession = sessionStorage.getItem("studentLoggedIn") === "true";
+
+if (!isParentSession && !isStudentSession) {
   alert("Session Expired. Please Login Again.");
-  window.location.href = "student-login.html";
+  window.location.href = "login.html";
   throw new Error("Not Logged In");
 }
 
-const roll = sessionStorage.getItem("studentRoll");
+const roll = isParentSession
+  ? sessionStorage.getItem("parentActiveRoll")
+  : sessionStorage.getItem("studentRoll");
 
 if (!roll) {
   alert("Session Expired. Please Login Again.");
-  window.location.href = "student-login.html";
+  window.location.href = isParentSession ? "parent-login.html" : "student-login.html";
   throw new Error("Roll Missing");
 }
 
@@ -226,7 +236,7 @@ async function init() {
 
   if (!studentSnap.exists()) {
     alert("Student data not found.");
-    window.location.href = "student-login.html";
+    window.location.href = isParentSession ? "parent-login.html" : "student-login.html";
     return;
   }
 
@@ -339,13 +349,20 @@ function downloadPDF() {
 }
 
 function logoutStudent() {
-  sessionStorage.removeItem("studentLoggedIn");
-  sessionStorage.removeItem("studentRoll");
-  window.location.replace("student-login.html");
+  if (isParentSession) {
+    sessionStorage.removeItem("parentLoggedIn");
+    sessionStorage.removeItem("parentContact");
+    sessionStorage.removeItem("parentActiveRoll");
+    window.location.replace("parent-login.html");
+  } else {
+    sessionStorage.removeItem("studentLoggedIn");
+    sessionStorage.removeItem("studentRoll");
+    window.location.replace("student-login.html");
+  }
 }
 
 function goToDashboard() {
-  window.location.href = "student-dashboard.html";
+  window.location.href = isParentSession ? "parent-dashboard.html" : "student-dashboard.html";
 }
 
 window.printResult = printResult;
