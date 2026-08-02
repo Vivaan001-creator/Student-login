@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parent Dashboard - Modern International School</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+      <div class="brand-text">
+        <h1><span class="accent">Modern</span></h1>
+        <p>International School</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="parent-dashboard.html" class="nav-link active">
+        <i class="fa-solid fa-house"></i>
+        <span class="link-text">Dashboard</span>
+      </a>
+      <a href="#result-section" class="nav-link">
+        <i class="fa-solid fa-chart-column"></i>
+        <span class="link-text">Result</span>
+      </a>
+      <a href="#attendance-section" class="nav-link">
+        <i class="fa-regular fa-square-check"></i>
+        <span class="link-text">Attendance</span>
+      </a>
+      <a href="#homework-section" class="nav-link">
+        <i class="fa-solid fa-file-lines"></i>
+        <span class="link-text">Homework</span>
+      </a>
+      <a href="#notices-section" class="nav-link">
+        <i class="fa-regular fa-bell"></i>
+        <span class="link-text">Notices</span>
+      </a>
+      <a href="#fee-section" class="nav-link">
+        <i class="fa-solid fa-file-invoice-dollar"></i>
+        <span class="link-text">Fee Status</span>
+      </a>
+      <a href="parent-login.html" class="nav-link" onclick="parentLogout(); return false;">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        <span class="link-text">Logout</span>
+      </a>
+    </nav>
+  </aside>
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <header class="dashboard-hero">
+      <div class="topbar-left">
+        <h1>Welcome, Parent!</h1>
+        <p>Viewing <span id="dashChildName">-</span> &nbsp;·&nbsp; Roll <span id="dashChildRoll">-</span></p>
+      </div>
+
+      <div class="topbar-right">
+        <div class="admin-profile">
+          <div class="avatar"><i class="fa-solid fa-people-roof"></i></div>
+          <span id="dashChildClass">Class -</span>
+        </div>
+      </div>
+
+      <svg class="topbar-illustration" viewBox="0 0 1000 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <g fill="rgba(255,255,255,0.18)">
+          <ellipse cx="150" cy="95" rx="30" ry="12"/>
+          <ellipse cx="178" cy="88" rx="20" ry="10"/>
+          <ellipse cx="820" cy="80" rx="34" ry="13"/>
+          <ellipse cx="500" cy="55" rx="26" ry="10"/>
+        </g>
+        <path d="M0,300 Q180,235 380,262 T760,248 Q880,240 1000,255 L1000,300 Z" fill="rgba(255,255,255,0.08)"/>
+        <path d="M0,300 Q220,260 460,278 T900,270 L1000,278 L1000,300 Z" fill="rgba(255,255,255,0.12)"/>
+        <polygon points="368,170 546,170 457,75" fill="rgba(255,255,255,0.24)"/>
+        <circle cx="457" cy="122" r="10" fill="rgba(255,255,255,0.34)"/>
+        <rect x="368" y="170" width="178" height="110" fill="rgba(255,255,255,0.22)"/>
+        <g fill="rgba(124,111,240,0.42)">
+          <path d="M387,220 L387,200 Q400,178 413,200 L413,220 Z"/>
+          <path d="M444,220 L444,200 Q457,178 470,200 L470,220 Z"/>
+          <path d="M501,220 L501,200 Q514,178 527,200 L527,220 Z"/>
+        </g>
+        <path d="M442,280 L442,225 Q457,205 472,225 L472,280 Z" fill="rgba(90,80,180,0.48)"/>
+        <rect x="425" y="278" width="64" height="6" fill="rgba(255,255,255,0.26)"/>
+      </svg>
+    </header>
+
+    <main class="content" id="parentDashboardBox">
+
+      <!-- Child switcher — only rendered when a parent has more than one child -->
+      <section class="card" id="child-switch-section" style="display:none;">
+        <div class="card-title">
+          <i class="fa-solid fa-people-group"></i>
+          <h2>My Children</h2>
+        </div>
+        <div class="child-switch-card">
+          <span class="child-switch-label">Switch child:</span>
+          <div class="child-switch-row" id="childSwitchRow"></div>
+        </div>
+      </section>
+
+      <!-- Profile summary -->
+      <section class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-id-card"></i>
+          <h2>Child's Profile</h2>
+        </div>
+
+        <div class="mini-stats-grid">
+          <div class="mini-stat-card">
+            <div class="mini-stat-icon purple"><i class="fa-solid fa-id-badge"></i></div>
+            <div class="mini-stat-info">
+              <div class="mini-stat-number" id="dashChildRoll2">-</div>
+              <div class="mini-stat-label">Roll Number</div>
+            </div>
+          </div>
+          <div class="mini-stat-card">
+            <div class="mini-stat-icon blue"><i class="fa-solid fa-chalkboard"></i></div>
+            <div class="mini-stat-info">
+              <div class="mini-stat-number" id="dashChildClass2">-</div>
+              <div class="mini-stat-label">Class</div>
+            </div>
+          </div>
+          <div class="mini-stat-card">
+            <div class="mini-stat-icon green"><i class="fa-solid fa-user"></i></div>
+            <div class="mini-stat-info">
+              <div class="mini-stat-number" id="dashFatherName">-</div>
+              <div class="mini-stat-label">Father's Name</div>
+            </div>
+          </div>
+          <div class="mini-stat-card">
+            <div class="mini-stat-icon orange"><i class="fa-solid fa-square-check"></i></div>
+            <div class="mini-stat-info">
+              <div class="mini-stat-number" id="dashAttendance">-</div>
+              <div class="mini-stat-label">Attendance</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Result -->
+      <section class="card" id="result-section">
+        <div class="card-title">
+          <i class="fa-solid fa-file-lines"></i>
+          <h2>Result</h2>
+        </div>
+
+        <p style="color:#777;margin-bottom:16px;">Report card dekhne ke liye month chunein aur button dabayein.</p>
+
+        <div class="field" style="max-width:260px;margin-bottom:18px;">
+          <label>Select Month</label>
+          <div class="input-wrap select-wrap">
+            <select id="resultMonth"></select>
+            <i class="fa-solid fa-chevron-down select-icon"></i>
+          </div>
+        </div>
+
+        <button type="button" class="btn-primary" onclick="viewChildResult()">
+          <i class="fa-solid fa-eye"></i> View Result
+        </button>
+      </section>
+
+      <!-- Attendance -->
+      <section class="card" id="attendance-section">
+        <div class="card-title">
+          <i class="fa-regular fa-square-check"></i>
+          <h2>Attendance</h2>
+        </div>
+
+        <div class="field" style="max-width:260px;margin-bottom:16px;">
+          <label>Select Month</label>
+          <div class="input-wrap select-wrap">
+            <select id="attendanceMonth"></select>
+            <i class="fa-solid fa-chevron-down select-icon"></i>
+          </div>
+        </div>
+
+        <div class="mini-stats-grid" id="attendanceSummaryBox" style="margin-bottom:18px;"></div>
+
+        <div class="table-wrapper">
+          <table class="classes-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="attendanceTableBody"></tbody>
+          </table>
+        </div>
+
+        <p id="attendanceEmptyMsg" class="result-empty-msg" style="display:none;"></p>
+      </section>
+
+      <!-- Homework -->
+      <section class="card" id="homework-section">
+        <div class="card-title">
+          <i class="fa-solid fa-file-lines"></i>
+          <h2>Homework</h2>
+        </div>
+
+        <div id="homeworkList"></div>
+        <p id="homeworkEmptyMsg" class="result-empty-msg" style="display:none;"></p>
+      </section>
+
+      <!-- Notice Board -->
+      <section class="card" id="notices-section">
+        <div class="card-title">
+          <i class="fa-regular fa-bell"></i>
+          <h2>Notice Board</h2>
+        </div>
+
+        <div id="noticesList"></div>
+        <p id="noticesEmptyMsg" class="result-empty-msg" style="display:none;"></p>
+      </section>
+
+      <!-- Fee Status -->
+      <section class="card" id="fee-section">
+        <div class="card-title">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+          <h2>Fee Status</h2>
+        </div>
+
+        <div id="feeSummaryBox"></div>
+
+        <div class="table-wrapper">
+          <table class="classes-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Mode</th>
+                <th>Note</th>
+              </tr>
+            </thead>
+            <tbody id="feeTableBody"></tbody>
+          </table>
+        </div>
+
+        <p id="feeEmptyMsg" class="result-empty-msg" style="display:none;"></p>
+      </section>
+
+      <footer class="footer">
+        © 2026 Modern International School. All rights reserved.
+      </footer>
+
+    </main>
+  </div>
+</div>
+
+<script type="module" src="parent.js"></script>
+<script>
+  // "View Result" button on the Result card: stores the month
+  // picked in #resultMonth (populated by parent.js) and the
+  // currently active child's roll, then hands off to result.html
+  // — the SAME print/result page student.js uses, which now
+  // recognizes either a student session or a parent session.
+  function viewChildResult() {
+    const monthSelect = document.getElementById('resultMonth');
+    const month = monthSelect && monthSelect.value;
+
+    if (!month) {
+      alert('Pehle month select karein.');
+      return;
+    }
+
+    localStorage.setItem('selectedMonth', month);
+    window.location.href = 'result.html';
+  }
+  window.viewChildResult = viewChildResult;
+</script>
+</body>
+</html>
