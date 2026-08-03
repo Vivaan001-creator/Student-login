@@ -39,6 +39,15 @@ function escapeHtml(str) {
     .replaceAll('"', "&quot;");
 }
 
+// Same helper admin.js uses for the teacher profile page, so dates
+// look consistent across the admin and student sides.
+function formatDateNice(value) {
+  if (!value) return "-";
+  const d = new Date(value);
+  if (isNaN(d.getTime())) return value; // not a parseable date, show as-is
+  return d.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+}
+
 // ==========================================================
 // Student / Parent Login (Roll Number + Date of Birth)
 //
@@ -242,7 +251,12 @@ async function loadStudentDashboard() {
   setText("dashStudentRoll2", roll);
   setText("dashStudentClass", student.class || "-");
   setText("dashStudentClass2", student.class || "-");
+  setText("dashStudentSection", student.section || "-");
+  setText("dashGender", student.gender || "-");
+  setText("dashDob", formatDateNice(student.dob));
+  setText("dashAdmissionDate", formatDateNice(student.admissionDate));
   setText("dashFatherName", student.father || "-");
+  setText("dashMotherName", student.mother || "-");
   setText("dashAttendance", (student.attendance || "0") + "%");
 
   const monthSelect = document.getElementById("resultMonth");
