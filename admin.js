@@ -8,6 +8,7 @@ signOut
 import {
   doc,
   setDoc,
+  updateDoc,
   getDoc,
   deleteDoc,
   collection,
@@ -44,7 +45,7 @@ import {
     getApp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-import { generateBillingPeriods, allocateDueStatus, findClassDoc } from "./fee-utils.js";
+import { generateBillingPeriods, allocateDueStatus, findClassDoc, isPaymentVerified } from "./fee-utils.js?v=3";
 
 // ==========================
 // Create a Teacher's Login Account
@@ -3139,6 +3140,7 @@ async function searchFeeStudent() {
     );
 
     let totalPaid = 0;
+    const pendingByPeriod = {};
     let paymentRowsHtml = "";
 
     if (paymentsSnap.empty) {
@@ -3146,16 +3148,37 @@ async function searchFeeStudent() {
     } else {
       paymentsSnap.forEach((p) => {
         const pay = p.data();
-        totalPaid += Number(pay.amount) || 0;
+        const amt = Number(pay.amount) || 0;
+        const trusted = isPaymentVerified(pay);
+
+        if (trusted) {
+          totalPaid += amt;
+        } else if (pay.periodKey) {
+          pendingByPeriod[pay.periodKey] = (pendingByPeriod[pay.periodKey] || 0) + amt;
+        }
+
         const dateText = pay.date && pay.date.toDate
           ? pay.date.toDate().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })
           : "-";
+
+        const actionCell = trusted
+          ? ""
+          : `
+            <div class="action-btns" style="margin-top:6px;">
+              <button class="btn-edit" onclick="verifyPayment('${roll}', '${p.id}')"><i class="fa-solid fa-check"></i> Verify</button>
+              <button class="btn-delete" onclick="rejectPayment('${roll}', '${p.id}')"><i class="fa-solid fa-xmark"></i> Reject</button>
+            </div>
+          `;
+        const noteText = trusted
+          ? escapeHtmlAdmin(pay.note || "-")
+          : `${escapeHtmlAdmin(pay.note || "-")} <span class="status-inactive">Pending Verification</span>${actionCell}`;
+
         paymentRowsHtml += `
           <tr>
             <td data-label="Date">${dateText}</td>
             <td data-label="Amount">₹${pay.amount}</td>
             <td data-label="Mode">${escapeHtmlAdmin(pay.mode || "-")}</td>
-            <td data-label="Note">${escapeHtmlAdmin(pay.note || "-")}</td>
+            <td data-label="Note">${noteText}</td>
           </tr>
         `;
       });
@@ -3163,14 +3186,24 @@ async function searchFeeStudent() {
 
     // Month-by-month due, anchored to admission date — same logic
     // (and same fee-utils.js module) the Parent Portal uses, so
-    // admin and parent never disagree on what's outstanding.
+    // admin and parent never disagree on what's outstanding. Only
+    // VERIFIED payments count as totalPaid here — a parent simply
+    // clicking through the Pay Now flow does not, by itself, clear
+    // a due period until admin verifies it below.
     const periods = generateBillingPeriods(student.admissionDate, feeFrequency, feeAmount);
-    const periodsWithStatus = allocateDueStatus(periods, totalPaid);
-    const outstanding = periodsWithStatus.filter((p) => p.status !== "paid");
+    const periodsWithStatus = allocateDueStatus(periods, totalPaid).map((p) => {
+      if (p.status !== "paid" && pendingByPeriod[p.key] > 0) {
+        return { ...p, status: "pending" };
+      }
+      return p;
+    });
+    const outstanding = periodsWithStatus.filter((p) => p.status === "due" || p.status === "partial");
 
     let statusBadge;
     if (!feeAmount) {
       statusBadge = `<span class="status-inactive">Fee not set</span>`;
+    } else if (outstanding.length === 0 && periodsWithStatus.some((p) => p.status === "pending")) {
+      statusBadge = `<span class="status-inactive">Verification Pending</span>`;
     } else if (outstanding.length === 0) {
       statusBadge = `<span class="status-active">All Paid</span>`;
     } else {
@@ -3193,6 +3226,17 @@ async function searchFeeStudent() {
                   <div class="fee-period-amount">₹${p.amount}</div>
                 </div>
                 <span class="status-active"><i class="fa-solid fa-circle-check"></i> Paid</span>
+              </div>
+            `;
+          }
+          if (p.status === "pending") {
+            return `
+              <div class="fee-period-row pending">
+                <div>
+                  <div class="fee-period-label">${escapeHtmlAdmin(p.label)}</div>
+                  <div class="fee-period-amount">₹${p.amount}</div>
+                </div>
+                <span class="status-inactive"><i class="fa-solid fa-hourglass-half"></i> Verification Pending</span>
               </div>
             `;
           }
@@ -3220,7 +3264,7 @@ async function searchFeeStudent() {
         </div>
         <div class="fee-student-amounts">
           <span>Fee: ₹${feeAmount || 0} / ${escapeHtmlAdmin(feeFrequency)}</span>
-          <span>Paid: ₹${totalPaid}</span>
+          <span>Paid (Verified): ₹${totalPaid}</span>
           ${statusBadge}
         </div>
         <button class="btn-add-class" onclick="openPaymentModal()">
@@ -3293,6 +3337,8 @@ async function savePayment() {
       date: Timestamp.fromDate(new Date(dateValue)),
       mode,
       note,
+      source: "admin",
+      verified: true,
       recordedAt: Timestamp.now()
     });
 
@@ -3308,3 +3354,41 @@ async function savePayment() {
 
 }
 window.savePayment = savePayment;
+
+// ==========================================================
+// Verify / Reject a parent-self-reported payment
+// (Fee Ledger — payments with source: "parent_portal" sit as
+// "Pending Verification" until admin acts on them here. Only
+// after Verify does the amount count toward that student's
+// Paid total / clear the corresponding due period.)
+// ==========================================================
+async function verifyPayment(roll, paymentId) {
+
+  try {
+    await updateDoc(doc(db, "students", roll, "payments", paymentId), {
+      verified: true
+    });
+    await searchFeeStudent();
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  }
+
+}
+window.verifyPayment = verifyPayment;
+
+async function rejectPayment(roll, paymentId) {
+
+  const confirmReject = confirm("Yeh self-reported payment reject karke hata dein? Agar parent ne galat report kiya tha, toh 'Yes' karein. Yeh undo nahi ho sakta.");
+  if (!confirmReject) return;
+
+  try {
+    await deleteDoc(doc(db, "students", roll, "payments", paymentId));
+    await searchFeeStudent();
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  }
+
+}
+window.rejectPayment = rejectPayment;
