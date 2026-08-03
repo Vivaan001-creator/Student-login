@@ -9,7 +9,7 @@ import {
   orderBy,
   limit
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-import { generateBillingPeriods, allocateDueStatus, findClassDoc, classKeyOf } from "./fee-utils.js";
+import { generateBillingPeriods, allocateDueStatus, findClassDoc, classKeyOf, isPaymentVerified } from "./fee-utils.js?v=3";
 
 // ==========================================================
 // Helpers
@@ -505,20 +505,32 @@ async function loadChildFeeStatus(roll, child) {
     );
 
     let totalPaid = 0;
+    const pendingByPeriod = {};
     let rows = "";
 
     paymentsSnap.forEach((p) => {
       const pay = p.data();
-      totalPaid += Number(pay.amount) || 0;
+      const amt = Number(pay.amount) || 0;
+      const trusted = isPaymentVerified(pay);
+
+      if (trusted) {
+        totalPaid += amt;
+      } else if (pay.periodKey) {
+        pendingByPeriod[pay.periodKey] = (pendingByPeriod[pay.periodKey] || 0) + amt;
+      }
+
       const dateText = pay.date && pay.date.toDate
         ? pay.date.toDate().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })
         : "-";
+      const statusTag = trusted
+        ? ""
+        : ` <span class="status-inactive" style="margin-left:6px;">Pending Verification</span>`;
       rows += `
         <tr>
           <td data-label="Date">${dateText}</td>
           <td data-label="Amount">₹${pay.amount}</td>
           <td data-label="Mode">${escapeHtml(pay.mode || "-")}</td>
-          <td data-label="Note">${escapeHtml(pay.note || "-")}</td>
+          <td data-label="Note">${escapeHtml(pay.note || "-")}${statusTag}</td>
         </tr>
       `;
     });
@@ -527,12 +539,23 @@ async function loadChildFeeStatus(roll, child) {
     // to the old single lump-sum view if admission date isn't set,
     // since there's nothing to anchor a month-wise breakdown to.
     const periods = generateBillingPeriods(child.admissionDate, feeFrequency, feeAmount);
-    const periodsWithStatus = allocateDueStatus(periods, totalPaid);
-    const outstanding = periodsWithStatus.filter((p) => p.status !== "paid");
+    const periodsWithStatus = allocateDueStatus(periods, totalPaid).map((p) => {
+      // A self-reported payment sitting in Firestore for this exact
+      // period, not yet trusted, shows as its own "pending" state —
+      // NOT paid (that's the whole point) and not plain "due" either,
+      // so a parent doesn't get prompted to pay twice.
+      if (p.status !== "paid" && pendingByPeriod[p.key] > 0) {
+        return { ...p, status: "pending" };
+      }
+      return p;
+    });
+    const outstanding = periodsWithStatus.filter((p) => p.status === "due" || p.status === "partial");
 
     let overallBadge;
     if (!feeAmount) {
       overallBadge = `<span class="status-inactive">Fee not set</span>`;
+    } else if (outstanding.length === 0 && periodsWithStatus.some((p) => p.status === "pending")) {
+      overallBadge = `<span class="status-inactive">Verification Pending</span>`;
     } else if (outstanding.length === 0) {
       overallBadge = `<span class="status-active">All Paid</span>`;
     } else {
@@ -548,7 +571,7 @@ async function loadChildFeeStatus(roll, child) {
         </div>
         <div class="fee-student-amounts">
           <span>Fee: ₹${feeAmount || 0} / ${escapeHtml(feeFrequency)}</span>
-          <span>Paid: ₹${totalPaid}</span>
+          <span>Paid (Verified): ₹${totalPaid}</span>
           ${overallBadge}
         </div>
       </div>
@@ -571,6 +594,17 @@ async function loadChildFeeStatus(roll, child) {
                   <div class="fee-period-amount">₹${p.amount}</div>
                 </div>
                 <span class="status-active"><i class="fa-solid fa-circle-check"></i> Paid</span>
+              </div>
+            `;
+          }
+          if (p.status === "pending") {
+            return `
+              <div class="fee-period-row pending">
+                <div>
+                  <div class="fee-period-label">${escapeHtml(p.label)}</div>
+                  <div class="fee-period-amount">₹${p.amount}</div>
+                </div>
+                <span class="status-inactive"><i class="fa-solid fa-hourglass-half"></i> Verification Pending</span>
               </div>
             `;
           }
