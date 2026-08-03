@@ -148,6 +148,22 @@ export function allocateDueStatus(periods, totalPaid) {
   });
 }
 
+// A payment only counts toward "Paid" if it's trusted:
+//  - explicitly verified (admin approved it), or
+//  - recorded directly by admin (source !== "parent_portal"),
+//    since admin only logs a payment after actually seeing the
+//    money (cash, bank transfer, etc.) — that's the school's
+//    existing trust boundary, unchanged by this feature.
+// A parent simply clicking "Maine Payment Kar Diya" on the Pay
+// Now flow is NOT, by itself, proof that money moved — so those
+// self-reports stay "pending" until admin confirms them, and are
+// deliberately excluded from the Paid/Due calculation until then.
+export function isPaymentVerified(pay) {
+  if (pay.verified === true) return true;
+  if (pay.verified === false) return false;
+  return pay.source !== "parent_portal";
+}
+
 // Standard UPI deep link. Most UPI apps (GPay, PhonePe, Paytm,
 // BHIM...) treat am= as fixed once passed this way, though this
 // is ultimately controlled by whichever app the parent has
