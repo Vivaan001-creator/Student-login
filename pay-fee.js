@@ -9,7 +9,7 @@ import {
   orderBy,
   Timestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-import { generateBillingPeriods, allocateDueStatus, findClassDoc } from "./fee-utils.js";
+import { generateBillingPeriods, allocateDueStatus, findClassDoc, isPaymentVerified } from "./fee-utils.js?v=3";
 
 function escapeHtml(str) {
   return String(str)
@@ -98,8 +98,16 @@ async function init() {
   );
 
   let totalPaid = 0;
+  let alreadyPendingAmount = 0;
+
   paymentsSnap.forEach((p) => {
-    totalPaid += Number(p.data().amount) || 0;
+    const pay = p.data();
+    const amt = Number(pay.amount) || 0;
+    if (isPaymentVerified(pay)) {
+      totalPaid += amt;
+    } else if (pay.periodKey === periodKey) {
+      alreadyPendingAmount += amt;
+    }
   });
 
   const periods = generateBillingPeriods(student.admissionDate, feeFrequency, feeAmount);
@@ -118,6 +126,21 @@ async function init() {
         <div class="pay-who">${escapeHtml(student.name || roll)} · Roll ${escapeHtml(roll)}</div>
         <div class="pay-period">${escapeHtml(period.label)}</div>
         <p class="pay-confirm-hint">Yeh payment already ho chuka hai — kuch aur karne ki zaroorat nahi.</p>
+        <a href="parent-dashboard.html" class="pay-back" style="justify-content:center;">
+          <i class="fa-solid fa-arrow-left"></i> Dashboard par jaayein
+        </a>
+      </div>
+    `;
+    return;
+  }
+
+  if (alreadyPendingAmount >= period.amountDue) {
+    content.innerHTML = `
+      <div class="pay-card">
+        <div class="pay-icon" style="background:#d97706;"><i class="fa-solid fa-hourglass-half"></i></div>
+        <div class="pay-who">${escapeHtml(student.name || roll)} · Roll ${escapeHtml(roll)}</div>
+        <div class="pay-period">${escapeHtml(period.label)}</div>
+        <p class="pay-confirm-hint">Aap is month ka payment pehle hi report kar chuke hain. School admin verify karne ke baad yeh "Paid" dikhega.</p>
         <a href="parent-dashboard.html" class="pay-back" style="justify-content:center;">
           <i class="fa-solid fa-arrow-left"></i> Dashboard par jaayein
         </a>
@@ -177,11 +200,12 @@ async function init() {
       <div class="pay-divider"><span class="line"></span><span>PHIR</span><span class="line"></span></div>
 
       <p class="pay-confirm-hint">
-        UPI app khulne ke baad payment complete karein. Payment successful hone ke baad, is browser tab par wapas aakar neeche wala button dabayein.
+        UPI app mein payment poora karne ke baad hi neeche wala button dabayein. Yeh payment turant "Paid" nahi dikhega —
+        <strong>school admin verify karega</strong> (apne bank/UPI statement se match karke), uske baad hi status "Paid" mein badlega.
       </p>
 
       <button type="button" class="btn-confirm-paid" id="confirmPaidBtn" disabled>
-        <i class="fa-solid fa-check"></i> Maine Payment Kar Diya
+        <i class="fa-solid fa-paper-plane"></i> Payment Report Karein (Verification ke liye)
       </button>
 
       <a href="parent-dashboard.html" class="pay-cancel">Cancel, Dashboard par vaapas jaayein</a>
@@ -191,8 +215,12 @@ async function init() {
   const upiBtn = document.getElementById("upiPayBtn");
   const confirmBtn = document.getElementById("confirmPaidBtn");
 
-  // Soft nudge: the confirm step only unlocks after the parent has
-  // actually opened the UPI app at least once from this page.
+  // Soft nudge: the report step only unlocks after the parent has
+  // actually opened the UPI app at least once from this page. This
+  // is NOT a security check (clicking the link doesn't prove the
+  // payment went through) — the real safeguard is that this write
+  // is marked verified:false and excluded from Paid/Due math until
+  // an admin confirms it.
   upiBtn.addEventListener("click", () => {
     confirmBtn.disabled = false;
   });
@@ -208,26 +236,28 @@ async function init() {
         mode: "UPI",
         note: `Self-reported via Parent Portal — ${period.label}`,
         source: "parent_portal",
+        periodKey: period.key,
+        verified: false,
         recordedAt: Timestamp.now()
       });
 
       content.innerHTML = `
         <div class="pay-card">
-          <div class="pay-icon" style="background:#16a34a;"><i class="fa-solid fa-check"></i></div>
-          <div class="pay-period">Payment Recorded ✅</div>
-          <p class="pay-confirm-hint">${escapeHtml(period.label)} ka ₹${amountDue} payment record ho gaya hai. Dashboard par redirect kiya ja raha hai...</p>
+          <div class="pay-icon" style="background:#d97706;"><i class="fa-solid fa-hourglass-half"></i></div>
+          <div class="pay-period">Payment Reported</div>
+          <p class="pay-confirm-hint">${escapeHtml(period.label)} ka ₹${amountDue} payment report ho gaya hai. School admin verify karne ke baad yeh "Paid" dikhega. Dashboard par redirect kiya ja raha hai...</p>
         </div>
       `;
 
       setTimeout(() => {
         window.location.href = "parent-dashboard.html";
-      }, 1600);
+      }, 2000);
 
     } catch (error) {
       console.error(error);
       confirmBtn.disabled = false;
-      confirmBtn.innerHTML = `<i class="fa-solid fa-check"></i> Maine Payment Kar Diya`;
-      alert("Payment record nahi ho paaya: " + error.message);
+      confirmBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Payment Report Karein (Verification ke liye)`;
+      alert("Payment report nahi ho paaya: " + error.message);
     }
   });
 }
